@@ -38,13 +38,31 @@ public class PasswordController {
         }
     }
 
-
-
-
-
     @PostMapping("/update-password")
-    public String updatePassword(@RequestParam("login") String login, @RequestParam("newPassword") String newPassword,
-                                 @RequestParam("confirmPassword") String confirmPassword, Model model) {
+    public String updatePassword(@RequestParam("login") String login,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmPassword") String confirmPassword,
+                                 @RequestParam(name = "showNewPassword", required = false) boolean showNewPassword,
+                                 @RequestParam(name = "showConfirmPassword", required = false) boolean showConfirmPassword,
+                                 Model model) {
+
+        // Store the password visibility states in the model
+        model.addAttribute("showNewPassword", showNewPassword);
+        model.addAttribute("showConfirmPassword", showConfirmPassword);
+
+        // Simulate password visibility logic
+        if (showNewPassword) {
+            model.addAttribute("newPasswordVisible", true);
+        } else {
+            model.addAttribute("newPasswordVisible", false);
+        }
+
+        if (showConfirmPassword) {
+            model.addAttribute("confirmPasswordVisible", true);
+        } else {
+            model.addAttribute("confirmPasswordVisible", false);
+        }
+
         if (!newPassword.equals(confirmPassword)) {
             model.addAttribute("error", "Паролі не співпадають.");
             return "change-password";
