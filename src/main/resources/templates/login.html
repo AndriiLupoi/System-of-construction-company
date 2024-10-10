@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Логін</title>
+    <link rel="stylesheet" th:href="@{../styles/loginStyle.css}">
+</head>
+<body>
+<div class="login-container">
+    <h2>Вхід</h2>
+    <form action="/login" method="POST">
+        <label for="login">Логін:</label>
+        <input type="text" id="login" name="login" required>
+
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Увійти</button>
+        <button type="button" onclick="window.location.href='/forgot-password';">Забули пароль?</button>
+
+
+        <p style="color: red;">
+            <th:block th:if="${error != null}">
+                [[${error}]]
+            </th:block>
+        </p>
+    </form>
+</div>
+</body>
+</html>
+
