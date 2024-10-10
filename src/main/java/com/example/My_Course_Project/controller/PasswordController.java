@@ -8,7 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Random;
 
 @Controller
 public class PasswordController {
@@ -18,62 +19,65 @@ public class PasswordController {
 
     @GetMapping("/forgot-password")
     public String showForgotPasswordPage() {
-        return "forgot-password"; // Повертаємо назву HTML-файлу без розширення
+        return "forgot-password"; // Return the HTML file name without extension
     }
 
     @PostMapping("/check-user")
     public String checkUser(@RequestParam("login") String login, @RequestParam("email") String email, Model model) {
         Keys user = keysService.findByLoginAndEmail(login, email);
 
-        // Зберігаємо введені дані в модель
+        // Store input data in the model
         model.addAttribute("login", login);
         model.addAttribute("email", email);
 
         if (user != null) {
-            model.addAttribute("showFields", true); // Додаємо параметр showFields
-            return "forgot-password"; // Повертаємо HTML-шаблон
+            String generatedPassword = generateRandomPassword(12); // Generate a new password
+            model.addAttribute("generatedPassword", generatedPassword); // Add generated password to the model
+            model.addAttribute("showFields", true); // Set to show the password fields
+            return "forgot-password"; // Return HTML template
         } else {
             model.addAttribute("error", "Користувача не знайдено.");
-            return "forgot-password"; // Повертаємо HTML-шаблон
+            return "forgot-password"; // Return HTML template
         }
+    }
+
+    private String generateRandomPassword(int length) {
+        // Define characters to use in password generation
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder password = new StringBuilder(length);
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            password.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return password.toString();
     }
 
     @PostMapping("/update-password")
     public String updatePassword(@RequestParam("login") String login,
                                  @RequestParam("newPassword") String newPassword,
-                                 @RequestParam("confirmPassword") String confirmPassword,
-                                 @RequestParam(name = "showNewPassword", required = false) boolean showNewPassword,
-                                 @RequestParam(name = "showConfirmPassword", required = false) boolean showConfirmPassword,
                                  Model model) {
-
-        // Store the password visibility states in the model
-        model.addAttribute("showNewPassword", showNewPassword);
-        model.addAttribute("showConfirmPassword", showConfirmPassword);
-
-        // Simulate password visibility logic
-        if (showNewPassword) {
-            model.addAttribute("newPasswordVisible", true);
-        } else {
-            model.addAttribute("newPasswordVisible", false);
-        }
-
-        if (showConfirmPassword) {
-            model.addAttribute("confirmPasswordVisible", true);
-        } else {
-            model.addAttribute("confirmPasswordVisible", false);
-        }
-
-        if (!newPassword.equals(confirmPassword)) {
-            model.addAttribute("error", "Паролі не співпадають.");
-            return "change-password";
-        }
-
+        // Attempt to update the password using your service method
         boolean updated = keysService.updatePassword(login, newPassword);
         if (updated) {
-            return "redirect:/login";
+            return "redirect:/login"; // Redirect to the login page after successful update
         } else {
             model.addAttribute("error", "Помилка при оновленні паролю.");
-            return "change-password";
+            return "forgot-password"; // Return to the forgot password page to show the error
         }
     }
+    @PostMapping("/save-password")
+    public String savePassword(@RequestParam("login") String login,
+                               @RequestParam("newPassword") String newPassword,
+                               Model model) {
+        // Attempt to save the new password using your service method
+        boolean updated = keysService.updatePassword(login, newPassword);
+        if (updated) {
+            return "redirect:/login"; // Redirect to the login page after successful save
+        } else {
+            model.addAttribute("error", "Помилка при збереженні паролю.");
+            return "forgot-password"; // Return to the forgot password page to show the error
+        }
+    }
+
 }
