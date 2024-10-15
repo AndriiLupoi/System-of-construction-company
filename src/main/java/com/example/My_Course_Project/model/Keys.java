@@ -33,4 +33,7 @@ public class Keys {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "verification_сode")
+    private String verificationCode;
 }

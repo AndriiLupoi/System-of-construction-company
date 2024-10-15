@@ -1,0 +1,48 @@
+.sidebar {
+    width: 60px; /* Встановлено початкову ширину 60px */
+    background-color: #343a40;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    transition: width 0.2s ease;
+}
+
+.sidebar img {
+    width: 20px;
+    height: 20px;
+    margin: 10px 0;
+    transition: transform 0.3s, width 0.3s, height 0.3s;
+}
+
+.sidebar:hover {
+    width: 80px; /* Збільшена ширина при наведенні */
+}
+
+.sidebar img:hover {
+    transform: scale(1.5);
+    width: 30px;
+    height: 30px;
+}
+
+.sidebar span {
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    display: none; /* Сховати текст за замовчуванням */
+}
+
+.sidebar:hover span {
+    display: block; /* Показати текст при наведенні на бічну панель */
+}
+
+.sidebar a {
+    display: flex; /* Додаємо flex для центрування */
+    flex-direction: column; /* Розташування значка та тексту в стовпчик */
+    align-items: center; /* Центрування по горизонталі */
+    text-decoration: none; /* Скинути стиль посилання */
+}

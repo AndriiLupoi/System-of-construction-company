@@ -25,7 +25,9 @@ public class ProjectController {
     private KeysService keysService;
 
     @PostMapping("/login")
-    public ModelAndView login(@RequestParam("login") String login, @RequestParam("password") String password, HttpSession session) {
+    public ModelAndView login(@RequestParam("login") String login,
+                              @RequestParam("password") String password,
+                              HttpSession session) {
         Keys user = keysService.checkLogin(login, password);
 
         if (user != null) {
@@ -40,8 +42,6 @@ public class ProjectController {
         }
     }
 
-
-
     @GetMapping("/index")
     public String showPage(Model model, HttpSession session) {
         // Перевіряємо, чи є користувач в сесії
@@ -54,6 +54,17 @@ public class ProjectController {
         return "home"; // Повертаємо шаблон index
     }
 
+    @GetMapping("/projects")
+    public String showProjectsPage(Model model, HttpSession session) {
+        // Перевіряємо, чи є користувач в сесії
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login"; // Якщо користувач не аутентифікований, перенаправляємо на логін
+        }
+
+        List<Project> projects = projectService.getAllProjects(); // Отримуємо всі проекти
+        model.addAttribute("projects", projects); // Додаємо проекти до моделі
+        return "projects"; // Повертаємо шаблон для відображення проектів
+    }
 
     @GetMapping("/login")
     public String loginPage() {
