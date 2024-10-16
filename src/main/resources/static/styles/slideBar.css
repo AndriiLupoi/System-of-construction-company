@@ -1,6 +1,6 @@
 .sidebar {
     width: 60px; /* Встановлено початкову ширину 60px */
-    background-color: #343a40;
+    background-image: url("../img/brick.png");
     height: 100vh;
     position: fixed;
     top: 0;
@@ -12,31 +12,44 @@
     transition: width 0.2s ease;
 }
 
-.sidebar img {
+.logo {
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+    transition: transform 0.3s, width 0.3s, height 0.3s;
+}
+.sidebar #home, #projects {
     width: 20px;
     height: 20px;
-    margin: 10px 0;
+    margin: 10px;
     transition: transform 0.3s, width 0.3s, height 0.3s;
 }
 
 .sidebar:hover {
-    width: 80px; /* Збільшена ширина при наведенні */
+    width: 90px; /* Збільшена ширина при наведенні */
 }
 
-.sidebar img:hover {
-    transform: scale(1.5);
-    width: 30px;
-    height: 30px;
+.sidebar #home:hover, #projects:hover{
+    transform: scale(1.2); /* Збільшення для інших зображень */
+    width: 35px;
+    height: 35px;
 }
 
-.sidebar span {
+.sidebar .logo:hover{
+    transform: scale(1.2);
+    width: 65px;
+    height: 65px;
+}
+
+.sidebar .span {
     color: white;
     font-size: 12px;
     text-align: center;
     display: none; /* Сховати текст за замовчуванням */
 }
 
-.sidebar:hover span {
+.sidebar:hover .span {
     display: block; /* Показати текст при наведенні на бічну панель */
 }
 
@@ -45,4 +58,64 @@
     flex-direction: column; /* Розташування значка та тексту в стовпчик */
     align-items: center; /* Центрування по горизонталі */
     text-decoration: none; /* Скинути стиль посилання */
+}
+
+.home-page, .project-page{
+    width: auto;
+    height: auto;
+    margin: 10px 0 5px 0;
+}
+
+.logout-btn {
+    margin-top: auto; /* Поміщаємо кнопку внизу */
+    margin-bottom: 50px;
+}
+
+.circle {
+    width: 40px; /* Розмір кнопки */
+    height: 40px;
+    border-radius: 50%; /* Робимо кнопку круглою */
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: width 0.3s, height 0.3s, background-color 0.3s;
+    position: relative;
+}
+
+.circle img {
+    width: 20px;
+    height: 20px;
+    transition: opacity 0.3s; /* Додаємо плавну зміну прозорості */
+}
+
+.circle .span-logout {
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    display: none; /* Ховаємо текст за замовчуванням */
+    transition: opacity 0.3s;
+}
+.circle:hover {
+    width: 80px; /* Збільшення кнопки при наведенні */
+    height: 40px;
+    background-color: #ff0000;
+    border-radius: 15px;
+}
+
+.circle:hover img {
+    opacity: 0; /* Іконка зникає при наведенні */
+}
+
+.circle:hover .span-logout {
+    display: block;
+    opacity: 1; /* Текст з'являється при наведенні */
+}
+
+.icons_background{
+    width: auto;
+    height: auto;
+    border-radius: 25px;
+    background: white;
+    align-items: center;
 }

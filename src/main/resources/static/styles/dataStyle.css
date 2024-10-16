@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    background-color: #f8f9fa;
+    background-image: url("../img/graybrick.png");
 }
 .content {
     margin-left: 80px; /* Зменшено до 80px */

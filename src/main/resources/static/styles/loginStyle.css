@@ -1,7 +1,7 @@
 /* Загальні стилі */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5; /* Світлий фон */
+    background-image: url("../img/brick.png");
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@ body {
 
 /* Контейнер для логіну */
 .login-container {
-    background-color: #ffffff; /* Білий фон для контейнера */
+    background-color: #eaeaea;
     padding: 40px;
     border-radius: 15px; /* Згладжені краї */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Тінь для ефекту */
@@ -22,13 +22,13 @@ body {
 
 .login-container:hover {
     transform: translateY(-5px); /* Піднімання контейнера при наведенні */
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* Зміна тіні при наведенні */
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.6); /* Зміна тіні при наведенні */
 }
 
 /* Заголовок */
 h2 {
     margin-bottom: 20px;
-    color: #343a40; /* Темний колір для заголовка */
+    color: #1e2025; /* Темний колір для заголовка */
     font-size: 24px; /* Збільшений розмір шрифту заголовка */
     text-transform: uppercase; /* Великі літери для заголовка */
 }
@@ -43,27 +43,26 @@ form {
 label {
     margin-bottom: 5px;
     font-weight: bold;
-    color: #555;
-    text-align: left; /* Вирівнювання лейблів зліва */
+    color: #1e2025;
+    text-align: left;
 }
 
 /* Поля вводу */
 input[type="text"],
 input[type="password"] {
-    padding: 12px 15px; /* Збільшені відступи для полів */
+    padding: 12px 15px;
     margin-bottom: 20px;
-    border: 1px solid #ced4da; /* Світло-сірий колір для полів */
-    border-radius: 5px; /* Згладжені краї */
+    border: 1px solid #1e2025;
+    border-radius: 5px;
     font-size: 16px;
-    transition: border-color 0.3s, box-shadow 0.3s; /* Анімація при фокусуванні */
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Стиль для фокуса на полях вводу */
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #007bff; /* Основний колір при фокусуванні */
-    outline: none; /* Сховати стандартну обводку */
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Легка тінь при фокусуванні */
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 /* Кнопки */

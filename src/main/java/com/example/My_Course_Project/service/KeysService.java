@@ -19,10 +19,6 @@ public class KeysService {
         return keysRepository.findByLoginAndEmail(login, email);
     }
 
-    public Keys findByLogin(String login) {
-        return keysRepository.findByLogin(login);
-    }
-
     public boolean updatePassword(String login, String newPassword) {
         Keys user = keysRepository.findByLogin(login);
         if (user != null) {
@@ -37,14 +33,6 @@ public class KeysService {
         Keys user = keysRepository.findByLogin(login);
         if (user != null) {
             user.setVerificationCode(verificationCode);
-            keysRepository.save(user);
-        }
-    }
-
-    public void clearVerificationCode(String login) {
-        Keys user = keysRepository.findByLogin(login);
-        if (user != null) {
-            user.setVerificationCode(null);
             keysRepository.save(user);
         }
     }

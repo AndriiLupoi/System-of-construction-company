@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-public class ProjectController {
+public class LoginController {
 
     @Autowired
     private ProjectService projectService;
@@ -54,26 +54,8 @@ public class ProjectController {
         return "home"; // Повертаємо шаблон index
     }
 
-    @GetMapping("/projects")
-    public String showProjectsPage(Model model, HttpSession session) {
-        // Перевіряємо, чи є користувач в сесії
-        if (session.getAttribute("user") == null) {
-            return "redirect:/login"; // Якщо користувач не аутентифікований, перенаправляємо на логін
-        }
-
-        List<Project> projects = projectService.getAllProjects(); // Отримуємо всі проекти
-        model.addAttribute("projects", projects); // Додаємо проекти до моделі
-        return "projects"; // Повертаємо шаблон для відображення проектів
-    }
-
     @GetMapping("/login")
     public String loginPage() {
         return "login"; // Повертаємо сторінку логіну
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate(); // Виходимо із системи, очищаємо сесію
-        return "redirect:/login"; // Перенаправлення на сторінку логіну після виходу
     }
 }
