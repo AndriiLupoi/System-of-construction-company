@@ -34,24 +34,12 @@ public class LoginController {
             // Зберігаємо користувача в сесії
             session.setAttribute("user", user);
             // Якщо користувач знайдений, перенаправляємо на головну сторінку
-            return new ModelAndView("redirect:/index"); // Перенаправлення на сторінку /index
+            return new ModelAndView("redirect:/home"); // Перенаправлення на сторінку /index
         } else {
             ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("error", "Невірний логін або пароль");
             return modelAndView;
         }
-    }
-
-    @GetMapping("/index")
-    public String showPage(Model model, HttpSession session) {
-        // Перевіряємо, чи є користувач в сесії
-        if (session.getAttribute("user") == null) {
-            return "redirect:/login"; // Якщо користувач не аутентифікований, перенаправляємо на логін
-        }
-
-        List<Project> projects = projectService.getAllProjects(); // Отримуємо всі проекти
-        model.addAttribute("projects", projects); // Додаємо проекти до моделі
-        return "home"; // Повертаємо шаблон index
     }
 
     @GetMapping("/login")

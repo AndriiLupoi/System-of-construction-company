@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Projects</title>
+    <link rel="stylesheet" th:href="@{../styles/dataStyle.css}">
+    <link rel="stylesheet" th:href="@{../styles/slideBar.css}">
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo-img">
+        <a href="home">
+            <img class="logo" th:src="@{../img/logo.png}" alt="Log Icon">
+        </a>
+    </div>
+
+    <div class="home-page">
+        <a href="home">
+            <div class="icons_background">
+                <img id="home" th:src="@{../img/home.png}" alt="Home Icon" />
+            </div>
+            <span class="span">Головна</span>
+        </a>
+    </div>
+    <div class="project-page">
+        <a href="data">
+            <div class="icons_background">
+                <img id="projects" th:src="@{../img/data.png}" alt="Data Icon" />
+            </div>
+            <span class="span">Таблиці</span>
+        </a>
+    </div>
+    <div class="workers-page">
+        <a href="projects">
+            <div class="icons_background">
+                <img id="workers" th:src="@{../img/workers.png}" alt="Data Icon" />
+            </div>
+            <span class="span">Робітники</span>
+        </a>
+    </div>
+    <div class="logout-btn">
+        <a href="logout">
+            <div class="circle">
+                <img th:src="@{../img/logout.png}" alt="Logout Icon" />
+                <span class="span-logout">Вийти</span>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="content">
+    <h1>Дані таблиці</h1>
+
+    <form method="get" action="/data">
+        <label for="tableSelect">Оберіть таблицю:</label>
+        <div class="select-container"> <!-- Додано контейнер для комбобокса та кнопки -->
+            <select id="tableSelect" name="tableName">
+                <option value="projects" th:selected="${tableName == 'project'}">Проекти</option>
+                <option value="equipment" th:selected="${tableName == 'equipment'}">Обладнання</option>
+                <option value="category" th:selected="${tableName == 'category'}">Категорія</option>
+                <option value="brigade" th:selected="${tableName == 'brigade'}">Бригади</option>
+                <option value="building_management" th:selected="${tableName == 'building_management'}">Управління будівництвом</option>
+                <option value="employee" th:selected="${tableName == 'employee'}">Співробітники</option>
+                <option value="estimate" th:selected="${tableName == 'estimate'}">Кошторис</option>
+                <option value="report" th:selected="${tableName == 'report'}">Звіти</option>
+                <option value="schedule" th:selected="${tableName == 'schedule'}">Розклад</option>
+                <option value="site" th:selected="${tableName == 'site'}">Розташування</option>
+                <option value="work_type" th:selected="${tableName == 'work_type'}">Типи робіт</option>
+            </select>
+            <button type="submit">Відобразити</button>
+        </div>
+    </form>
+
+
+
+    <!-- Таблиця даних -->
+    <table>
+        <thead>
+        <tr th:if="${tableName != null and tableName.equals('project')}">
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Категорія ID</th>
+            <th>Сайт ID</th>
+            <th>Дата початку</th>
+            <th>Дата завершення</th>
+        </tr>
+
+
+        <!-- Заголовки для таблиці "Обладнання" -->
+        <tr th:if="${tableName != null and tableName.equals('equipment')}">
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Тип</th>
+            <th>Сайт ID</th>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('category')}">
+            <th>ID</th>
+            <th>Назва</th>
+            <th>опис</th>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('brigade')}">
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Сайт ID</th>
+            <th>Лідер ID</th>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('building_management')}">
+            <th>ID</th>
+            <th>Назва</th>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('estimate')}">
+            <th>ID</th>
+            <th>Проект ID</th>
+            <th>Матеріал</th>
+            <th>Кількість</th>
+            <th>Вартість</th>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('report')}">
+            <th>ID</th>
+            <th>Проект ID</th>
+            <th>Тип робіт ID</th>
+            <th>Дата завершення</th>
+            <th>Використані матеріали</th>
+            <th>Фактична вартість</th>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('schedule')}">
+            <th>ID</th>
+            <th>Проект ID</th>
+            <th>Тип робіт ID</th>
+            <th>Дата початку</th>
+            <th>Дата завершення</th>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('site')}">
+            <th>ID</th>
+            <th>Назва</th>
+            <th>ID управління</th>
+            <th>Локація</th>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('work_type')}">
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Опис</th>
+        </tr>
+
+        </thead>
+        <tbody>
+        <tr th:if="${tableName != null and tableName.equals('project')}" th:each="project : ${data}">
+            <td th:text="${project.id}" data-label="ID"></td>
+            <td th:text="${project.name}" data-label="Назва"></td>
+            <td th:text="${project.categoryId}" data-label="Категорія ID"></td>
+            <td th:text="${project.siteId}" data-label="Сайт ID"></td>
+            <td th:text="${project.startDate}" data-label="Дата початку"></td>
+            <td th:text="${project.endDate}" data-label="Дата завершення"></td>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('equipment')}" th:each="equipment : ${data}">
+            <td th:text="${equipment.id}"></td>
+            <td th:text="${equipment.name}"></td>
+            <td th:text="${equipment.type}"></td>
+            <td th:text="${equipment.siteId}"></td>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('category')}" th:each="category : ${data}">
+            <td th:text="${category.id}" data-label="ID"></td>
+            <td th:text="${category.name}" data-label="Назва"></td>
+            <td th:text="${category.description}" data-label="Опис"></td>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('brigade')}" th:each="brigade : ${data}">
+            <td th:text="${brigade.id}" data-label="ID"></td>
+            <td th:text="${brigade.name}" data-label="Назва"></td>
+            <td th:text="${brigade.site_id}" data-label="Сайт ID"></td>
+            <td th:text="${brigade.leader_id}" data-label="Лідер ID"></td>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('building_management')}" th:each="building : ${data}">
+            <td th:text="${building.id}" data-label="ID"></td>
+            <td th:text="${building.name}" data-label="Назва"></td>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('estimate')}" th:each="estimate : ${data}">
+            <td th:text="${estimate.id}" data-label="ID"></td>
+            <td th:text="${estimate.projectId}" data-label="Проект ID"></td>
+            <td th:text="${estimate.material}" data-label="Матеріал"></td>
+            <td th:text="${estimate.quantity}" data-label="Кількість"></td>
+            <td th:text="${estimate.cost}" data-label="Вартість"></td>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('report')}" th:each="report : ${data}">
+            <td th:text="${report.id}" data-label="ID"></td>
+            <td th:text="${report.projectId}" data-label="Проект ID"></td>
+            <td th:text="${report.workTypeId}" data-label="Тип робіт ID"></td>
+            <td th:text="${report.completionDate}" data-label="Дата завершення"></td>
+            <td th:text="${report.actualMaterialUsed}" data-label="Використані матеріали"></td>
+            <td th:text="${report.actualCost}" data-label="Фактична вартість"></td>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('schedule')}" th:each="schedule : ${data}">
+            <td th:text="${schedule.id}" data-label="ID"></td>
+            <td th:text="${schedule.projectId}" data-label="Проект ID"></td>
+            <td th:text="${schedule.workTypeId}" data-label="Тип робіт ID"></td>
+            <td th:text="${schedule.startDate}" data-label="Дата початку"></td>
+            <td th:text="${schedule.endDate}" data-label="Дата завершення"></td>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('site')}" th:each="site : ${data}">
+            <td th:text="${site.id}" data-label="ID"></td>
+            <td th:text="${site.name}" data-label="Назва"></td>
+            <td th:text="${site.managementId}" data-label="ID управління"></td>
+            <td th:text="${site.location}" data-label="Локація"></td>
+        </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('work_type')}" th:each="workType : ${data}">
+            <td th:text="${workType.id}" data-label="ID"></td>
+            <td th:text="${workType.name}" data-label="Назва"></td>
+            <td th:text="${workType.description}" data-label="Опис"></td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+
+</body>
+</html>

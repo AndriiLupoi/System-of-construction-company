@@ -19,7 +19,7 @@
     margin-bottom: 10px;
     transition: transform 0.3s, width 0.3s, height 0.3s;
 }
-.sidebar #home, #projects {
+.sidebar #home, #projects, #workers {
     width: 20px;
     height: 20px;
     margin: 10px;
@@ -30,7 +30,7 @@
     width: 90px; /* Збільшена ширина при наведенні */
 }
 
-.sidebar #home:hover, #projects:hover{
+.sidebar #home:hover, #projects:hover, #workers:hover{
     transform: scale(1.2); /* Збільшення для інших зображень */
     width: 35px;
     height: 35px;
@@ -60,7 +60,7 @@
     text-decoration: none; /* Скинути стиль посилання */
 }
 
-.home-page, .project-page{
+.home-page, .project-page, .workers-page{
     width: auto;
     height: auto;
     margin: 10px 0 5px 0;
