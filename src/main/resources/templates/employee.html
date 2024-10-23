@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee</title>
+    <link rel="stylesheet" th:href="@{../styles/slideBar.css}">
+    <link rel="stylesheet" th:href="@{../styles/employeersStyle.css}">
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo-img">
+        <a href="home">
+            <img class="logo" th:src="@{../img/logo.png}" alt="Log Icon">
+        </a>
+    </div>
+
+    <div class="home-page">
+        <a href="home">
+            <div class="icons_background">
+                <img id="home" th:src="@{../img/home.png}" alt="Home Icon" />
+            </div>
+            <span class="span">Головна</span>
+        </a>
+    </div>
+    <div class="project-page">
+        <a href="tables">
+            <div class="icons_background">
+                <img id="projects" th:src="@{../img/data.png}" alt="Data Icon" />
+            </div>
+            <span class="span">Таблиці</span>
+        </a>
+    </div>
+    <div class="workers-page">
+        <a href="employees">
+            <div class="icons_background">
+                <img id="workers" th:src="@{../img/workers.png}" alt="Data Icon" />
+            </div>
+            <span class="span">Робітники</span>
+        </a>
+    </div>
+    <div class="logout-btn">
+        <a href="logout">
+            <div class="circle">
+                <img th:src="@{../img/logout.png}" alt="Logout Icon" />
+                <span class="span-logout">Вийти</span>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="main-content">
+    <h1>Список Співробітників</h1>
+    <div class="employee-container">
+        <div th:each="employee : ${employees}" class="employee-card">
+            <img th:src="@{/employee/image/{id}(id=${employee.id})}" alt="Фото працівника" class="employee-image"/>
+            <h3 th:text="${employee.name}">Ім'я працівника</h3>
+            <p th:text="${employee.position}">Посада</p>
+            <form action="/employee/edit" method="get">
+                <input type="hidden" name="id" th:value="${employee.id}" />
+                <button type="submit">Змінити зображення</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

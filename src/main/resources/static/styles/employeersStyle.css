@@ -1,0 +1,97 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e1e; /* Темний фон */
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.main-content {
+    width: 90%;
+    padding: 20px;
+}
+
+.employee-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Зменшив мінімальну ширину карток */
+    gap: 20px;
+    justify-content: center;
+    margin-left: 5%;
+    width: 95%;
+}
+
+.employee-card {
+    background-color: #2a2a2a; /* Темний фон для картки */
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); /* М'яка тінь */
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.employee-card:hover {
+    transform: translateY(-5px); /* Легка анімація при наведенні */
+    box-shadow: 0 12px 30px rgba(255, 102, 0, 0.4); /* Помаранчева тінь */
+}
+
+.employee-image {
+    width: 100%;
+    height: 220px; /* Зменшив висоту зображення */
+    object-fit: cover;
+    border-bottom: 3px solid #ff6600; /* Лінія для акценту */
+}
+
+h3 {
+    margin: 10px 0 10px 15px;
+    color: #ff6600; /* Помаранчевий колір для заголовків */
+    font-size: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+p {
+    margin: 8px 20px;
+    color: #bbbbbb;
+    font-size: 15px; /* Трохи зменшив розмір шрифту */
+    line-height: 1.4;
+}
+
+button {
+    margin: 15px auto 20px;
+    display: block;
+    padding: 10px 25px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 25px; /* Менш круглі краї */
+    font-size: 15px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #cc5200;
+    transform: translateY(-2px);
+}
+
+h1{
+    color: white;
+    margin-left: 4%;
+}
+
+/* Адаптивні стилі для мобільних пристроїв */
+@media (max-width: 768px) {
+    .employee-container {
+        grid-template-columns: 1fr; /* Одноколонкова структура для менших екранів */
+        padding: 10px;
+    }
+
+    .employee-card {
+        padding: 15px;
+    }
+}

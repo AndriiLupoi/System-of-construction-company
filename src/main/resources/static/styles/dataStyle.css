@@ -3,70 +3,71 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    background-image: url("../img/graybrick.png");
-    background-position: center; /* Центрування фону */
+    background-color: #1e1e1e; /* Темний фон */
+    background-position: center;
 }
 
 .content {
     width: 70%;
-    height: auto; /* Дозволяє контенту визначати висоту */
-    background-color: #ffffff;
+    height: auto;
+    background-color: #2a2a2a; /* Темний фон для контейнера */
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* Глибша тінь */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); /* Більш насичена тінь */
     padding: 40px;
-    margin: 40px auto; /* Вирівнювання по центру */
-    transition: transform 0.3s, box-shadow 0.3s; /* Анімація при наведенні */
+    margin: 40px auto;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .content:hover {
-    transform: scale(1.03); /* Легке збільшення при наведенні */
-    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.25); /* Інтенсивніша тінь */
+    transform: scale(1.03);
+    box-shadow: 0 12px 50px rgba(255, 255, 255, 0.2); /* Легкий світлий ефект тіні при наведенні */
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #f0f0f0; /* Світлий текст */
     font-size: 32px;
     margin-bottom: 30px;
-    font-weight: 600; /* Жирніший заголовок */
+    font-weight: 600;
 }
 
 form {
     display: flex;
-    flex-direction: column; /* Вертикальне вирівнювання для label */
-    align-items: center; /* Центрування мітки */
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 30px;
 }
 
 label {
     font-weight: bold;
-    margin-bottom: 10px; /* Відступ знизу, щоб відокремити від селектора */
-    color: #007bff; /* Колір мітки */
-    font-size: 16px; /* Збільшити шрифт для кращої читабельності */
+    margin-bottom: 10px;
+    color: #ff6600; /* Помаранчевий для міток */
+    font-size: 16px;
 }
 
 .select-container {
-    display: flex; /* Встановлюємо горизонтальне вирівнювання */
-    align-items: center; /* Вертикальне вирівнювання в центрі */
+    display: flex;
+    align-items: center;
 }
 
 select {
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #007bff;
-    margin-right: 10px; /* Відступ справа, щоб відокремити від кнопки */
+    border: 1px solid #ff6600; /* Помаранчевий для рамки */
+    margin-right: 10px;
     transition: border-color 0.3s;
-    background-color: #f8f9fa; /* Світлий фон для селектора */
+    background-color: #333333; /* Темний фон для селектора */
+    color: #f0f0f0; /* Світлий текст */
 }
 
 select:focus {
     outline: none;
-    border-color: #0056b3; /* Темніший синій при фокусі */
-    background-color: #ffffff; /* Білий фон при фокусі */
+    border-color: #cc5200; /* Темніший помаранчевий при фокусі */
+    background-color: #444444; /* Темніший фон при фокусі */
 }
 
 button {
-    background-color: #007bff;
+    background-color: #ff6600; /* Помаранчевий для кнопок */
     color: white;
     border: none;
     border-radius: 5px;
@@ -76,8 +77,8 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3; /* Темніший синій при наведенні */
-    transform: translateY(-2px); /* Легке підняття кнопки при наведенні */
+    background-color: #cc5200; /* Темніший помаранчевий при наведенні */
+    transform: translateY(-2px);
 }
 
 table {
@@ -91,30 +92,30 @@ table {
 th, td {
     padding: 15px;
     text-align: left;
-    border: 1px solid #dee2e6;
+    border: 1px solid #555555; /* Темніша рамка */
 }
 
 th {
-    background: linear-gradient(90deg, #007bff, #0056b3); /* Градієнт для заголовка */
+    background: linear-gradient(90deg, #ff6600, #cc5200); /* Градієнт для заголовка */
     color: white;
     font-weight: bold;
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9; /* Світліший колір для парних рядків */
+    background-color: #333333; /* Темніший фон для парних рядків */
 }
 
 tr:hover {
-    background-color: #e1f5fe; /* Світло-блакитний колір при наведенні */
-    transition: background-color 0.3s; /* Плавний перехід кольору */
+    background-color: #444444; /* Темний колір при наведенні */
+    transition: background-color 0.3s;
 }
-
-/* Стиль для дрібного тексту */
+tr{
+    color: white;
+}
 small {
-    color: #777;
+    color: #bbbbbb; /* Світлий текст для дрібних елементів */
 }
 
-/* Медіа-запит для мобільних пристроїв */
 @media (max-width: 600px) {
     table, thead, tbody, th, td, tr {
         display: block;
@@ -145,6 +146,6 @@ small {
         white-space: nowrap;
         content: attr(data-label);
         font-weight: bold;
-        color: #007bff; /* Колір для міток */
+        color: #ff6600; /* Помаранчевий для міток */
     }
 }

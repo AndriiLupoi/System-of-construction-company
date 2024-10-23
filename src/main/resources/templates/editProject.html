@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редагувати зображення</title>
+    <style>
+        /* Загальні стилі */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url("../img/brick.png");
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Контейнер для зміни зображення */
+        .container {
+            background-color: #333333; /* Темний фон для контейнера */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Більш виражена тінь */
+            width: 400px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2); /* Менш насичена тінь при наведенні */
+        }
+
+        /* Заголовок */
+        h1 {
+            margin-bottom: 20px;
+            color: #f0f0f0; /* Світлий текст для контрасту */
+            font-size: 28px;
+            text-transform: uppercase;
+        }
+
+        /* Стилі для форм */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Центрування елементів */
+        }
+
+        /* Поля вводу */
+        input[type="file"] {
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #444444; /* Темна обводка */
+            border-radius: 5px;
+            background-color: #2a2a2a; /* Темний фон полів вводу */
+            color: #ffffff; /* Світлий текст */
+            font-size: 16px;
+            cursor: pointer;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="file"]:focus {
+            border-color: #ff6600; /* Помаранчевий колір при фокусі */
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+        }
+
+        /* Кнопки */
+        button {
+            padding: 12px 20px;
+            background-color: #ff6600; /* Помаранчевий як основний колір кнопок */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #cc5200; /* Темніший відтінок при наведенні */
+            transform: translateY(-2px);
+        }
+
+        /* Повідомлення про помилки */
+        .message {
+            color: #ff3333; /* Яскраво-червоний для повідомлень про помилки */
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* Додаткові стилі для мобільних пристроїв */
+        @media (max-width: 400px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+
+            input[type="file"] {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Змінити зображення працівника</h1>
+    <form action="/project/upload" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:value="${project.id}" /> <!-- ID працівника -->
+        <input type="file" name="image" accept="image/png, image/jpeg" required />
+        <button type="submit">Зберегти зображення</button>
+    </form>
+    <div class="message">Будь ласка, виберіть зображення для завантаження.</div>
+</div>
+
+</body>
+</html>

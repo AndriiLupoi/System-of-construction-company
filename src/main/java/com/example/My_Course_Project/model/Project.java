@@ -35,4 +35,7 @@ public class Project {
 
     @Column(name = "end_date")
     private Date endDate;
+
+    @Column(name = "image")
+    private byte[] image;
 }

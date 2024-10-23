@@ -39,4 +39,16 @@ public class ProjectService {
         projectRepository.save(existingProject);
     }
 
+    public void saveProjectImage(int id, byte[] image) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Project not found")); // Пошук проекту за ID
+        project.setImage(image); // Зберігаємо зображення
+        projectRepository.save(project); // Оновлюємо запис у базі даних
+    }
+
+    public Project getProjectById(int projectId) {
+        return projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Проект не знайдено з ID: " + projectId));
+    }
+
 }

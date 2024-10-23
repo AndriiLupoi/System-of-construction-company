@@ -32,7 +32,7 @@
         </a>
     </div>
     <div class="workers-page">
-        <a href="tables">
+        <a href="employees">
             <div class="icons_background">
                 <img id="workers" th:src="@{../img/workers.png}" alt="Data Icon" />
             </div>
@@ -47,6 +47,41 @@
             </div>
         </a>
     </div>
+
 </div>
+<h1>Список Проєктів</h1>
+<div class="project-cards-container" th:if="${projects.size() > 0}">
+    <div th:each="project : ${projects}" class="project-card">
+        <img th:src="@{/project/image/{id}(id=${project.id})}" alt="Фото проекта" class="project-image"/>
+        <div class="card-content">
+            <h3 th:text="${project.name}">Project Name</h3>
+
+            <!-- Виводимо дані категорії -->
+            <p>Категорія: <span th:text="${categoryMap[project.categoryId].name}">Category Name</span></p>
+            <p>Опис: <span th:text="${categoryMap[project.categoryId].description}">Category Description</span></p>
+
+            <!-- Виводимо дані сайту -->
+            <p>Сайт: <span th:text="${siteMap[project.siteId].name}">Site Name</span></p>
+            <p>Управління:
+                <span th:text="${brigadeMap[siteMap[project.siteId].managementId].name}">Brigade Name</span>
+
+            </p>
+            <p>Лідер бригади:
+                <span th:text="${employeeMap[brigadeMap[siteMap[project.siteId].managementId].leader_id].name}">Leader Name</span>
+            </p>
+            <p>Місцезнаходження: <span th:text="${siteMap[project.siteId].location}">Location</span></p>
+
+            <p>Дата початку: <span th:text="${project.startDate}">Start Date</span></p>
+            <p>Дата завершення: <span th:text="${project.endDate}">End Date</span></p>
+
+            <!-- Додаткові дані, які хочете вивести -->
+            <form action="/project/edit" method="get">
+                <input type="hidden" name="id" th:value="${project.id}" />
+                <button type="submit">Змінити зображення</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

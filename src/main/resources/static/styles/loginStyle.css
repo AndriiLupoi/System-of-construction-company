@@ -11,26 +11,26 @@ body {
 
 /* Контейнер для логіну */
 .login-container {
-    background-color: #eaeaea;
+    background-color: #333333; /* Темний фон для контейнера */
     padding: 40px;
-    border-radius: 15px; /* Згладжені краї */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Тінь для ефекту */
-    width: 350px; /* Фіксована ширина контейнера */
-    text-align: center; /* Центрування тексту */
-    transition: transform 0.3s, box-shadow 0.3s; /* Анімація при наведенні */
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Більш виражена тінь */
+    width: 350px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .login-container:hover {
-    transform: translateY(-5px); /* Піднімання контейнера при наведенні */
-    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.6); /* Зміна тіні при наведенні */
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2); /* Менш насичена тінь при наведенні */
 }
 
 /* Заголовок */
 h2 {
     margin-bottom: 20px;
-    color: #1e2025; /* Темний колір для заголовка */
-    font-size: 24px; /* Збільшений розмір шрифту заголовка */
-    text-transform: uppercase; /* Великі літери для заголовка */
+    color: #f0f0f0; /* Світлий текст для контрасту */
+    font-size: 24px;
+    text-transform: uppercase;
 }
 
 /* Стилі для форм */
@@ -43,16 +43,18 @@ form {
 label {
     margin-bottom: 5px;
     font-weight: bold;
-    color: #1e2025;
+    color: #cccccc; /* Світліший текст для кращої читабельності */
     text-align: left;
 }
 
 /* Поля вводу */
 input[type="text"],
 input[type="password"] {
+    background-color: #2a2a2a; /* Темний фон полів вводу */
+    color: #ffffff; /* Світлий текст */
     padding: 12px 15px;
     margin-bottom: 20px;
-    border: 1px solid #1e2025;
+    border: 1px solid #444444; /* Темна рамка */
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -60,33 +62,32 @@ input[type="password"] {
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #007bff;
+    border-color: #ff6600; /* Акцент на помаранчевий колір при фокусі */
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
 
 /* Кнопки */
 button {
     padding: 12px;
     margin-top: 10px;
-    background-color: #007bff; /* Основний колір кнопок */
-    color: white; /* Білий текст на кнопках */
+    background-color: #ff6600; /* Помаранчевий як основний колір кнопок */
+    color: white;
     border: none;
-    border-radius: 5px; /* Згладжені краї кнопок */
-    cursor: pointer; /* Курсор при наведенні */
-    font-size: 16px; /* Збільшений розмір шрифту кнопок */
-    transition: background-color 0.3s, transform 0.2s; /* Анімація зміни фону */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Стиль для кнопок при наведенні */
 button:hover {
-    background-color: #0056b3; /* Темніший відтінок при наведенні */
-    transform: translateY(-2px); /* Піднімання кнопки при наведенні */
+    background-color: #cc5200; /* Темніший відтінок при наведенні */
+    transform: translateY(-2px);
 }
 
 /* Повідомлення про помилки */
 .error-message {
-    color: red; /* Червоний колір для помилок */
+    color: #ff3333; /* Яскраво-червоний для помилок */
     margin-top: 10px;
     font-size: 14px;
 }
@@ -94,20 +95,20 @@ button:hover {
 /* Додаткові стилі для мобільних пристроїв */
 @media (max-width: 400px) {
     .login-container {
-        width: 90%; /* Зменшена ширина на мобільних */
-        padding: 20px; /* Зменшене внутрішнє відступи */
+        width: 90%;
+        padding: 20px;
     }
 
     h2 {
-        font-size: 20px; /* Менший шрифт для заголовка */
+        font-size: 20px;
     }
 
     button {
-        font-size: 14px; /* Менший шрифт для кнопок */
+        font-size: 14px;
     }
 
     input[type="text"],
     input[type="password"] {
-        font-size: 14px; /* Менший шрифт для полів вводу */
+        font-size: 14px;
     }
 }
