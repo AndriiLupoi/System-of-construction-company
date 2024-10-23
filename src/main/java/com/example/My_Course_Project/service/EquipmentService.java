@@ -27,5 +27,16 @@ public class EquipmentService {
         }
     }
 
+    // Логіка пошуку обладнання
+    public List<Equipment> searchEquipment(String query) {
+        try {
+            Integer id = Integer.parseInt(query);
+            return equipmentRepository.findByNameContainingOrTypeContainingOrSiteId("", "", id);
+        } catch (NumberFormatException e) {
+            return equipmentRepository.findByNameContainingOrTypeContainingOrSiteId(query, query, null);
+        }
+    }
+
+
 }
 

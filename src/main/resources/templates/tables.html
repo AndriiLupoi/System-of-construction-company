@@ -50,6 +50,7 @@
 <div class="content">
     <h1>Дані таблиці</h1>
 
+    <div class="form-container">
     <form method="get" action="/data">
         <label for="tableSelect">Оберіть таблицю:</label>
         <div class="select-container"> <!-- Додано контейнер для комбобокса та кнопки -->
@@ -59,7 +60,6 @@
                 <option value="category" th:selected="${tableName == 'category'}">Категорія</option>
                 <option value="brigade" th:selected="${tableName == 'brigade'}">Бригади</option>
                 <option value="building_management" th:selected="${tableName == 'building_management'}">Управління будівництвом</option>
-                <option value="employee" th:selected="${tableName == 'employee'}">Співробітники</option>
                 <option value="estimate" th:selected="${tableName == 'estimate'}">Кошторис</option>
                 <option value="report" th:selected="${tableName == 'report'}">Звіти</option>
                 <option value="schedule" th:selected="${tableName == 'schedule'}">Розклад</option>
@@ -70,7 +70,16 @@
         </div>
     </form>
 
+    <form method="get" action="/data/search">
+        <label for="searchQuery">Пошук:</label>
+        <div class="input-container">
+            <input type="hidden" name="tableName" th:value="${tableName}">
 
+            <input type="text" id="searchQuery" name="query" placeholder="Введіть термін для пошуку" />
+            <button type="submit">Шукати</button>
+        </div>
+    </form>
+    </div>
 
     <!-- Таблиця даних -->
     <table>
@@ -176,8 +185,8 @@
         <tr th:if="${tableName != null and tableName.equals('brigade')}" th:each="brigade : ${data}">
             <td th:text="${brigade.id}" data-label="ID"></td>
             <td th:text="${brigade.name}" data-label="Назва"></td>
-            <td th:text="${brigade.site_id}" data-label="Сайт ID"></td>
-            <td th:text="${brigade.leader_id}" data-label="Лідер ID"></td>
+            <td th:text="${brigade.siteId}" data-label="Сайт ID"></td>
+            <td th:text="${brigade.leaderId}" data-label="Лідер ID"></td>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('building_management')}" th:each="building : ${data}">

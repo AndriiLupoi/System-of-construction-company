@@ -67,7 +67,7 @@
 
             </p>
             <p>Лідер бригади:
-                <span th:text="${employeeMap[brigadeMap[siteMap[project.siteId].managementId].leader_id].name}">Leader Name</span>
+                <span th:text="${employeeMap[brigadeMap[siteMap[project.siteId].managementId].leaderId].name}">Leader Name</span>
             </p>
             <p>Місцезнаходження: <span th:text="${siteMap[project.siteId].location}">Location</span></p>
 

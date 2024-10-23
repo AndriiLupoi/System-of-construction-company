@@ -1,5 +1,6 @@
 package com.example.My_Course_Project.service;
 
+import com.example.My_Course_Project.DataTransferObjects.ProjectDTO;
 import com.example.My_Course_Project.exception.ResourceNotFoundException;
 import com.example.My_Course_Project.model.Project;
 import com.example.My_Course_Project.repository.ProjectRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -19,24 +21,21 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    @Transactional
-    public void updateProject(Project updatedProject) {
-        // Перевірка, чи проект існує перед оновленням
-        if (!projectRepository.existsById(updatedProject.getId())) {
-            throw new ResourceNotFoundException("Project not found with ID: " + updatedProject.getId());
-        }
+    public List<ProjectDTO> getAllProjectsWithoutImages() {
+        // Отримуємо всі проекти
+        List<Project> projects = projectRepository.findAll();
 
-        // Завантаження проекту з бази даних
-        Project existingProject = projectRepository.findById(updatedProject.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found with ID: " + updatedProject.getId()));
-
-        // Оновлення полів проекту
-        existingProject.setName(updatedProject.getName());
-        existingProject.setCategoryId(updatedProject.getCategoryId());
-        existingProject.setSiteId(updatedProject.getSiteId());
-
-        // Збереження оновленого проекту
-        projectRepository.save(existingProject);
+        // Перетворюємо їх на DTO без поля "image"
+        return projects.stream()
+                .map(project -> new ProjectDTO(
+                        project.getId(),
+                        project.getName(),
+                        project.getCategoryId(),
+                        project.getSiteId(),
+                        project.getStartDate(),
+                        project.getEndDate()
+                ))
+                .collect(Collectors.toList());
     }
 
     public void saveProjectImage(int id, byte[] image) {
@@ -51,4 +50,15 @@ public class ProjectService {
                 .orElseThrow(() -> new ResourceNotFoundException("Проект не знайдено з ID: " + projectId));
     }
 
+    // Логіка пошуку проектів
+    public List<Project> searchProjects(String query) {
+        try {
+            // Якщо query — це числове значення (наприклад, для ID категорії або сайту)
+            Integer id = Integer.parseInt(query);
+            return projectRepository.findByNameContainingOrCategoryIdOrSiteId("", id, id);
+        } catch (NumberFormatException e) {
+            // Якщо це не число, шукаємо тільки за назвою
+            return projectRepository.findByNameContainingOrCategoryIdOrSiteId(query, null, null);
+        }
+    }
 }

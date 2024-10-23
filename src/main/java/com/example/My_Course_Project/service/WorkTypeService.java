@@ -17,4 +17,15 @@ public class WorkTypeService {
     public List<WorkType> getAllWorkTypes() {
         return workTypeRepository.findAll();
     }
+
+    // Логіка пошуку типів робіт
+    public List<WorkType> searchWorkTypes(String query) {
+        try {
+            Integer id = Integer.parseInt(query);
+            return workTypeRepository.findByNameContainingOrDescriptionContaining(id.toString(), "");
+        } catch (NumberFormatException e) {
+            return workTypeRepository.findByNameContainingOrDescriptionContaining(query, query);
+        }
+    }
+
 }

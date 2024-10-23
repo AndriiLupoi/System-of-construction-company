@@ -78,11 +78,6 @@ public class SlideBarController {
     }
 
 
-
-
-
-
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate(); // Виходимо із системи, очищаємо сесію

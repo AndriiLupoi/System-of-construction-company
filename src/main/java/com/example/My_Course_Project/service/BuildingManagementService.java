@@ -17,4 +17,15 @@ public class BuildingManagementService {
     public List<BuildingManagement> getAllBuildings() {
         return buildingManagementRepository.findAll();
     }
+
+    // Логіка пошуку управлінь будівництва
+    public List<BuildingManagement> searchBuildingManagements(String query) {
+        try {
+            Integer id = Integer.parseInt(query);
+            return buildingManagementRepository.findByNameContaining(id.toString());
+        } catch (NumberFormatException e) {
+            return buildingManagementRepository.findByNameContaining(query);
+        }
+    }
+
 }

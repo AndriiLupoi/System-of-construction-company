@@ -1,5 +1,6 @@
 package com.example.My_Course_Project.controller;
 
+import com.example.My_Course_Project.DataTransferObjects.ProjectDTO;
 import com.example.My_Course_Project.model.*;
 import com.example.My_Course_Project.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -56,8 +57,7 @@ public class DataController {
 
         switch (tableName) {
             case "projects":
-                List<Project> projects = projectService.getAllProjects();
-                System.out.println("Loaded projects: " + projects); // Додайте цю строку
+                List<ProjectDTO> projects = projectService.getAllProjectsWithoutImages();
                 model.addAttribute("data", projects);
                 model.addAttribute("tableName", "project");
                 break;
@@ -124,4 +124,91 @@ public class DataController {
     }
 
 
+    @GetMapping("/data/search")
+    public String searchProjects(@RequestParam("tableName") String tableName,
+                                 @RequestParam("query") String query,
+                                 Model model,
+                                 HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login"; // Якщо користувач не аутентифікований, перенаправляємо на логін
+
+        }
+
+        switch (tableName){
+            case "project":
+                List<Project> projects = projectService.searchProjects(query);
+                model.addAttribute("data", projects);
+                // Можна додати інші типи таблиць тут
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            case "brigade":
+                List<Brigade> brigades = brigadeService.searchBrigades(query);
+                model.addAttribute("data", brigades);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            case "building_management":
+                List<BuildingManagement> buildingManagements = buildingManagementService.searchBuildingManagements(query);
+                model.addAttribute("data", buildingManagements);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            case "category":
+                List<Category> categories = categoryService.searchCategories(query);
+                model.addAttribute("data", categories);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            case "equipment":
+                List<Equipment> equipment = equipmentService.searchEquipment(query);
+                model.addAttribute("data", equipment);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            case "estimate":
+                List<Estimate> estimates = estimateService.searchEstimates(query);
+                model.addAttribute("data", estimates);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            case "report":
+                List<Report> reports = reportService.searchReports(query);
+                model.addAttribute("data", reports);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            case "schedule":
+                List<Schedule> schedules = scheduleService.searchSchedules(query);
+                model.addAttribute("data", schedules);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            case "site":
+                List<Site> sites = siteService.searchSites(query);
+                model.addAttribute("data", sites);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            case "work_type":
+                List<WorkType> workTypes = workTypeService.searchWorkTypes(query);
+                model.addAttribute("data", workTypes);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + tableName);
+        }
+
+        return "tables"; // Повертаємо до шаблону сторінку з результатами
+    }
 }

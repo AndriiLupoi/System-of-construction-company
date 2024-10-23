@@ -25,8 +25,8 @@ public class Brigade {
     private String name;
 
     @Column(name = "site_id")
-    private int site_id;
+    private Integer siteId;
 
     @Column(name = "leader_id")
-    private int leader_id;
+    private Integer leaderId;
 }

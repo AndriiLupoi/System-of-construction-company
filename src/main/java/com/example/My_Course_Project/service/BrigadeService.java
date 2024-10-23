@@ -17,4 +17,17 @@ public class BrigadeService {
     public List<Brigade> getAllBrigades() {
         return brigadeRepository.findAll();
     }
+
+    // Логіка пошуку бригад
+    public List<Brigade> searchBrigades(String query) {
+        try {
+            // Якщо query — це числове значення (наприклад, для ID сайту або лідера)
+            Integer id = Integer.parseInt(query);
+            return brigadeRepository.findByNameContainingOrSiteIdOrLeaderId("", id, id);
+        } catch (NumberFormatException e) {
+            // Якщо це не число, шукаємо тільки за назвою
+            return brigadeRepository.findByNameContainingOrSiteIdOrLeaderId(query, null, null);
+        }
+    }
+
 }
