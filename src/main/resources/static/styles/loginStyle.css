@@ -1,7 +1,7 @@
 /* Загальні стилі */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-image: url("../img/brick.png");
+    background-image: url("../img/background/brick.png");
     display: flex;
     justify-content: center;
     align-items: center;

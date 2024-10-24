@@ -1,6 +1,6 @@
 .sidebar {
     width: 60px; /* Встановлено початкову ширину 60px */
-    background-image: url("../img/brick.png");
+    background-image: url("../img/background/brick.png");
     height: 100vh;
     position: fixed;
     top: 0;
