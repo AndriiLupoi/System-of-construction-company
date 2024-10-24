@@ -1,13 +1,15 @@
 package com.example.My_Course_Project.service;
 
-import com.example.My_Course_Project.DataTransferObjects.ProjectDTO;
+import com.example.My_Course_Project.DataTransferObjects.ProjectDTOs.ProjectDTO;
 import com.example.My_Course_Project.exception.ResourceNotFoundException;
 import com.example.My_Course_Project.model.Project;
 import com.example.My_Course_Project.repository.ProjectRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,5 +62,24 @@ public class ProjectService {
             // Якщо це не число, шукаємо тільки за назвою
             return projectRepository.findByNameContainingOrCategoryIdOrSiteId(query, null, null);
         }
+    }
+
+    public void saveProject(String name, int categoryId, int siteId, Date startDate, Date endDate, MultipartFile image) throws IOException {
+        // Створення нового проекту
+        Project project = new Project();
+        project.setName(name);
+        project.setCategoryId(categoryId);
+        project.setSiteId(siteId);
+        project.setStartDate(startDate);
+        project.setEndDate(endDate);
+
+        // Збереження зображення
+        if (image != null && !image.isEmpty()) {
+            byte[] imageData = image.getBytes();
+            project.setImage(imageData); // Зберігаємо зображення у полі типу byte[]
+        }
+
+        // Збереження проекту у базі даних
+        projectRepository.save(project);
     }
 }

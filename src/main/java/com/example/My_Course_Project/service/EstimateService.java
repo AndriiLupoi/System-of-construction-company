@@ -37,7 +37,19 @@ public class EstimateService {
 
         return results;
     }
+    public void saveEstimate(int projectId, String material, int quantity, double cost) {
+        // Створення нового об'єкта Estimate
+        Estimate estimate = new Estimate();
 
+        // Встановлення значень полів
+        estimate.setProjectId(projectId);
+        estimate.setMaterial(material);
+        estimate.setQuantity(quantity);
+        estimate.setCost(cost);
+
+        // Збереження об'єкта у базі даних
+        estimateRepository.save(estimate);
+    }
 
 
 }

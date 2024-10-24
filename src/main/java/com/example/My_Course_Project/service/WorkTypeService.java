@@ -28,4 +28,15 @@ public class WorkTypeService {
         }
     }
 
+    public void saveWorkType(String name, String description) {
+        // Створення нового об'єкта WorkType
+        WorkType workType = new WorkType();
+
+        // Встановлення значень полів
+        workType.setName(name);
+        workType.setDescription(description);
+
+        // Збереження об'єкта у базі даних
+        workTypeRepository.save(workType);
+    }
 }

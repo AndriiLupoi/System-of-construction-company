@@ -28,4 +28,16 @@ public class CategoryService {
         }
     }
 
+    public void saveCategory(String name, String description) {
+        // Створення нового об'єкта категорії
+        Category category = new Category();
+
+        // Встановлення значень полів
+        category.setName(name);
+        category.setDescription(description);
+
+        // Збереження об'єкта у базі даних
+        categoryRepository.save(category);
+    }
+
 }

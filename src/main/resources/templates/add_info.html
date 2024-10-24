@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Додати дані</title>
+    <link rel="stylesheet" th:href="@{../styles/slideBar.css}">
+    <link rel="stylesheet" th:href="@{../styles/add_infoStyles.css}">
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo-img">
+        <a href="home">
+            <img class="logo" th:src="@{../img/logo.png}" alt="Log Icon">
+        </a>
+    </div>
+
+    <div class="home-page">
+        <a href="home">
+            <div class="icons_background">
+                <img id="home" th:src="@{../img/home.png}" alt="Home Icon" />
+            </div>
+            <span class="span">Головна</span>
+        </a>
+    </div>
+    <div class="project-page">
+        <a href="tables">
+            <div class="icons_background">
+                <img id="projects" th:src="@{../img/data.png}" alt="Data Icon" />
+            </div>
+            <span class="span">Таблиці</span>
+        </a>
+    </div>
+    <div class="workers-page">
+        <a href="employees">
+            <div class="icons_background">
+                <img id="workers" th:src="@{../img/workers.png}" alt="Data Icon" />
+            </div>
+            <span class="span">Робітники</span>
+        </a>
+    </div>
+    <div class="add-page">
+        <a href="add_info">
+            <div class="icons_background">
+                <img id="add_info" th:src="@{../img/add_info.png}" alt="Data Icon" />
+            </div>
+            <span class="span">Додати</span>
+        </a>
+    </div>
+    <div class="logout-btn">
+        <a href="logout">
+            <div class="circle">
+                <img th:src="@{../img/logout.png}" alt="Logout Icon" />
+                <span class="span-logout">Вийти</span>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="content">
+    <h1>Додати нові дані</h1>
+
+    <div class="form-container">
+        <form method="post" action="/add_info_in_project" enctype="multipart/form-data">
+            <h2>Додати проект</h2>
+            <div class="form-group">
+                <label for="name">Назва:</label>
+                <input type="text" id="name" name="name" required />
+            </div>
+            <div class="form-group">
+                <label for="category_id">ID категорії:</label>
+                <input type="text" id="category_id" name="categoryId" required />
+            </div>
+            <div class="form-group">
+                <label for="site_id_project">ID розташування:</label>
+                <input type="text" id="site_id_project" name="siteId" required />
+            </div>
+            <div class="form-group">
+                <label for="start_date">Дата початку:</label>
+                <input type="date" id="start_date" name="start_date" required />
+            </div>
+            <div class="form-group">
+                <label for="end_date">Дата закінчення:</label>
+                <input type="date" id="end_date" name="end_date" required />
+            </div>
+            <div class="form-group">
+                <label for="image">Зображення:</label>
+                <input type="file" id="image" name="image" accept="image/png, image/jpeg" required />
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="add_info_in_site" enctype="multipart/form-data">
+            <h2>Додати розташування</h2>
+            <div class="form-group">
+                <label for="name_site">Назва:</label>
+                <input type="text" id="name_site" name="name_site" required />
+            </div>
+            <div class="form-group">
+                <label for="management_id">ID Бригади:</label>
+                <input type="text" id="management_id" name="management_id" required />
+            </div>
+            <div class="form-group">
+                <label for="location">Розташування:</label>
+                <input type="text" id="location" name="location" required />
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="add_info_in_brigade" enctype="multipart/form-data">
+            <h2>Додати Бригаду</h2>
+            <div class="form-group">
+                <label for="name_brigade">Назва Бригади:</label>
+                <input type="text" id="name_brigade" name="name_brigade" required />
+            </div>
+            <div class="form-group">
+                <label for="site_id">ID Майданчика:</label>
+                <input type="text" id="site_id" name="site_id" required />
+            </div>
+            <div class="form-group">
+                <label for="leader_id">ID Лідера:</label>
+                <input type="text" id="leader_id" name="leader_id" required />
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="add_info_in_category" enctype="multipart/form-data">
+            <h2>Додати Категорію</h2>
+            <div class="form-group">
+                <label for="name_category">Назва Категорії:</label>
+                <input type="text" id="name_category" name="name_category" required />
+            </div>
+            <div class="form-group">
+                <label for="description">Опис:</label>
+                <input type="text" id="description" name="description" required />
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="add_info_in_equipment" enctype="multipart/form-data">
+            <h2>Додати обладнання</h2>
+            <div class="form-group">
+                <label for="name_equipment">Назва обладнання:</label>
+                <input type="text" id="name_equipment" name="name_equipment" required />
+            </div>
+            <div class="form-group">
+                <label for="type">Тип обладнання:</label>
+                <input type="text" id="type" name="type" required />
+            </div>
+            <div class="form-group">
+                <label for="site_ide">ID сайту:</label>
+                <input type="text" id="site_ide" name="site_id" required />
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="add_info_in_estimate" enctype="multipart/form-data">
+            <h2>Додати кошторис</h2>
+            <div class="form-group">
+                <label for="project_id">ID Проекту:</label>
+                <input type="text" id="project_id" name="project_id" required />
+            </div>
+            <div class="form-group">
+                <label for="material">Матеріал:</label>
+                <input type="text" id="material" name="material" required />
+            </div>
+            <div class="form-group">
+                <label for="quantity">Кількість:</label>
+                <input type="text" id="quantity" name="quantity" required />
+            </div>
+            <div class="form-group">
+                <label for="cost">Вартість:</label>
+                <input type="text" id="cost" name="cost" required />
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="add_info_in_report" enctype="multipart/form-data">
+            <h2>Додати звіт</h2>
+            <div class="form-group">
+                <label for="project_id_report">ID Проекту:</label>
+                <input type="text" id="project_id_report" name="project_id" required />
+            </div>
+            <div class="form-group">
+                <label for="work_type_id">ID Типу Роботи:</label>
+                <input type="text" id="work_type_id" name="work_type_id" required />
+            </div>
+            <div class="form-group">
+                <label for="completion_date">Дата завершення:</label>
+                <input type="date" id="completion_date" name="completion_date" required />
+            </div>
+            <div class="form-group">
+                <label for="actual_material_used">Фактично використані матеріали:</label>
+                <input type="text" id="actual_material_used" name="actual_material_used" required />
+            </div>
+            <div class="form-group">
+                <label for="actual_cost">Фактична вартість:</label>
+                <input type="text" id="actual_cost" name="actual_cost" required />
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="add_info_in_schedule">
+            <h2>Додати Графік</h2>
+            <div class="form-group">
+                <label for="project_id_schedule">ID Проекту:</label>
+                <input type="text" id="project_id_schedule" name="project_id" required />
+            </div>
+            <div class="form-group">
+                <label for="work_type_id_schedule">ID Типу Роботи:</label>
+                <input type="text" id="work_type_id_schedule" name="work_type_id" required />
+            </div>
+            <div class="form-group">
+                <label for="start_date_schedule">Дата Початку:</label>
+                <input type="date" id="start_date_schedule" name="start_date" required />
+            </div>
+            <div class="form-group">
+                <label for="end_date_schedule">Дата Завершення:</label>
+                <input type="date" id="end_date_schedule" name="end_date" required />
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <form method="post" action="add_info_in_work_type">
+            <h2>Додати Тип Роботи</h2>
+            <div class="form-group">
+                <label for="name_work_type">Назва:</label>
+                <input type="text" id="name_work_type" name="name" required />
+            </div>
+            <div class="form-group">
+                <label for="description_work_type">Опис:</label>
+                <input type="text" id="description_work_type" name="description" required />
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

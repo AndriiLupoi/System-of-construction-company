@@ -95,4 +95,13 @@ public class SlideBarController {
         model.addAttribute("employees", employees);
         return "employee"; // Повернення шаблону для відображення
     }
+    @GetMapping("/add_info")
+    public String addNewInfoPage(Model model, HttpSession session) {
+        // Перевірка наявності користувача в сесії
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login"; // Перенаправлення на логін, якщо користувач не аутентифікований
+        }
+        model.addAttribute("tableName", "project"); // За замовчуванням відображаємо таблицю проектів
+        return "add_info";
+    }
 }

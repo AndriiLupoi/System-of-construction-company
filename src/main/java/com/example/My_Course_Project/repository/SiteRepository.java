@@ -11,4 +11,7 @@ public interface SiteRepository extends JpaRepository<Site, Integer> {
     List<Site> findByNameContainingOrManagementIdOrLocationContaining(String name,
                                                                       Integer managementId,
                                                                       String location);
+
+    @Override
+    Site save(Site site);
 }

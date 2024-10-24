@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
     List<Project> findByNameContainingOrCategoryIdOrSiteId(String name, Integer categoryId, Integer siteId);
+
+    @Override
+    Project save(Project project);
 }

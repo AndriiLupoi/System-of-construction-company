@@ -1,9 +1,6 @@
 package com.example.My_Course_Project.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -18,6 +15,7 @@ import java.sql.Date;
 public class Report {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Додаємо генерацію ID
     @Column(name = "id")
     private int id;
 

@@ -60,4 +60,21 @@ public class ReportService {
             return -1; // Якщо не вдається перетворити, повертаємо -1
         }
     }
-}
+
+    public void saveReport(int projectId, int workTypeId, java.util.Date completionDate, String actualMaterialUsed, double actualCost) {
+        // Перетворення java.util.Date в java.sql.Date
+        java.sql.Date sqlCompletionDate = new java.sql.Date(completionDate.getTime());
+
+        // Створення нового об'єкта Report
+        Report report = new Report();
+
+        // Встановлення значень полів
+        report.setProjectId(projectId);
+        report.setWorkTypeId(workTypeId);
+        report.setCompletionDate(sqlCompletionDate); // Використовуйте sqlCompletionDate
+        report.setActualMaterialUsed(actualMaterialUsed);
+        report.setActualCost(actualCost);
+
+        // Збереження об'єкта у базі даних
+        reportRepository.save(report);
+    }}

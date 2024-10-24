@@ -1,4 +1,4 @@
-package com.example.My_Course_Project.DataTransferObjects;
+package com.example.My_Course_Project.DataTransferObjects.ProjectDTOs;
 
 import java.util.Date;
 

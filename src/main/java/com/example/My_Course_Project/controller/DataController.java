@@ -1,18 +1,15 @@
 package com.example.My_Course_Project.controller;
 
-import com.example.My_Course_Project.DataTransferObjects.ProjectDTO;
+import com.example.My_Course_Project.DataTransferObjects.ProjectDTOs.ProjectDTO;
 import com.example.My_Course_Project.model.*;
 import com.example.My_Course_Project.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
 
-import java.util.Collections;
 import java.util.List;
 @Controller
 public class DataController {
@@ -56,7 +53,7 @@ public class DataController {
         }
 
         switch (tableName) {
-            case "projects":
+            case "project":
                 List<ProjectDTO> projects = projectService.getAllProjectsWithoutImages();
                 model.addAttribute("data", projects);
                 model.addAttribute("tableName", "project");
@@ -138,7 +135,7 @@ public class DataController {
             case "project":
                 List<Project> projects = projectService.searchProjects(query);
                 model.addAttribute("data", projects);
-                // Можна додати інші типи таблиць тут
+
                 model.addAttribute("tableName", tableName);
                 model.addAttribute("query", query);
                 break;
@@ -209,6 +206,8 @@ public class DataController {
                 throw new IllegalStateException("Unexpected value: " + tableName);
         }
 
-        return "tables"; // Повертаємо до шаблону сторінку з результатами
+        return "tables";
     }
+
+
 }

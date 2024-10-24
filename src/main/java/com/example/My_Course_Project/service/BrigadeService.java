@@ -29,5 +29,16 @@ public class BrigadeService {
             return brigadeRepository.findByNameContainingOrSiteIdOrLeaderId(query, null, null);
         }
     }
+    public void saveBrigade(String name, int siteId, int leaderId) {
+        // Створення нового об'єкта бригади
+        Brigade brigade = new Brigade();
 
+        // Встановлення значень полів
+        brigade.setName(name);
+        brigade.setSiteId(siteId);
+        brigade.setLeaderId(leaderId);
+
+        // Збереження об'єкта у базі даних
+        brigadeRepository.save(brigade);
+    }
 }

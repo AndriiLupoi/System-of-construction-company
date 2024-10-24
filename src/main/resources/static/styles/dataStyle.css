@@ -56,7 +56,7 @@ label {
 }
 
 .form-container{
-    margin-left: 20%;
+    margin-left: 14%;
     align-items: center;
     display: flex;
     flex-direction: row;
@@ -65,7 +65,9 @@ label {
 #searchQuery{
     margin: 0 10px 1px 0;
 }
-
+.cancel_searching{
+    margin: 0 0 -30px 10px;
+}
 select {
     padding: 10px;
     border-radius: 5px;
@@ -196,5 +198,5 @@ small {
         margin-left: 0;
         align-items: center;
     }
-    
+
 }

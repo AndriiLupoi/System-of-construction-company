@@ -37,6 +37,18 @@ public class EquipmentService {
         }
     }
 
+    public void saveEquipment(String name, String type, int siteId) {
+        // Створення нового об'єкта обладнання
+        Equipment equipment = new Equipment();
+
+        // Встановлення значень полів
+        equipment.setName(name);
+        equipment.setType(type);
+        equipment.setSiteId(siteId);
+
+        // Збереження об'єкта у базі даних
+        equipmentRepository.save(equipment);
+    }
 
 }
 

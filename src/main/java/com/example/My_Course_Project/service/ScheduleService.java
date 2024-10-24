@@ -42,4 +42,18 @@ public class ScheduleService {
             }
         }
     }
+
+    public void saveSchedule(int projectId, int workTypeId, LocalDate startDate, LocalDate endDate) {
+        // Створення нового об'єкта Schedule
+        Schedule schedule = new Schedule();
+
+        // Встановлення значень полів
+        schedule.setProjectId(projectId);
+        schedule.setWorkTypeId(workTypeId);
+        schedule.setStartDate(startDate);
+        schedule.setEndDate(endDate);
+
+        // Збереження об'єкта у базі даних
+        scheduleRepository.save(schedule);
+    }
 }
