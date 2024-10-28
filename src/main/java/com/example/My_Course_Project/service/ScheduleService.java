@@ -56,4 +56,8 @@ public class ScheduleService {
         // Збереження об'єкта у базі даних
         scheduleRepository.save(schedule);
     }
+
+    public void deleteScheduleById(int id) {
+        scheduleRepository.deleteById(id);
+    }
 }

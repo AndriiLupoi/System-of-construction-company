@@ -26,7 +26,7 @@ public class Employee {
     private int siteId;
 
     @Column(name = "brigade_id")
-    private int brigadeId;
+    private Integer brigadeId;
 
     @Column(name = "image")
     private byte[] image;

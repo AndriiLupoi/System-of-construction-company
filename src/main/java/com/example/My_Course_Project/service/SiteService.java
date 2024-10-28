@@ -55,5 +55,8 @@ public class SiteService {
         logger.info("Site successfully saved: Name = {}, ManagementId = {}, Location = {}", name, managementId, location);
     }
 
+    public void deleteSiteById(int id) {
+        siteRepository.deleteById(id);
+    }
 
 }

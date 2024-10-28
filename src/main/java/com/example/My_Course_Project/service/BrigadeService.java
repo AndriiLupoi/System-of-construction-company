@@ -41,4 +41,8 @@ public class BrigadeService {
         // Збереження об'єкта у базі даних
         brigadeRepository.save(brigade);
     }
+
+    public void deleteBrigadeById(int id) {
+        brigadeRepository.deleteById(id);
+    }
 }

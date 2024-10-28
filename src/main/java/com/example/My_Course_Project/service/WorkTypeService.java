@@ -39,4 +39,8 @@ public class WorkTypeService {
         // Збереження об'єкта у базі даних
         workTypeRepository.save(workType);
     }
+
+    public void deleteWorkTypeById(int id) {
+        workTypeRepository.deleteById(id);
+    }
 }

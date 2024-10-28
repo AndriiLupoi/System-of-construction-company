@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 
 
 @Entity
-@Table(name = "brigade")
+@Table(name = "building_management")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -82,4 +82,8 @@ public class ProjectService {
         // Збереження проекту у базі даних
         projectRepository.save(project);
     }
+
+    public void deleteProjectById(int id) {
+        projectRepository.deleteById(id);
+    }
 }

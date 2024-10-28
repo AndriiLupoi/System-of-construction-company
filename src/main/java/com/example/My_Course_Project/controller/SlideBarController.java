@@ -30,6 +30,8 @@ public class SlideBarController {
 
     @Autowired
     private BrigadeService brigadeService;
+    @Autowired
+    private BuildingManagementService buildingManagementService;
 
     @GetMapping("/tables")
     public String showTablesPage(Model model, HttpSession session) {
@@ -48,8 +50,9 @@ public class SlideBarController {
         List<Project> projects = projectService.getAllProjects(); // Отримуємо всі проекти
         List<Category> categories = categoryService.getAllCategories(); // Отримуємо всі категорії
         List<Site> sites = siteService.getAllSites(); // Отримуємо всі сайти
-        List<Brigade> buildingManagements = brigadeService.getAllBrigades(); // Отримуємо всі бригади
+        List<Brigade> brigades = brigadeService.getAllBrigades(); // Отримуємо всі бригади
         List<Employee> employees = employeeService.getAllEmployees(); // Отримуємо всіх працівників
+        List<BuildingManagement> buildingManagements = buildingManagementService.getAllBuildings();
 
         // Створюємо мапу для категорій
         Map<Integer, Category> categoryMap = categories.stream()
@@ -60,12 +63,15 @@ public class SlideBarController {
                 .collect(Collectors.toMap(Site::getId, site -> site));
 
         // Створюємо мапу для бригад
-        Map<Integer, Brigade> brigadeMap = buildingManagements.stream()
+        Map<Integer, Brigade> brigadeMap = brigades.stream()
                 .collect(Collectors.toMap(Brigade::getId, brigade -> brigade));
 
         // Створюємо мапу для працівників
         Map<Integer, Employee> employeeMap = employees.stream()
                 .collect(Collectors.toMap(Employee::getId, employee -> employee));
+
+        Map<Integer, BuildingManagement> buildingManagementMap = buildingManagements.stream()
+                .collect(Collectors.toMap(BuildingManagement::getId, buildingManagement -> buildingManagement));
 
         // Додаємо всі дані до моделі
         model.addAttribute("projects", projects);
@@ -73,6 +79,7 @@ public class SlideBarController {
         model.addAttribute("siteMap", siteMap);
         model.addAttribute("brigadeMap", brigadeMap); // Додаємо мапу бригад до моделі
         model.addAttribute("employeeMap", employeeMap); // Додаємо мапу працівників до моделі
+        model.addAttribute("buildingManagementMap", buildingManagementMap);
 
         return "home"; // Повертаємо назву шаблону
     }

@@ -28,4 +28,7 @@ public class BuildingManagementService {
         }
     }
 
+    public void deleteBuildingManagementById(int id) {
+        buildingManagementRepository.deleteById(id);
+    }
 }

@@ -77,4 +77,9 @@ public class ReportService {
 
         // Збереження об'єкта у базі даних
         reportRepository.save(report);
-    }}
+    }
+
+    public void deleteReportById(int id) {
+        reportRepository.deleteById(id);
+    }
+}

@@ -20,7 +20,7 @@ public class Report {
     private int id;
 
     @Column(name = "project_id")
-    private int projectId;
+    private Integer projectId;
 
     @Column(name = "work_type_id")
     private int workTypeId;

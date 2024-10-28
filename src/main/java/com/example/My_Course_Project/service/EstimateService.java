@@ -51,5 +51,8 @@ public class EstimateService {
         estimateRepository.save(estimate);
     }
 
+    public void deleteEstimateById(int estimateId) {
+        estimateRepository.deleteById(estimateId);
+    }
 
 }

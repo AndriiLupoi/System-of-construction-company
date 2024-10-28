@@ -124,7 +124,7 @@ table {
 }
 
 th, td {
-    padding: 15px;
+    padding: 10px;
     text-align: left;
     border: 1px solid #555555; /* Темніша рамка */
 }
@@ -148,6 +148,17 @@ tr {
 }
 small {
     color: #bbbbbb; /* Світлий текст для дрібних елементів */
+}
+
+.no-border {
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: none;
+}
+
+.delete-btn{
+    margin-top: 30%;
 }
 
 @media (max-width: 600px) {

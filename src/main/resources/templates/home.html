@@ -64,14 +64,20 @@
             <h3 th:text="${project.name}">Project Name</h3>
 
             <!-- Виводимо дані категорії -->
-            <p>Категорія: <span th:text="${categoryMap[project.categoryId].name}">Category Name</span></p>
-            <p>Опис: <span th:text="${categoryMap[project.categoryId].description}">Category Description</span></p>
-
-            <!-- Виводимо дані сайту -->
-            <p>Сайт: <span th:text="${siteMap[project.siteId].name}">Site Name</span></p>
+            <p>Категорія:
+                <span th:text="${categoryMap[project.categoryId].name}">Category Name</span>
+            </p>
+            <p>Опис:
+                <span th:text="${categoryMap[project.categoryId].description}">Category Description</span>
+            </p>
+            <p>Сайт:
+                <span th:text="${siteMap[project.siteId].name}">Site Name</span>
+            </p>
             <p>Управління:
+                <span th:text="${buildingManagementMap[siteMap[project.siteId].managementId].name}">BuildingManagment Name</span>
+            </p>
+            <p>Бригада:
                 <span th:text="${brigadeMap[siteMap[project.siteId].managementId].name}">Brigade Name</span>
-
             </p>
             <p>Лідер бригади:
                 <span th:text="${employeeMap[brigadeMap[siteMap[project.siteId].managementId].leaderId].name}">Leader Name</span>

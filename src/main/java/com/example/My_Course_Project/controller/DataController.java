@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
 
@@ -208,6 +210,46 @@ public class DataController {
 
         return "tables";
     }
+
+    @PostMapping("/data/delete/{id}")
+    public String deleteRecord(@RequestParam("tableName") String tableName, @PathVariable("id") int id) {
+        switch (tableName) {
+            case "project":
+                projectService.deleteProjectById(id);
+                break;
+            case "equipment":
+                equipmentService.deleteEquipmentById(id);
+                break;
+            case "category":
+                categoryService.deleteCategoryById(id);
+                break;
+            case "brigade":
+                brigadeService.deleteBrigadeById(id);
+                break;
+            case "building_management":
+                buildingManagementService.deleteBuildingManagementById(id);
+                break;
+            case "estimate":
+                estimateService.deleteEstimateById(id);
+                break;
+            case "report":
+                reportService.deleteReportById(id);
+                break;
+            case "schedule":
+                scheduleService.deleteScheduleById(id);
+                break;
+            case "site":
+                siteService.deleteSiteById(id);
+                break;
+            case "work_type":
+                workTypeService.deleteWorkTypeById(id);
+                break;
+            default:
+                throw new IllegalArgumentException("Неправильна назва таблиці: " + tableName);
+        }
+        return "redirect:/data?tableName=" + tableName;
+    }
+
 
 
 }

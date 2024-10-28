@@ -50,5 +50,9 @@ public class EquipmentService {
         equipmentRepository.save(equipment);
     }
 
+    public void deleteEquipmentById(int id) {
+        equipmentRepository.deleteById(id);
+    }
+
 }
 
