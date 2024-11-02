@@ -8,9 +8,9 @@ import java.util.List;
 
 @Repository
 public interface SiteRepository extends JpaRepository<Site, Integer> {
-    List<Site> findByNameContainingOrManagementIdOrLocationContaining(String name,
-                                                                      Integer managementId,
-                                                                      String location);
+    List<Site> findByNameContainingOrBuildingManagement_IdOrLocationContaining(String name,
+                                                                               Integer managementId,
+                                                                               String location);
 
     @Override
     Site save(Site site);

@@ -127,4 +127,32 @@ public class ScheduleService {
 
         return new ArrayList<>(resultSet); // Повертаємо список результатів
     }
+
+    public List<Object[]> findConstructionProjectsByManagementOrSite(Integer managementId, Integer siteId) {
+        List<Object[]> resultList = new ArrayList<>();
+
+        // Отримуємо всі розклади для обробки
+        List<Schedule> schedules = scheduleRepository.findAll();
+
+        for (Schedule schedule : schedules) {
+            // Перевіряємо умови для будівельного управління або ділянки
+            boolean matchesManagement = managementId != null && managementId.equals(schedule.getSite().getBuildingManagement().getId());
+            boolean matchesSite = siteId != null && siteId.equals(schedule.getSite().getId());
+
+            // Додаємо до результату, якщо хоча б один з параметрів відповідає
+            if (matchesManagement || matchesSite) {
+                resultList.add(new Object[]{
+                        schedule.getProject().getName(),               // Назва проекту
+                        schedule.getSite().getName(),                  // Назва ділянки
+                        schedule.getSite().getBuildingManagement().getName(),  // Назва управління
+                        schedule.getStartDate(),                       // Дата початку
+                        schedule.getEndDate()                          // Дата закінчення
+                });
+            }
+        }
+        return resultList;
+    }
+
+
+
 }

@@ -1,8 +1,9 @@
 package com.example.My_Course_Project.service;
 
 import com.example.My_Course_Project.controller.AddController;
-import com.example.My_Course_Project.exception.ResourceNotFoundException;
+import com.example.My_Course_Project.model.BuildingManagement;
 import com.example.My_Course_Project.model.Site;
+import com.example.My_Course_Project.repository.BuildingManagementRepository;
 import com.example.My_Course_Project.repository.SiteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,8 @@ public class SiteService {
 
     @Autowired
     private SiteRepository siteRepository;
+    @Autowired
+    private BuildingManagementRepository buildingManagementRepository;
 
     public List<Site> getAllSites() {
         return siteRepository.findAll();
@@ -30,10 +33,10 @@ public class SiteService {
         // Спробуємо спочатку розпізнати як число (ID управління)
         try {
             Integer id = Integer.parseInt(query);
-            results.addAll(siteRepository.findByNameContainingOrManagementIdOrLocationContaining(null, id, null));
+            results.addAll(siteRepository.findByNameContainingOrBuildingManagement_IdOrLocationContaining(null, id, null));
         } catch (NumberFormatException e) {
             // Якщо це не число, шукаємо по назві і локації
-            results.addAll(siteRepository.findByNameContainingOrManagementIdOrLocationContaining(query, null, query));
+            results.addAll(siteRepository.findByNameContainingOrBuildingManagement_IdOrLocationContaining(query, null, query));
         }
 
         return results;
@@ -45,8 +48,12 @@ public class SiteService {
 
         // Встановлення значень полів
         site.setName(name);
-        site.setManagementId(managementId);
         site.setLocation(location);
+
+        // Збереження об'єкта управління будівництвом
+        BuildingManagement buildingManagement = buildingManagementRepository.findById(managementId)
+                .orElseThrow(() -> new RuntimeException("BuildingManagement not found for ID: " + managementId));
+        site.setBuildingManagement(buildingManagement);
 
         // Збереження об'єкта у базі даних
         siteRepository.save(site);
@@ -54,6 +61,7 @@ public class SiteService {
         // Логування для підтвердження успішного збереження
         logger.info("Site successfully saved: Name = {}, ManagementId = {}, Location = {}", name, managementId, location);
     }
+
 
     public void deleteSiteById(int id) {
         siteRepository.deleteById(id);

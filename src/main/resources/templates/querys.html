@@ -80,6 +80,7 @@
             <option value="brigadesAndLeaders" th:selected="${selectedQuery == 'brigadesAndLeaders'}">Будівельні керування та їхні керівники</option> <!-- Додано новий запит -->
             <option value="overbudgetMaterials" th:selected="${selectedQuery == 'overbudgetMaterials'}">Матеріали з перевищенням кошторису по проекту</option>
             <option value="worksByBrigades" th:selected="${selectedQuery == 'worksByBrigades'}">Види робіт, виконані бригадою на об'єктах у заданий період</option>
+            <option value="schedulesByManagementOrSite" th:selected="${selectedQuery == 'schedulesByManagementOrSite'}">Графіки зведення проектів які зводяться будівельним управлінням або ділянкою</option>
         </select>
         <button type="submit">Показати форму</button>
     </form>
@@ -136,6 +137,28 @@
 
         <button type="submit">Показати роботи</button>
     </form>
+
+    <form th:if="${selectedQuery == 'schedulesByManagementOrSite'}" action="/schedulesByManagementOrSite" method="post">
+        <label for="managementSelect">Будівельне управління:</label>
+        <select id="managementSelect" name="managementId">
+            <option value="" selected>Оберіть управління</option>
+            <option th:each="management : ${managements}"
+                    th:value="${management.id}"
+                    th:text="${management.name}"></option>
+        </select>
+
+        <label for="siteSelect">Ділянка:</label>
+        <select id="siteSelect" name="siteId">
+            <option value="" selected>Оберіть ділянку</option>
+            <option th:each="site : ${sites}"
+                    th:value="${site.id}"
+                    th:text="${site.name}"></option>
+        </select>
+
+        <button type="submit">Показати</button>
+    </form>
+
+
 
     <!-- Відображення деталей проекту -->
     <div th:if="${schedules != null}">
@@ -264,6 +287,30 @@
                 <td th:text="${workDetail[2]}"></td>
                 <td th:text="${workDetail[3]}"></td>
                 <td th:text="${workDetail[4]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${schedulesByManagementOrSite != null}">
+        <h2>Об'єкти та графіки їх зведення</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Назва проекту</th>
+                <th>Ділянка</th>
+                <th>Будівельне управління</th>
+                <th>Дата початку</th>
+                <th>Дата закінчення</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="project : ${schedulesByManagementOrSite}">
+                <td th:text="${project[0]}"></td> <!-- Назва проекту -->
+                <td th:text="${project[1]}"></td> <!-- Назва ділянки -->
+                <td th:text="${project[2]}"></td> <!-- Назва управління -->
+                <td th:text="${project[3]}"></td> <!-- Дата початку -->
+                <td th:text="${project[4]}"></td> <!-- Дата закінчення -->
             </tr>
             </tbody>
         </table>

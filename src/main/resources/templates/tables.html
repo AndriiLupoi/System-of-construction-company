@@ -309,7 +309,7 @@
         <tr th:if="${tableName != null and tableName.equals('site')}" th:each="site : ${data}">
             <td th:text="${site.id}" data-label="ID"></td>
             <td th:text="${site.name}" data-label="Назва"></td>
-            <td th:text="${site.managementId}" data-label="ID управління"></td>
+            <td th:text="${site.buildingManagement.id}" data-label="ID управління"></td>
             <td th:text="${site.location}" data-label="Локація"></td>
             <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${site.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">

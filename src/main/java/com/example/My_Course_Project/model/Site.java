@@ -19,8 +19,9 @@ public class Site {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "management_id")
-    private int managementId;
+    @OneToOne
+    @JoinColumn(name = "management_id", referencedColumnName = "id")
+    private BuildingManagement buildingManagement;
 
     @Column(name = "location")
     private String location;

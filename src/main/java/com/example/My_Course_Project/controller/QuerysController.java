@@ -32,6 +32,10 @@ public class QuerysController {
     private BrigadeRepository brigadeRepository;
     @Autowired
     private WorkTypeService workTypeService;
+    @Autowired
+    private BuildingManagementService buildingManagementService;
+    @Autowired
+    private SiteService siteService;
 
     private boolean isUserAuthenticated(HttpSession session) {
         return session.getAttribute("user") != null;
@@ -48,19 +52,38 @@ public class QuerysController {
         System.out.println("Selected Query: " + selectedQuery);
 
         model.addAttribute("selectedQuery", selectedQuery);
-        if ("estimate".equals(selectedQuery)) {
-            model.addAttribute("projects", projectService.getAllProjects());
-        } else if ("brigade".equals(selectedQuery)) {
-            model.addAttribute("workTypes", workTypeService.getAllWorkTypes());
-        } else if ("brigadesAndLeaders".equals(selectedQuery)) {
-            List<Object[]> brigades = brigadeService.findAllBrigadesAndLeaders();
-            model.addAttribute("brigades", brigades);
-        } else if ("overbudgetMaterials".equals(selectedQuery)) {
-            model.addAttribute("projects", projectService.getAllProjects());
-        } else if ("worksByBrigades".equals(selectedQuery)) {
-            model.addAttribute("brigades", brigadeService.getAllBrigades());
-        }
 
+        switch (selectedQuery) {
+            case "estimate":
+                model.addAttribute("projects", projectService.getAllProjects());
+                break;
+
+            case "brigade":
+                model.addAttribute("workTypes", workTypeService.getAllWorkTypes());
+                break;
+
+            case "brigadesAndLeaders":
+                List<Object[]> brigades = brigadeService.findAllBrigadesAndLeaders();
+                model.addAttribute("brigades", brigades);
+                break;
+
+            case "overbudgetMaterials":
+                model.addAttribute("projects", projectService.getAllProjects());
+                break;
+
+            case "worksByBrigades":
+                model.addAttribute("brigades", brigadeService.getAllBrigades());
+                break;
+
+            case "schedulesByManagementOrSite":
+                model.addAttribute("managements", buildingManagementService.getAllBuildings());
+                model.addAttribute("sites", siteService.getAllSites());
+                break;
+
+            default:
+                model.addAttribute("error", "Такого запиту не існує!");
+                return "error"; // Створіть сторінку для відображення помилок
+        }
         return "querys";
     }
 
@@ -149,6 +172,24 @@ public class QuerysController {
         model.addAttribute("selectedQuery", selectedQuery);
 
         return "querys"; // Повертаємо до шаблону для відображення результатів
+    }
+
+    @PostMapping("/schedulesByManagementOrSite")
+    public String getConstructionProjects(
+            @RequestParam(value = "managementId", required = false) Integer managementId,
+            @RequestParam(value = "siteId", required = false) Integer siteId,
+            Model model) {
+
+        if (managementId == null && siteId == null) {
+            model.addAttribute("error", "Будь ласка, оберіть будівельне управління або ділянку.");
+            return "querys";
+        }
+
+        List<Object[]> schedulesByManagementOrSite = scheduleService.findConstructionProjectsByManagementOrSite(managementId, siteId);
+
+        model.addAttribute("schedulesByManagementOrSite", schedulesByManagementOrSite);
+
+        return "querys";
     }
 
 }

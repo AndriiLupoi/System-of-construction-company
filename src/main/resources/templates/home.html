@@ -82,13 +82,13 @@
                 <span th:text="${siteMap[project.siteId].name}">Site Name</span>
             </p>
             <p>Управління:
-                <span th:text="${buildingManagementMap[siteMap[project.siteId].managementId].name}">BuildingManagment Name</span>
+                <span th:text="${buildingManagementMap[siteMap[project.siteId].buildingManagement.id].name}">Building Management Name</span>
             </p>
             <p>Бригада:
-                <span th:text="${brigadeMap[siteMap[project.siteId].managementId].name}">Brigade Name</span>
+                <span th:text="${brigadeMap[siteMap[project.siteId].buildingManagement.id].name}">Brigade Name</span>
             </p>
             <p>Лідер бригади:
-                <span th:text="${employeeMap[brigadeMap[siteMap[project.siteId].managementId].leaderId].name}">Leader Name</span>
+                <span th:text="${employeeMap[brigadeMap[siteMap[project.siteId].buildingManagement.id].leaderId].name}">Leader Name</span>
             </p>
             <p>Місцезнаходження: <span th:text="${siteMap[project.siteId].location}">Location</span></p>
 
