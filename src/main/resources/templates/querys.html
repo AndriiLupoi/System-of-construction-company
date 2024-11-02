@@ -76,9 +76,10 @@
         <select id="querySelect" name="selectedQuery" required>
             <option value="" disabled selected>Оберіть запит</option>
             <option value="estimate" th:selected="${selectedQuery == 'estimate'}">Графік і Кошторис</option>
-            <option value="brigade" th:selected="${selectedQuery == 'brigade'}">Бригади, що виконали роботи</option>
+            <option value="brigade" th:selected="${selectedQuery == 'brigade'}">Бригади, що виконували обраний вид робіт у зазначений період</option>
             <option value="brigadesAndLeaders" th:selected="${selectedQuery == 'brigadesAndLeaders'}">Будівельні керування та їхні керівники</option> <!-- Додано новий запит -->
             <option value="overbudgetMaterials" th:selected="${selectedQuery == 'overbudgetMaterials'}">Матеріали з перевищенням кошторису по проекту</option>
+            <option value="worksByBrigades" th:selected="${selectedQuery == 'worksByBrigades'}">Види робіт, виконані бригадою на об'єктах у заданий період</option>
         </select>
         <button type="submit">Показати форму</button>
     </form>
@@ -119,6 +120,22 @@
         <button type="submit">Показати деталі</button>
     </form>
 
+    <form th:if="${selectedQuery == 'worksByBrigades'}" action="/worksByBrigades" method="post">
+        <input type="hidden" name="selectedQuery" th:value="${selectedQuery}"/>
+
+        <label for="brigadeSelect">Виберіть бригаду:</label>
+        <select id="brigadeSelect" name="brigadeId" required>
+            <option th:each="brigade : ${brigades}" th:value="${brigade.id}" th:text="${brigade.name}"></option>
+        </select>
+
+        <label for="startDateB">Дата початку:</label>
+        <input type="date" id="startDateB" name="startDateB" required/>
+
+        <label for="endDateB">Дата завершення:</label>
+        <input type="date" id="endDateB" name="endDateB" required/>
+
+        <button type="submit">Показати роботи</button>
+    </form>
 
     <!-- Відображення деталей проекту -->
     <div th:if="${schedules != null}">
@@ -177,8 +194,8 @@
             <tbody>
             <tr th:each="result : ${results}">
                 <td th:text="${result[0]}"></td> <!-- Назва бригади -->
-                <td th:text="${result[1]}"></td> <!-- Назва проекту -->
-                <td th:text="${result[2]}"></td> <!-- Назва типу робіт -->
+                <td th:text="${result[2]}"></td> <!-- Назва проекту -->
+                <td th:text="${result[1]}"></td> <!-- Назва типу робіт -->
             </tr>
             </tbody>
         </table>
@@ -223,6 +240,30 @@
                 <td th:text="${material[2]}"></td>
                 <td th:text="${material[3]}"></td>
                 <td th:text="${material[4]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${brigadeWorkDetails != null}">
+        <h2>Роботи, виконані бригадою</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Бригада</th>
+                <th>Тип робіт</th>
+                <th>Проект</th>
+                <th>Дата початку</th>
+                <th>Дата завершення</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="workDetail : ${brigadeWorkDetails}">
+                <td th:text="${workDetail[0]}"></td>
+                <td th:text="${workDetail[1]}"></td>
+                <td th:text="${workDetail[2]}"></td>
+                <td th:text="${workDetail[3]}"></td>
+                <td th:text="${workDetail[4]}"></td>
             </tr>
             </tbody>
         </table>

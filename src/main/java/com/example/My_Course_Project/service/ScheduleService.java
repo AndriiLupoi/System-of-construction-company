@@ -102,7 +102,29 @@ public class ScheduleService {
         return new ArrayList<>(resultSet); // Повертаємо список результатів
     }
 
+    public List<Object[]> findWorkDetailsByBrigadeAndPeriod(int brigadeId, LocalDate startDate, LocalDate endDate) {
+        Set<Object[]> resultSet = new HashSet<>(); // Використовуємо Set для унікальності результатів
 
+        // Отримуємо всі розклади
+        List<Schedule> schedules = scheduleRepository.findAll();
 
+        for (Schedule schedule : schedules) {
+            // Перевіряємо, чи відповідає бригада та період
+            if (schedule.getBrigade().getId() == brigadeId &&
+                    !schedule.getStartDate().isBefore(startDate) &&
+                    !schedule.getEndDate().isAfter(endDate)) {
 
+                // Додаємо до результату
+                resultSet.add(new Object[]{
+                        schedule.getBrigade().getName(),       // Назва бригади
+                        schedule.getWorkType().getName(),      // Тип робіт
+                        schedule.getProject().getName(),       // Назва проекту
+                        schedule.getStartDate(),               // Дата початку
+                        schedule.getEndDate()                  // Дата закінчення
+                });
+            }
+        }
+
+        return new ArrayList<>(resultSet); // Повертаємо список результатів
+    }
 }

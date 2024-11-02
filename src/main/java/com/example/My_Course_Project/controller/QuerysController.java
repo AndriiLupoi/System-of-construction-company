@@ -57,6 +57,8 @@ public class QuerysController {
             model.addAttribute("brigades", brigades);
         } else if ("overbudgetMaterials".equals(selectedQuery)) {
             model.addAttribute("projects", projectService.getAllProjects());
+        } else if ("worksByBrigades".equals(selectedQuery)) {
+            model.addAttribute("brigades", brigadeService.getAllBrigades());
         }
 
         return "querys";
@@ -121,6 +123,32 @@ public class QuerysController {
         model.addAttribute("overBudgetMaterials", overBudgetMaterials);
 
         return "querys"; // Повертає назву шаблону для відображення
+    }
+
+
+    @PostMapping("/worksByBrigades")
+    public String handleBrigadeWorkSelection(@RequestParam int brigadeId,
+                                             @RequestParam(value = "brigadeName", required = false) String brigadeName,
+                                             @RequestParam String selectedQuery,
+                                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDateB,
+                                             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDateB,
+                                             Model model,
+                                             HttpSession session) {
+        if (!isUserAuthenticated(session)) {
+            return "redirect:/login";
+        }
+
+        // Отримуємо дані про роботи, виконані бригадою за вказаний період
+        List<Object[]> brigadeWorkDetails = scheduleService.findWorkDetailsByBrigadeAndPeriod(brigadeId, startDateB, endDateB);
+
+        // Передаємо дані до моделі
+        model.addAttribute("startDate", startDateB);
+        model.addAttribute("brigadeName", brigadeName);
+        model.addAttribute("endDate", endDateB);
+        model.addAttribute("brigadeWorkDetails", brigadeWorkDetails);
+        model.addAttribute("selectedQuery", selectedQuery);
+
+        return "querys"; // Повертаємо до шаблону для відображення результатів
     }
 
 }
