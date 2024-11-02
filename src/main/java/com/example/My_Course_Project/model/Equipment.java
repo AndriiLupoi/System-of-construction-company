@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 public class Equipment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Додаємо генерацію ID
     @Column(name = "id")
     private int id;
 

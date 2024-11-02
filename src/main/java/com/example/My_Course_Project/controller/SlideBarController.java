@@ -34,11 +34,19 @@ public class SlideBarController {
     private BuildingManagementService buildingManagementService;
 
     @GetMapping("/tables")
-    public String showTablesPage(Model model, HttpSession session) {
+    public String showTablesPage(HttpSession session) {
         if (session.getAttribute("user") == null) {
             return "redirect:/login";
         }
         return "tables";
+    }
+
+    @GetMapping("/querys")
+    public String showQuerysPage(HttpSession session, Model model) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+        return "querys"; // Назва шаблону
     }
 
     @GetMapping("/home")

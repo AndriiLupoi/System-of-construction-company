@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Запити</title>
+    <link rel="stylesheet" th:href="@{../styles/slideBar.css}">
+    <link rel="stylesheet" th:href="@{../styles/querysStyle.css}">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo-img">
+        <a href="home">
+            <img class="logo" th:src="@{../img/icons/logo.png}" alt="Log Icon">
+        </a>
+    </div>
+
+    <div class="home-page">
+        <a href="home">
+            <div class="icons_background">
+                <img id="home" th:src="@{../img/icons/home.png}" alt="Home Icon" />
+            </div>
+            <span class="span">Головна</span>
+        </a>
+    </div>
+    <div class="project-page">
+        <a href="tables">
+            <div class="icons_background">
+                <img id="projects" th:src="@{../img/icons/data.png}" alt="Data Icon" />
+            </div>
+            <span class="span">Таблиці</span>
+        </a>
+    </div>
+    <div class="workers-page">
+        <a href="employees">
+            <div class="icons_background">
+                <img id="workers" th:src="@{../img/icons/workers.png}" alt="Employeers Icon" />
+            </div>
+            <span class="span">Робітники</span>
+        </a>
+    </div>
+    <div class="add-page">
+        <a href="add_info">
+            <div class="icons_background">
+                <img id="add_info" th:src="@{../img/icons/add_info.png}" alt="Add Info Icon" />
+            </div>
+            <span class="span">Додати</span>
+        </a>
+    </div>
+    <div class="querys-page">
+        <a href="querys">
+            <div class="icons_background">
+                <img id="query_img" th:src="@{../img/icons/querys.png}" alt="Querys Icon" />
+            </div>
+            <span class="span">Запити</span>
+        </a>
+    </div>
+    <div class="logout-btn">
+        <a href="logout">
+            <div class="circle">
+                <img th:src="@{../img/icons/logout.png}" alt="Logout Icon" />
+                <span class="span-logout">Вийти</span>
+            </div>
+        </a>
+    </div>
+</div>
+<div class="content">
+    <form action="/selectedQuery" method="post">
+        <label for="querySelect">Виберіть запит:</label>
+        <select id="querySelect" name="selectedQuery" required>
+            <option value="" disabled selected>Оберіть запит</option>
+            <option value="estimate" th:selected="${selectedQuery == 'estimate'}">Графік і Кошторис</option>
+            <option value="brigade" th:selected="${selectedQuery == 'brigade'}">Бригади, що виконали роботи</option>
+            <option value="brigadesAndLeaders" th:selected="${selectedQuery == 'brigadesAndLeaders'}">Будівельні керування та їхні керівники</option> <!-- Додано новий запит -->
+            <option value="overbudgetMaterials" th:selected="${selectedQuery == 'overbudgetMaterials'}">Матеріали з перевищенням кошторису по проекту</option>
+        </select>
+        <button type="submit">Показати форму</button>
+    </form>
+
+
+    <form th:if="${selectedQuery == 'estimate'}" action="/EstimateAndSchedule" method="post">
+        <input type="hidden" name="selectedQuery" th:value="${selectedQuery}"/>
+        <label for="projectSelect">Виберіть проект:</label>
+        <select id="projectSelect" name="projectName" required>
+            <option value="" disabled selected>Оберіть проект</option>
+            <option th:each="project : ${projects}" th:value="${project.name}" th:text="${project.name}"></option>
+        </select>
+        <button type="submit">Показати деталі</button>
+    </form>
+
+    <form th:if="${selectedQuery == 'brigade'}" action="/selectWork" method="post">
+        <input type="hidden" name="selectedQuery" th:value="${selectedQuery}"/>
+        <input type="hidden" name="workTypeName" th:value="${workTypeName}"/> <!-- Додаємо приховане поле для workTypeName -->
+        <label for="workTypeSelect">Виберіть тип робіт:</label>
+        <select id="workTypeSelect" name="workTypeId" required>
+            <option th:each="workType : ${workTypes}" th:value="${workType.id}" th:text="${workType.name}" th:onclick="'setWorkTypeName(\'' + workType.name + '\')'"></option>
+        </select>
+        <label for="startDate">Дата початку:</label>
+        <input type="date" id="startDate" name="startDate" required/>
+
+        <label for="endDate">Дата завершення:</label>
+        <input type="date" id="endDate" name="endDate" required/>
+        <button type="submit">Показати деталі</button>
+    </form>
+
+    <form th:if="${selectedQuery == 'overbudgetMaterials'}" action="/overbudgetMaterials" method="post">
+        <input type="hidden" name="selectedQuery" th:value="${selectedQuery}"/>
+        <label for="projectformaterialSelect">Виберіть проект:</label>
+        <select id="projectformaterialSelect" name="projectId" required>
+            <option value="" disabled selected>Оберіть проект</option>
+            <option th:each="project : ${projects}" th:value="${project.id}" th:text="${project.name}"></option>
+        </select>
+        <button type="submit">Показати деталі</button>
+    </form>
+
+
+    <!-- Відображення деталей проекту -->
+    <div th:if="${schedules != null}">
+        <h2>Деталі проекту: <span th:text="${projectName}"></span></h2>
+        <h3>Графік робіт:</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Тип робіт</th>
+                <th>Дата початку</th>
+                <th>Дата завершення</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="schedule : ${schedules}">
+                <td th:text="${schedule.id}"></td>
+                <td th:text="${schedule.workType.name}"></td>
+                <td th:text="${schedule.startDate}"></td>
+                <td th:text="${schedule.endDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3>Кошторис:</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Матеріал</th>
+                <th>Кількість</th>
+                <th>Вартість</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="estimate : ${estimates}">
+                <td th:text="${estimate.id}"></td>
+                <td th:text="${estimate.material}"></td>
+                <td th:text="${estimate.quantity}"></td>
+                <td th:text="${estimate.cost}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${results != null}">
+        <h3>Бригади, які виконали роботи:</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Назва бригади</th>
+                <th>Назва проекту</th>
+                <th>Тип робіт</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="result : ${results}">
+                <td th:text="${result[0]}"></td> <!-- Назва бригади -->
+                <td th:text="${result[1]}"></td> <!-- Назва проекту -->
+                <td th:text="${result[2]}"></td> <!-- Назва типу робіт -->
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${selectedQuery == 'brigadesAndLeaders'}">
+        <h2>Перелік будівельних керувань й їхніх керівників</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Бригада</th>
+                <th>Лідер</th>
+                <th>Проект</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="brigade : ${brigades}">
+                <td th:text="${brigade[0]}"></td>
+                <td th:text="${brigade[2]}"></td>
+                <td th:text="${brigade[1]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${overBudgetMaterials != null}">
+        <h2>Перелік матеріалів з перевищенням кошторису</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Матеріал</th>
+                <th>Загальна кількість використаного матеріалу</th>
+                <th>Загальна фактична вартість</th>
+                <th>Кошторисна вартість</th>
+                <th>Сума перевищення кошторису</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="material : ${overBudgetMaterials}">
+                <td th:text="${material[0]}"></td>
+                <td th:text="${material[1]}"></td>
+                <td th:text="${material[2]}"></td>
+                <td th:text="${material[3]}"></td>
+                <td th:text="${material[4]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

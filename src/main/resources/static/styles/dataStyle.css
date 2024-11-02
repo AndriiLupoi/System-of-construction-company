@@ -16,6 +16,7 @@ body {
     padding: 40px;
     margin: 40px auto;
     transition: transform 0.3s, box-shadow 0.3s;
+    animation: fadeIn 1s ease;
 }
 
 .content:hover {
@@ -124,11 +125,10 @@ table {
 }
 
 th, td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #555555; /* Темніша рамка */
+    padding: 5px; /* Установіть однаковий padding */
+    text-align: left; /* Установіть вирівнювання */
+    border: 1px solid #555555; /* Однакова рамка */
 }
-
 th {
     background: linear-gradient(90deg, #ff6600, #cc5200); /* Градієнт для заголовка */
     color: white;
@@ -157,9 +157,17 @@ small {
     background: none;
 }
 
-.delete-btn{
-    margin-top: 30%;
+.delete-btn {
+    margin-top: 8%; /* Установіть однаковий маргін */
+    margin-bottom: -20px;
+    background-color: #ff0000; /* Наприклад, червоний фон */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
 }
+
 
 @media (max-width: 600px) {
     table, thead, tbody, th, td, tr {

@@ -16,6 +16,7 @@ body {
     padding: 20px;
     width: 85%;
     margin: 0 5% 0 5%;
+    animation: fadeIn 1s ease;
 }
 
 .project-card {
@@ -94,4 +95,10 @@ h1 {
     .project-card p {
         font-size: 14px;
     }
+}
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

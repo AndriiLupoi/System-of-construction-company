@@ -58,5 +58,4 @@ public class SiteService {
     public void deleteSiteById(int id) {
         siteRepository.deleteById(id);
     }
-
 }

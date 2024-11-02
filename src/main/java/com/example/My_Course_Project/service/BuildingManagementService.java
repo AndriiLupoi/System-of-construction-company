@@ -1,6 +1,5 @@
 package com.example.My_Course_Project.service;
 
-import com.example.My_Course_Project.exception.ResourceNotFoundException;
 import com.example.My_Course_Project.model.BuildingManagement;
 import com.example.My_Course_Project.repository.BuildingManagementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,5 +29,13 @@ public class BuildingManagementService {
 
     public void deleteBuildingManagementById(int id) {
         buildingManagementRepository.deleteById(id);
+    }
+
+    public void saveBuildingManagement(String name) {
+        BuildingManagement buildingManagement = new BuildingManagement();
+
+        buildingManagement.setName(name);
+
+        buildingManagementRepository.save(buildingManagement);
     }
 }

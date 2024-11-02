@@ -1,0 +1,136 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* Основний блок контенту */
+.content {
+    width: 85%;
+    max-width: 1200px;
+    padding: 30px;
+    background: linear-gradient(145deg, #2e2e2e, #232323);
+    border-radius: 15px;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5), -8px -8px 16px rgba(58, 58, 58, 0.3);
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Стилі для вибору проекту та форми */
+form {
+    margin: 0 auto 30px;
+    width: 85%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+label {
+    color: #ff6600; /* Помаранчевий для міток */
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+select, input[type="date"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ff6600;
+    background-color: #2a2a2a;
+    color: #dddddd;
+    font-size: 17px;
+    margin-top: 12px;
+    outline: none;
+    width: 97%;
+    transition: border-color 0.3s ease;
+}
+
+select:hover, input[type="date"]:hover {
+    border-color: #ff6600;
+}
+
+button[type="submit"] {
+    margin-top: 20px;
+    padding: 12px 30px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 17px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+button[type="submit"]:hover {
+    background-color: #ff6600;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Заголовки для деталей проекту */
+h2, h3 {
+    color: #ff6600;
+    text-align: center;
+    margin-top: 35px;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+/* Стилі для таблиць */
+table {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #2a2a2a;
+    color: #dddddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+}
+
+th {
+    background-color: #333333;
+    color: #ff6600;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+td {
+    border-bottom: 1px solid #444444;
+    transition: background-color 0.3s ease;
+}
+
+tr:hover td {
+    background-color: #333333;
+}
+
+/* Додатковий стиль для тіней і анімації */
+tr:nth-child(even) td {
+    background-color: #292929;
+}

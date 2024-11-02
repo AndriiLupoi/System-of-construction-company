@@ -2,15 +2,18 @@ package com.example.My_Course_Project.service;
 
 import com.example.My_Course_Project.DataTransferObjects.ProjectDTOs.ProjectDTO;
 import com.example.My_Course_Project.exception.ResourceNotFoundException;
+import com.example.My_Course_Project.model.Estimate;
 import com.example.My_Course_Project.model.Project;
+import com.example.My_Course_Project.model.Report;
+import com.example.My_Course_Project.repository.EstimateRepository;
 import com.example.My_Course_Project.repository.ProjectRepository;
+import com.example.My_Course_Project.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +21,10 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private EstimateRepository estimateRepository;
+    @Autowired
+    private ReportRepository reportRepository;
 
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
@@ -67,6 +74,7 @@ public class ProjectService {
     public void saveProject(String name, int categoryId, int siteId, Date startDate, Date endDate, MultipartFile image) throws IOException {
         // Створення нового проекту
         Project project = new Project();
+
         project.setName(name);
         project.setCategoryId(categoryId);
         project.setSiteId(siteId);
@@ -86,4 +94,11 @@ public class ProjectService {
     public void deleteProjectById(int id) {
         projectRepository.deleteById(id);
     }
+
+    public List<Object[]> findOverBudgetMaterials(int projectId) {
+        return reportRepository.findOverBudgetMaterials(projectId);
+    }
+
+
+
 }

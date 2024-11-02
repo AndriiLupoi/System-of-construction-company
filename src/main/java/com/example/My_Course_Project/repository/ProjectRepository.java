@@ -2,6 +2,7 @@ package com.example.My_Course_Project.repository;
 
 import com.example.My_Course_Project.model.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     @Override
     Project save(Project project);
+
+
 }

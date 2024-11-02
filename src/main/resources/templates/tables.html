@@ -46,6 +46,14 @@
             <span class="span">Додати</span>
         </a>
     </div>
+    <div class="querys-page">
+        <a href="querys">
+            <div class="icons_background">
+                <img id="query_img" th:src="@{../img/icons/querys.png}" alt="Querys Icon" />
+            </div>
+            <span class="span">Запити</span>
+        </a>
+    </div>
     <div class="logout-btn">
         <a href="logout">
             <div class="circle">
@@ -153,7 +161,8 @@
             <th>Проект ID</th>
             <th>Тип робіт ID</th>
             <th>Дата завершення</th>
-            <th>Використані матеріали</th>
+            <th>Матеріали</th>
+            <th>Використано</th>
             <th>Фактична вартість</th>
             <th>Видалення</th>
         </tr>
@@ -164,6 +173,8 @@
             <th>Тип робіт ID</th>
             <th>Дата початку</th>
             <th>Дата завершення</th>
+            <th>Бригада</th>
+            <th>Розташування</th>
             <th>Видалення</th>
         </tr>
 
@@ -232,7 +243,7 @@
             <td th:text="${brigade.leaderId}" data-label="Лідер ID"></td>
             <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${brigade.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
-                    <input type="hidden" name="tableName" value="project"/>
+                    <input type="hidden" name="tableName" value="brigade"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
@@ -268,7 +279,8 @@
             <td th:text="${report.projectId}" data-label="Проект ID"></td>
             <td th:text="${report.workTypeId}" data-label="Тип робіт ID"></td>
             <td th:text="${report.completionDate}" data-label="Дата завершення"></td>
-            <td th:text="${report.actualMaterialUsed}" data-label="Використані матеріали"></td>
+            <td th:text="${report.material}" data-label="Матеріали"></td>
+            <td th:text="${report.usedMaterial}" data-label="Використано"></td>
             <td th:text="${report.actualCost}" data-label="Фактична вартість"></td>
             <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${report.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
@@ -280,10 +292,12 @@
 
         <tr th:if="${tableName != null and tableName.equals('schedule')}" th:each="schedule : ${data}">
             <td th:text="${schedule.id}" data-label="ID"></td>
-            <td th:text="${schedule.projectId}" data-label="Проект ID"></td>
-            <td th:text="${schedule.workTypeId}" data-label="Тип робіт ID"></td>
+            <td th:text="${schedule.project.id}" data-label="Проект ID"></td>
+            <td th:text="${schedule.workType.id}" data-label="Тип робіт ID"></td>
             <td th:text="${schedule.startDate}" data-label="Дата початку"></td>
             <td th:text="${schedule.endDate}" data-label="Дата завершення"></td>
+            <td th:text="${schedule.brigade.id}" data-label="Бригада"></td>
+            <td th:text="${schedule.site.id}" data-label="Розташування"></td>
             <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${schedule.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="schedule"/>

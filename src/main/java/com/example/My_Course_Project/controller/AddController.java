@@ -44,6 +44,8 @@ public class AddController {
     private ScheduleService scheduleService;
     @Autowired
     private WorkTypeService workTypeService;
+    @Autowired
+    private BuildingManagementService buildingManagementService;
 
 
     @PostMapping("/add_info_in_project")
@@ -147,7 +149,8 @@ public class AddController {
             @RequestParam(value = "project_id", required = false) int projectId,
             @RequestParam(value = "work_type_id", required = false) int workTypeId,
             @RequestParam(value = "completion_date", required = false) String completionDateStr,
-            @RequestParam(value = "actual_material_used", required = false) String actualMaterialUsed,
+            @RequestParam(value = "material", required = false) String material,
+            @RequestParam(value = "used_material", required = false) int usedMaterial,
             @RequestParam(value = "actual_cost", required = false) double actualCost
     ) {
         try {
@@ -155,10 +158,8 @@ public class AddController {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date completionDate = dateFormat.parse(completionDateStr);
 
-            logger.info("User input - ProjectId: {}, WorkTypeId: {}, CompletionDate: {}, ActualMaterialUsed: {}, ActualCost: {}",
-                    projectId, workTypeId, completionDate, actualMaterialUsed, actualCost);
 
-            reportService.saveReport(projectId, workTypeId, completionDate, actualMaterialUsed, actualCost);
+            reportService.saveReport(projectId, workTypeId, completionDate, material, usedMaterial, actualCost);
 
             return "add_info"; // Повернення до потрібної сторінки
         } catch (ParseException e) {
@@ -196,5 +197,13 @@ public class AddController {
     ) {
         workTypeService.saveWorkType(name, description);
         return "add_info"; // Повернення до потрібної сторінки
+    }
+
+    @PostMapping("/add_info_in_building_managment")
+    public String saveInfoInBuldingManagment(
+            @RequestParam(value = "name", required = false) String name
+    ) {
+        buildingManagementService.saveBuildingManagement(name);
+        return "add_info";
     }
 }

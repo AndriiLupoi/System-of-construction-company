@@ -15,7 +15,6 @@ import java.sql.Date;
 public class Report {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Додаємо генерацію ID
     @Column(name = "id")
     private int id;
 
@@ -28,8 +27,11 @@ public class Report {
     @Column(name = "completion_date")
     private Date completionDate;
 
-    @Column(name = "actual_material_used")
-    private String actualMaterialUsed;
+    @Column(name = "material")
+    private String material;
+
+    @Column(name = "used")
+    private int usedMaterial;
 
     @Column(name = "actual_cost")
     private double actualCost;

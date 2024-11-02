@@ -15,19 +15,29 @@ import java.time.LocalDate;
 public class Schedule {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Додаємо генерацію ID
     @Column(name = "id")
     private int id;
 
-    @Column(name = "project_id")
-    private int projectId;
+    @ManyToOne
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
+    private Project project;
 
-    @Column(name = "work_type_id")
-    private int workTypeId;
+    @ManyToOne
+    @JoinColumn(name = "work_type_id", referencedColumnName = "id")
+    private WorkType workType;
 
     @Column(name = "start_date")
     private LocalDate startDate;
 
     @Column(name = "end_date")
     private LocalDate endDate;
+
+    @ManyToOne // Додайте цю анотацію, якщо у вас є зв’язок з Brigade
+    @JoinColumn(name = "brigade_id", referencedColumnName = "id")
+    private Brigade brigade; // Припускаємо, що у вас є клас Brigade
+
+    @ManyToOne
+    @JoinColumn(name = "site_id", referencedColumnName = "id")
+    private Site site;
+
 }

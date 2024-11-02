@@ -1,6 +1,5 @@
 package com.example.My_Course_Project.service;
 
-import com.example.My_Course_Project.exception.ResourceNotFoundException;
 import com.example.My_Course_Project.model.Report;
 import com.example.My_Course_Project.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,23 +28,23 @@ public class ReportService {
         // Спробуйте спочатку розпізнати як число (ID проекту або типу роботи)
         try {
             Integer id = Integer.parseInt(query);
-            results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrActualMaterialUsedOrActualCost(id, id, null, "", 0.0));
+            results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrMaterialOrUsedMaterialOrActualCost(id, id, null, "", 0, 0.0));
         } catch (NumberFormatException e) {
             // Якщо не число, спробуйте розпізнати як дату
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Задайте формат дати
                 Date date = dateFormat.parse(query);
-                results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrActualMaterialUsedOrActualCost(null, null, date, "", 0.0));
+                results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrMaterialOrUsedMaterialOrActualCost(null, null, date, "",0, 0.0));
             } catch (ParseException pe) {
                 // Якщо це не число і не дата, пробуємо шукати за фактичним матеріалом
                 String material = query;
-                results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrActualMaterialUsedOrActualCost(null, null, null, material, 0.0));
+                results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrMaterialOrUsedMaterialOrActualCost(null, null, null, material,0, 0.0));
             }
 
             // Спробуйте знайти за вартістю
             double cost = parseCost(query); // Перетворення query у вартість
             if (cost >= 0) {
-                results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrActualMaterialUsedOrActualCost(null, null, null, "", cost));
+                results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrMaterialOrUsedMaterialOrActualCost(null, null, null, "",0, cost));
             }
         }
 
@@ -61,7 +60,7 @@ public class ReportService {
         }
     }
 
-    public void saveReport(int projectId, int workTypeId, java.util.Date completionDate, String actualMaterialUsed, double actualCost) {
+    public void saveReport(int projectId, int workTypeId, java.util.Date completionDate, String Material, Integer UsedMaterial ,double actualCost) {
         // Перетворення java.util.Date в java.sql.Date
         java.sql.Date sqlCompletionDate = new java.sql.Date(completionDate.getTime());
 
@@ -71,8 +70,9 @@ public class ReportService {
         // Встановлення значень полів
         report.setProjectId(projectId);
         report.setWorkTypeId(workTypeId);
-        report.setCompletionDate(sqlCompletionDate); // Використовуйте sqlCompletionDate
-        report.setActualMaterialUsed(actualMaterialUsed);
+        report.setCompletionDate(sqlCompletionDate);
+        report.setMaterial(Material);
+        report.setUsedMaterial(UsedMaterial);
         report.setActualCost(actualCost);
 
         // Збереження об'єкта у базі даних
@@ -82,4 +82,6 @@ public class ReportService {
     public void deleteReportById(int id) {
         reportRepository.deleteById(id);
     }
+
+
 }
