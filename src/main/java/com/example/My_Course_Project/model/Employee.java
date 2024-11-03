@@ -22,11 +22,13 @@ public class Employee {
     @Column(name = "position")
     private String position;
 
-    @Column(name = "site_id")
-    private int siteId;
+    @OneToOne
+    @JoinColumn(name = "site_id", referencedColumnName = "id")
+    private Site site;
 
-    @Column(name = "brigade_id")
-    private Integer brigadeId;
+    @ManyToOne
+    @JoinColumn(name = "brigade_id", referencedColumnName = "id")
+    private Brigade brigade;
 
     @Column(name = "image")
     private byte[] image;

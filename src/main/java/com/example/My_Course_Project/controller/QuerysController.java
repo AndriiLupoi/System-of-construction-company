@@ -36,6 +36,8 @@ public class QuerysController {
     private BuildingManagementService buildingManagementService;
     @Autowired
     private SiteService siteService;
+    @Autowired
+    private EmployeeService employeeService;
 
     private boolean isUserAuthenticated(HttpSession session) {
         return session.getAttribute("user") != null;
@@ -68,7 +70,7 @@ public class QuerysController {
                 break;
 
             case "overbudgetMaterials":
-                model.addAttribute("projects", projectService.getAllProjects());
+                model.addAttribute("projectsForMaterial", projectService.getAllProjects());
                 break;
 
             case "worksByBrigades":
@@ -78,6 +80,10 @@ public class QuerysController {
             case "schedulesByManagementOrSite":
                 model.addAttribute("managements", buildingManagementService.getAllBuildings());
                 model.addAttribute("sites", siteService.getAllSites());
+                break;
+
+            case "brigadeCompositionForProject":
+                model.addAttribute("projectsForBrigades", projectService.getAllProjects());
                 break;
 
             default:
@@ -178,7 +184,12 @@ public class QuerysController {
     public String getConstructionProjects(
             @RequestParam(value = "managementId", required = false) Integer managementId,
             @RequestParam(value = "siteId", required = false) Integer siteId,
-            Model model) {
+            Model model,
+            HttpSession session) {
+
+        if (!isUserAuthenticated(session)) {
+            return "redirect:/login";
+        }
 
         if (managementId == null && siteId == null) {
             model.addAttribute("error", "Будь ласка, оберіть будівельне управління або ділянку.");
@@ -191,5 +202,20 @@ public class QuerysController {
 
         return "querys";
     }
+
+    @PostMapping("/brigadeCompositionForProject")
+    public String getBrigadeCompositionForProject(
+            @RequestParam("projectId") int projectId,
+            Model model,
+            HttpSession session) {
+        if (!isUserAuthenticated(session)) {
+            return "redirect:/login";
+        }
+
+        List<Object[]> brigadeComposition = employeeService.findBrigadeCompositionForProject(projectId);
+        model.addAttribute("brigadeComposition", brigadeComposition);
+        return "querys";
+    }
+
 
 }

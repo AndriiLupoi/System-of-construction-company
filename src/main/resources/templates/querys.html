@@ -81,6 +81,7 @@
             <option value="overbudgetMaterials" th:selected="${selectedQuery == 'overbudgetMaterials'}">Матеріали з перевищенням кошторису по проекту</option>
             <option value="worksByBrigades" th:selected="${selectedQuery == 'worksByBrigades'}">Види робіт, виконані бригадою на об'єктах у заданий період</option>
             <option value="schedulesByManagementOrSite" th:selected="${selectedQuery == 'schedulesByManagementOrSite'}">Графіки зведення проектів які зводяться будівельним управлінням або ділянкою</option>
+            <option value="brigadeCompositionForProject" th:selected="${selectedQuery == 'brigadeCompositionForProject'}">Склад бригад за об'єктом</option>
         </select>
         <button type="submit">Показати форму</button>
     </form>
@@ -116,7 +117,9 @@
         <label for="projectformaterialSelect">Виберіть проект:</label>
         <select id="projectformaterialSelect" name="projectId" required>
             <option value="" disabled selected>Оберіть проект</option>
-            <option th:each="project : ${projects}" th:value="${project.id}" th:text="${project.name}"></option>
+            <option th:each="project : ${projectsForMaterial}"
+                    th:value="${project.id}"
+                    th:text="${project.name}"></option>
         </select>
         <button type="submit">Показати деталі</button>
     </form>
@@ -158,6 +161,16 @@
         <button type="submit">Показати</button>
     </form>
 
+    <form th:if="${selectedQuery == 'brigadeCompositionForProject'}" action="/brigadeCompositionForProject" method="post">
+        <label for="projectSelectEmployee">Проект:</label>
+        <select id="projectSelectEmployee" name="projectId">
+            <option value="" selected>Оберіть проект</option>
+            <option th:each="project : ${projectsForBrigades}"
+                    th:value="${project.id}"
+                    th:text="${project.name}"></option>
+        </select>
+        <button type="submit">Показати</button>
+    </form>
 
 
     <!-- Відображення деталей проекту -->
@@ -315,6 +328,29 @@
             </tbody>
         </table>
     </div>
+
+    <div th:if="${brigadeComposition != null}">
+        <h2>Склад бригад для обраного проекту</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Назва бригади</th>
+                <th>Ім'я робітника</th>
+                <th>Посада</th>
+                <th>Ділянка</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="composition : ${brigadeComposition}">
+                <td th:text="${composition[0]}"></td>
+                <td th:text="${composition[1]}"></td>
+                <td th:text="${composition[2]}"></td>
+                <td th:text="${composition[3]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 </body>
 </html>
