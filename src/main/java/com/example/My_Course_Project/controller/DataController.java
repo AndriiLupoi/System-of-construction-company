@@ -45,6 +45,8 @@ public class DataController {
 
     @Autowired
     private WorkTypeService workTypeService;
+    @Autowired
+    private JobCategoryService jobCategoryService;
 
 
     @GetMapping("/data")
@@ -115,9 +117,14 @@ public class DataController {
                 model.addAttribute("tableName", "work_type");
                 break;
 
+            case "jobCategory":
+                List<JobCategory> jobCategories = jobCategoryService.getAllJobCategory();
+                model.addAttribute("jobCategories", jobCategories);
+                model.addAttribute("tableName", "jobCategory");
+                break;
             default:
                 model.addAttribute("error", "Таблиця не знайдена");
-                return "error"; // Створіть сторінку для відображення помилок
+                return "error";
         }
         return "tables"; // Повертаємо шаблон таблиць з даними
     }
@@ -204,6 +211,14 @@ public class DataController {
                 model.addAttribute("tableName", tableName);
                 model.addAttribute("query", query);
                 break;
+            case "jobCategory":
+                List<JobCategory> jobCategories = jobCategoryService.searchJobCategories(query);
+                model.addAttribute("jobCategories", jobCategories);
+
+                model.addAttribute("tableName", tableName);
+                model.addAttribute("query", query);
+                break;
+
             default:
                 throw new IllegalStateException("Unexpected value: " + tableName);
         }
@@ -244,6 +259,10 @@ public class DataController {
             case "work_type":
                 workTypeService.deleteWorkTypeById(id);
                 break;
+            case "jobCategory":
+                jobCategoryService.deleteJobCategoryById(id);
+                break;
+
             default:
                 throw new IllegalArgumentException("Неправильна назва таблиці: " + tableName);
         }

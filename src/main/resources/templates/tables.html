@@ -81,6 +81,7 @@
                     <option value="schedule" th:selected="${tableName == 'schedule'}">Розклад</option>
                     <option value="site" th:selected="${tableName == 'site'}">Розташування</option>
                     <option value="work_type" th:selected="${tableName == 'work_type'}">Типи робіт</option>
+                    <option value="jobCategory" th:selected="${tableName == 'jobCategory'}">Категорії посад</option>
                 </select>
                 <button type="submit">Відобразити</button>
             </div>
@@ -192,6 +193,14 @@
             <th>Опис</th>
             <th>Видалення</th>
         </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('jobCategory')}">
+            <th>ID</th>
+            <th>Назва</th>
+            <th>Опис</th>
+            <th>Видалення</th>
+        </tr>
+
 
         </thead>
         <tbody>
@@ -330,6 +339,19 @@
                 </form>
             </td>
         </tr>
+
+        <tr th:if="${tableName != null and tableName.equals('jobCategory')}" th:each="jobCategory : ${jobCategories}">
+            <td th:text="${jobCategory.id}" data-label="ID"></td>
+            <td th:text="${jobCategory.name}" data-label="Назва"></td>
+            <td th:text="${jobCategory.description}" data-label="Опис"></td>
+            <td class="delete_field">
+                <form th:action="@{/data/delete/{id}(id=${jobCategory.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
+                    <input type="hidden" name="tableName" value="jobCategory"/>
+                    <button type="submit" class="delete-btn">Видалити</button>
+                </form>
+            </td>
+        </tr>
+
         </tbody>
 
     </table>
