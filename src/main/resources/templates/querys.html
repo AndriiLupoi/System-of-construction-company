@@ -82,6 +82,7 @@
             <option value="worksByBrigades" th:selected="${selectedQuery == 'worksByBrigades'}">Види робіт, виконані бригадою на об'єктах у заданий період</option>
             <option value="schedulesByManagementOrSite" th:selected="${selectedQuery == 'schedulesByManagementOrSite'}">Графіки зведення проектів які зводяться будівельним управлінням або ділянкою</option>
             <option value="brigadeCompositionForProject" th:selected="${selectedQuery == 'brigadeCompositionForProject'}">Склад бригад за об'єктом</option>
+            <option value="engineeringAndTechnicalStaff" th:selected="${selectedQuery == 'engineeringAndTechnicalStaff'}">Список спеціалістів інженерно-технічного складу</option>
         </select>
         <button type="submit">Показати форму</button>
     </form>
@@ -172,6 +173,25 @@
         <button type="submit">Показати</button>
     </form>
 
+    <form th:if="${selectedQuery == 'engineeringAndTechnicalStaff'}" action="/engineeringAndTechnicalStaff" method="post">
+        <label for="managementSelectS">Будівельне управління:</label>
+        <select id="managementSelectS" name="managementId">
+            <option value="" selected>Оберіть управління</option>
+            <option th:each="management : ${managements}"
+                    th:value="${management.id}"
+                    th:text="${management.name}"></option>
+        </select>
+
+        <label for="siteSelectS">Ділянка:</label>
+        <select id="siteSelectS" name="siteId">
+            <option value="" selected>Оберіть ділянку</option>
+            <option th:each="site : ${sites}"
+                    th:value="${site.id}"
+                    th:text="${site.name}"></option>
+        </select>
+
+        <button type="submit">Показати</button>
+    </form>
 
     <!-- Відображення деталей проекту -->
     <div th:if="${schedules != null}">
@@ -346,6 +366,30 @@
                 <td th:text="${composition[1]}"></td>
                 <td th:text="${composition[2]}"></td>
                 <td th:text="${composition[3]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${specialists != null}">
+        <h2>Список спеціалістів інженерно-технічного складу</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Ім'я</th>
+                <th>Посада</th>
+                <th>Локація</th>
+                <th>Управління</th>
+                <th>Категорія роботи</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="specialist : ${specialists}">
+                <td th:text="${specialist[0]}"></td>
+                <td th:text="${specialist[1]}"></td>
+                <td th:text="${specialist[2]}"></td>
+                <td th:text="${specialist[3]}"></td>
+                <td th:text="${specialist[4]}"></td>
             </tr>
             </tbody>
         </table>

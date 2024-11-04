@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -84,6 +85,11 @@ public class QuerysController {
 
             case "brigadeCompositionForProject":
                 model.addAttribute("projectsForBrigades", projectService.getAllProjects());
+                break;
+
+            case "engineeringAndTechnicalStaff":
+                model.addAttribute("managements", buildingManagementService.getAllBuildings());
+                model.addAttribute("sites", siteService.getAllSites());
                 break;
 
             default:
@@ -214,6 +220,25 @@ public class QuerysController {
 
         List<Object[]> brigadeComposition = employeeService.findBrigadeCompositionForProject(projectId);
         model.addAttribute("brigadeComposition", brigadeComposition);
+        return "querys";
+    }
+
+    @PostMapping("/engineeringAndTechnicalStaff")
+    public String getSpecialistsByCategoryAndLocation(
+            @RequestParam(value = "siteId", required = false) Integer  siteId,
+            @RequestParam(value = "managementId", required = false) Integer  managementId,
+            Model model,
+            HttpSession session) {
+        // Перевірка аутентифікації
+        if (!isUserAuthenticated(session)) {
+            return "redirect:/login";
+        }
+
+        // Перевірка, чи передано хоча б один параметр
+        if (siteId != null || managementId != null) {
+            List<Object[]> specialists = employeeService.findEngineeringStaffBySiteOrManagement(siteId, managementId);
+            model.addAttribute("specialists", specialists);
+        }
         return "querys";
     }
 

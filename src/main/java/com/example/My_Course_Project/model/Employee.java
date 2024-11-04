@@ -22,6 +22,10 @@ public class Employee {
     @Column(name = "position")
     private String position;
 
+    @ManyToOne
+    @JoinColumn(name = "job_category_id", referencedColumnName = "id")
+    private JobCategory jobCategory;
+
     @OneToOne
     @JoinColumn(name = "site_id", referencedColumnName = "id")
     private Site site;

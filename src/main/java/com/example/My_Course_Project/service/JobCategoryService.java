@@ -20,6 +20,7 @@ public class JobCategoryService {
     public List<JobCategory> getAllJobCategory() {
         return jobCategoryRepository.findAll();
     }
+
     public void deleteJobCategoryById(int id) {
         if (!jobCategoryRepository.existsById(id)) {
             throw new EntityNotFoundException("JobCategory with id " + id + " not found");
@@ -42,8 +43,5 @@ public class JobCategoryService {
         }
         return result;
     }
-
-
-
 
 }

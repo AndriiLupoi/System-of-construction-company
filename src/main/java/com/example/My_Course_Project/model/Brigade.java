@@ -31,10 +31,9 @@ public class Brigade {
 
     @ManyToOne
     @JoinColumn(name = "site_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Site site; // Припустимо, що у вас є клас Site
+    private Site site;
 
-    // Додайте зв'язки з іншими таблицями, якщо потрібно
     @OneToOne
     @JoinColumn(name = "leader_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Employee leader; // Припустимо, що у вас є клас Employee
+    private Employee leader;
 }

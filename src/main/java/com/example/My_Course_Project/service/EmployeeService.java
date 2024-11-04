@@ -75,6 +75,28 @@ public class EmployeeService {
         return resultList;
     }
 
+    public List<Object[]> findEngineeringStaffBySiteOrManagement(Integer siteId, Integer managementId) {
+        List<Object[]> resultList = new ArrayList<>();
+
+        List<Employee> employees = employeeRepository.findByBrigade_Site_IdOrBrigade_Site_BuildingManagement_Id(
+                siteId, managementId);
+
+        for (Employee employee : employees) {
+            if (employee.getJobCategory() != null &&
+                    "Інженерно-технічний склад".equals(employee.getJobCategory().getName())) {
+
+                resultList.add(new Object[] {
+                        employee.getName(),
+                        employee.getPosition(),
+                        employee.getBrigade().getSite().getName(),
+                        employee.getBrigade().getSite().getBuildingManagement().getName(),
+                        employee.getJobCategory().getName()
+                });
+            }
+        }
+
+        return resultList;
+    }
 
 
 
