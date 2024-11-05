@@ -83,6 +83,7 @@
             <option value="schedulesByManagementOrSite" th:selected="${selectedQuery == 'schedulesByManagementOrSite'}">Графіки зведення проектів які зводяться будівельним управлінням або ділянкою</option>
             <option value="brigadeCompositionForProject" th:selected="${selectedQuery == 'brigadeCompositionForProject'}">Склад бригад за об'єктом</option>
             <option value="engineeringAndTechnicalStaff" th:selected="${selectedQuery == 'engineeringAndTechnicalStaff'}">Список спеціалістів інженерно-технічного складу</option>
+            <option value="equipmentBySiteOrDate" th:selected="${selectedQuery == 'equipmentBySiteOrDate'}">Отримати список обладнання на ділянці</option>
         </select>
         <button type="submit">Показати форму</button>
     </form>
@@ -191,6 +192,22 @@
         </select>
 
         <button type="submit">Показати</button>
+    </form>
+
+    <form th:if="${selectedQuery == 'equipmentBySiteOrDate'}" action="/equipmentBySiteOrDate" method="post">
+        <input type="hidden" name="selectedQuery" th:value="${selectedQuery}"/>
+        <input type="hidden" name="siteName" th:value="${siteName}"/>
+        <label for="siteSelectE">Виберіть тип робіт:</label>
+        <select id="siteSelectE" name="siteId">
+            <option value="" disabled selected>Оберіть розташування</option>
+            <option th:each="site : ${sites}" th:value="${site.id}" th:text="${site.name}"></option>
+        </select>
+        <label for="startDateE">Дата початку:</label>
+        <input type="date" id="startDateE" name="startDate"/>
+
+        <label for="endDateE">Дата завершення:</label>
+        <input type="date" id="endDateE" name="endDate"/>
+        <button type="submit">Показати деталі</button>
     </form>
 
     <!-- Відображення деталей проекту -->
@@ -394,6 +411,31 @@
             </tbody>
         </table>
     </div>
+
+    <div th:if="${equipments != null}">
+        <h2>Список обладнання</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Назва обладнання</th>
+                <th>Тип</th>
+                <th>Локація</th>
+                <th>Дата початку</th>
+                <th>Дата завершення</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="equipment : ${equipments}">
+                <td th:text="${equipment[0]}"></td>
+                <td th:text="${equipment[1]}"></td>
+                <td th:text="${equipment[2]}"></td>
+                <td th:text="${equipment[3]}"></td>
+                <td th:text="${equipment[4]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
 
 </div>
 </body>

@@ -22,4 +22,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     List<Schedule> findByProjectId(Integer projectId);
 
     List<Schedule> findByBrigade(Brigade brigade);
+
+    List<Schedule> findBySiteIdAndStartDateBetween(Integer siteId, LocalDate startDate, LocalDate endDate);
+
+    List<Schedule> findBySiteId(Integer siteId);
 }

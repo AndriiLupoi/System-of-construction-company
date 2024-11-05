@@ -1,7 +1,5 @@
 package com.example.My_Course_Project.controller;
 
-import com.example.My_Course_Project.DataTransferObjects.BrigadeDetailsDto;
-import com.example.My_Course_Project.model.*;
 import com.example.My_Course_Project.repository.BrigadeRepository;
 import com.example.My_Course_Project.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -9,14 +7,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.ui.Model; // Змінений імпорт
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class QuerysController {
@@ -39,6 +36,8 @@ public class QuerysController {
     private SiteService siteService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private EquipmentService equipmentService;
 
     private boolean isUserAuthenticated(HttpSession session) {
         return session.getAttribute("user") != null;
@@ -91,7 +90,9 @@ public class QuerysController {
                 model.addAttribute("managements", buildingManagementService.getAllBuildings());
                 model.addAttribute("sites", siteService.getAllSites());
                 break;
-
+            case "equipmentBySiteOrDate":
+                model.addAttribute("sites", siteService.getAllSites());
+                break;
             default:
                 model.addAttribute("error", "Такого запиту не існує!");
                 return "error"; // Створіть сторінку для відображення помилок
@@ -242,5 +243,28 @@ public class QuerysController {
         return "querys";
     }
 
+    @PostMapping("/equipmentBySiteOrDate")
+    public String getEquipmentBySiteAndDate(
+            @RequestParam(value = "siteId", required = false) Integer siteId,
+            @RequestParam(value = "startDate", required = false) LocalDate startDate,
+            @RequestParam(value = "endDate", required = false) LocalDate endDate,
+            Model model,
+            HttpSession session) {
+        // Перевірка аутентифікації
+        if (!isUserAuthenticated(session)) {
+            return "redirect:/login";
+        }
+
+        // Перевірка, чи передано хоча б один параметр
+        if (siteId != null || (startDate != null && endDate != null)) {
+            // Отримати дані про обладнання
+            List<Object[]> equipments = equipmentService.findEquipmentBySiteAndDate(siteId, startDate, endDate);
+
+            // Додати список обладнання до моделі
+            model.addAttribute("equipments", equipments);
+        }
+
+        return "querys"; // Назва HTML-сторінки для відображення обладнання
+    }
 
 }

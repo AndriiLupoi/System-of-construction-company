@@ -22,6 +22,7 @@ public class Equipment {
     @Column(name = "type")
     private String type;
 
-    @Column(name = "site_id")
-    private int siteId;
+    @ManyToOne
+    @JoinColumn(name = "site_id",referencedColumnName = "id")
+    private Site site;
 }
