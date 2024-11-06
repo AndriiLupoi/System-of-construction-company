@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface WorkTypeRepository extends JpaRepository<WorkType, Integer> {
     List<WorkType> findByNameContainingOrDescriptionContaining(String name, String description);
-
 }

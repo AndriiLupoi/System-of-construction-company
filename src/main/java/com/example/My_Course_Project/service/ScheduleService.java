@@ -24,6 +24,8 @@ public class ScheduleService {
     private SiteRepository siteRepository;
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private ReportRepository reportRepository;
 
     public List<Schedule> getAllSchedules() {
         return scheduleRepository.findAll();
@@ -153,6 +155,57 @@ public class ScheduleService {
         return resultList;
     }
 
+    public List<Object[]> findAllSchedulesWithDelayedCompletion(Integer siteId, Integer managementId, Boolean organizationFlag) {
+        Set<Object[]> resultSet = new HashSet<>();
 
+        List<Schedule> schedules = scheduleRepository.findAll();
 
+        for (Schedule schedule : schedules) {
+            List<Report> reports = reportRepository.findByProjectAndWorkType(schedule.getProject(), schedule.getWorkType());
+
+            for (Report report : reports) {
+                LocalDate reportCompletionDate = report.getCompletionDate();
+                LocalDate scheduleEndDate = schedule.getEndDate();
+
+                if (reportCompletionDate != null && scheduleEndDate != null && reportCompletionDate.isAfter(scheduleEndDate)) {
+                    boolean matchesSite = true;
+                    boolean matchesManagement = true;
+
+                    if (siteId != null) {
+                        matchesSite = (schedule.getSite().getId() == siteId);
+                    }
+
+                    if (managementId != null) {
+                        matchesManagement = (schedule.getSite().getBuildingManagement().getId() == managementId);
+                    }
+
+                    if (organizationFlag != null && organizationFlag) {
+                        resultSet.add(new Object[]{
+                                schedule.getWorkType().getName(),
+                                schedule.getSite().getId(),
+                                schedule.getSite().getBuildingManagement().getName(),
+                                schedule.getProject().getName(),
+                                scheduleEndDate,
+                                reportCompletionDate
+                        });
+                        break;
+                    }
+
+                    if (matchesSite || matchesManagement) {
+                        resultSet.add(new Object[]{
+                                schedule.getWorkType().getName(),
+                                schedule.getSite().getId(),
+                                schedule.getSite().getBuildingManagement().getName(),
+                                schedule.getProject().getName(),
+                                scheduleEndDate,
+                                reportCompletionDate
+                        });
+                        break;
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>(resultSet);
+    }
 }

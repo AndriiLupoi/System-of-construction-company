@@ -32,9 +32,9 @@ public class Schedule {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @ManyToOne // Додайте цю анотацію, якщо у вас є зв’язок з Brigade
+    @ManyToOne
     @JoinColumn(name = "brigade_id", referencedColumnName = "id")
-    private Brigade brigade; // Припускаємо, що у вас є клас Brigade
+    private Brigade brigade;
 
     @ManyToOne
     @JoinColumn(name = "site_id", referencedColumnName = "id")

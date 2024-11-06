@@ -28,6 +28,17 @@ public class JobCategoryService {
         jobCategoryRepository.deleteById(id);
     }
 
+    public void saveJobCategory(String name, String description) {
+        // Створення нового об'єкта JobCategory
+        JobCategory jobCategory = new JobCategory();
+
+        // Встановлення значень полів
+        jobCategory.setName(name);
+        jobCategory.setDescription(description);
+
+        // Збереження об'єкта у базі даних
+        jobCategoryRepository.save(jobCategory);
+    }
 
     // Логіка пошуку категорій робіт
     public List<JobCategory> searchJobCategories(String query) {

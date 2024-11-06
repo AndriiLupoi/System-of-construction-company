@@ -84,6 +84,7 @@
             <option value="brigadeCompositionForProject" th:selected="${selectedQuery == 'brigadeCompositionForProject'}">Склад бригад за об'єктом</option>
             <option value="engineeringAndTechnicalStaff" th:selected="${selectedQuery == 'engineeringAndTechnicalStaff'}">Список спеціалістів інженерно-технічного складу</option>
             <option value="equipmentBySiteOrDate" th:selected="${selectedQuery == 'equipmentBySiteOrDate'}">Отримати список обладнання на ділянці</option>
+            <option value="allDelayedSchedulesByFilters" th:selected="${selectedQuery == 'allDelayedSchedulesByFilters'}">Види робіт з перевищенням термінів по ділянці або управлінню</option>
         </select>
         <button type="submit">Показати форму</button>
     </form>
@@ -144,6 +145,7 @@
     </form>
 
     <form th:if="${selectedQuery == 'schedulesByManagementOrSite'}" action="/schedulesByManagementOrSite" method="post">
+        <input type="hidden" name="selectedQuery" th:value="${selectedQuery}"/>
         <label for="managementSelect">Будівельне управління:</label>
         <select id="managementSelect" name="managementId">
             <option value="" selected>Оберіть управління</option>
@@ -164,6 +166,7 @@
     </form>
 
     <form th:if="${selectedQuery == 'brigadeCompositionForProject'}" action="/brigadeCompositionForProject" method="post">
+        <input type="hidden" name="selectedQuery" th:value="${selectedQuery}"/>
         <label for="projectSelectEmployee">Проект:</label>
         <select id="projectSelectEmployee" name="projectId">
             <option value="" selected>Оберіть проект</option>
@@ -175,6 +178,7 @@
     </form>
 
     <form th:if="${selectedQuery == 'engineeringAndTechnicalStaff'}" action="/engineeringAndTechnicalStaff" method="post">
+        <input type="hidden" name="selectedQuery" th:value="${selectedQuery}"/>
         <label for="managementSelectS">Будівельне управління:</label>
         <select id="managementSelectS" name="managementId">
             <option value="" selected>Оберіть управління</option>
@@ -209,6 +213,31 @@
         <input type="date" id="endDateE" name="endDate"/>
         <button type="submit">Показати деталі</button>
     </form>
+
+    <form th:if="${selectedQuery == 'allDelayedSchedulesByFilters'}" action="/allDelayedSchedulesByFilters" method="post">
+        <input type="hidden" name="selectedQuery" th:value="${selectedQuery}"/>
+        <label for="siteSelectD">Ділянка:</label>
+        <select id="siteSelectD" name="siteId">
+            <option value="" selected>Оберіть ділянку</option>
+            <option th:each="site : ${sites}"
+                    th:value="${site.id}"
+                    th:text="${site.name}"></option>
+        </select>
+
+        <label for="managementSelectD">Будівельне управління:</label>
+        <select id="managementSelectD" name="managementId">
+            <option value="" selected>Оберіть управління</option>
+            <option th:each="management : ${managements}"
+                    th:value="${management.id}"
+                    th:text="${management.name}"></option>
+        </select>
+
+        <label for="organizationFlag">Include All Organizations:</label>
+        <input type="checkbox" id="organizationFlag" name="organizationFlag" value="true">
+
+        <button type="submit">Показати</button>
+    </form>
+
 
     <!-- Відображення деталей проекту -->
     <div th:if="${schedules != null}">
@@ -436,7 +465,31 @@
         </table>
     </div>
 
-
+    <div th:if="${delayedSchedules != null}">
+        <h2>Список розкладів з затримкою завершення</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Тип роботи</th>
+                <th>Локація</th>
+                <th>Управління будівництвом</th>
+                <th>Назва проекту</th>
+                <th>Дата завершення</th>
+                <th>Дата завершення в звіті</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="schedule : ${delayedSchedules}">
+                <td th:text="${schedule[0]}"></td>
+                <td th:text="${schedule[1]}"></td>
+                <td th:text="${schedule[2]}"></td>
+                <td th:text="${schedule[3]}"></td>
+                <td th:text="${schedule[4]}"></td>
+                <td th:text="${schedule[5]}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

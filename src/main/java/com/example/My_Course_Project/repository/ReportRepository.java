@@ -1,6 +1,8 @@
 package com.example.My_Course_Project.repository;
 
+import com.example.My_Course_Project.model.Project;
 import com.example.My_Course_Project.model.Report;
+import com.example.My_Course_Project.model.WorkType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -29,9 +31,9 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
             "FROM " +
             "    Report r " +
             "JOIN " +
-            "    Project p ON r.projectId = p.id " +
+            "    Project p ON r.project.id = p.id " +
             "JOIN " +
-            "    Estimate e ON r.projectId = e.projectId AND r.material = e.material " +
+            "    Estimate e ON r.project.id = e.projectId AND r.material = e.material " +
             "WHERE " +
             "    p.id = :projectId " +
             "GROUP BY " +
@@ -40,4 +42,5 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
             "    SUM(r.actualCost) > MAX(e.cost)")
     List<Object[]> findOverBudgetMaterials(@Param("projectId") int projectId);
 
+    List<Report> findByProjectAndWorkType(Project project, WorkType workType);
 }

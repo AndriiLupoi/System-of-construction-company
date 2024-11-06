@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "report")
@@ -18,14 +19,16 @@ public class Report {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "project_id")
-    private Integer projectId;
+    @ManyToOne
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
+    private Project project;
 
-    @Column(name = "work_type_id")
-    private int workTypeId;
+    @ManyToOne
+    @JoinColumn(name = "work_type_id", referencedColumnName = "id")
+    private WorkType workType;
 
     @Column(name = "completion_date")
-    private Date completionDate;
+    private LocalDate completionDate;
 
     @Column(name = "material")
     private String material;

@@ -93,9 +93,13 @@ public class QuerysController {
             case "equipmentBySiteOrDate":
                 model.addAttribute("sites", siteService.getAllSites());
                 break;
+            case "allDelayedSchedulesByFilters":
+                model.addAttribute("sites", siteService.getAllSites());
+                model.addAttribute("managements", buildingManagementService.getAllBuildings());
+                break;
             default:
                 model.addAttribute("error", "Такого запиту не існує!");
-                return "error"; // Створіть сторінку для відображення помилок
+                return "error";
         }
         return "querys";
     }
@@ -265,6 +269,30 @@ public class QuerysController {
         }
 
         return "querys"; // Назва HTML-сторінки для відображення обладнання
+    }
+
+    @PostMapping("/allDelayedSchedulesByFilters")
+    public String getDelayedSchedulesByFilters(
+            @RequestParam(value = "siteId", required = false) Integer siteId,
+            @RequestParam(value = "managementId", required = false) Integer managementId,
+            @RequestParam(value = "organizationFlag", required = false) Boolean organizationFlag,
+            Model model,
+            HttpSession session) {
+
+        // Перевірка аутентифікації
+        if (!isUserAuthenticated(session)) {
+            return "redirect:/login";
+        }
+
+        // Перевірка, чи передано хоча б один параметр
+        if (siteId != null || managementId != null || organizationFlag != null) {
+            List<Object[]> delayedSchedules = scheduleService.findAllSchedulesWithDelayedCompletion(siteId, managementId, organizationFlag);
+
+            System.out.println(delayedSchedules);
+            model.addAttribute("delayedSchedules", delayedSchedules);
+        }
+
+        return "querys";
     }
 
 }

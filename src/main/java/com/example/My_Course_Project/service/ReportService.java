@@ -1,12 +1,17 @@
 package com.example.My_Course_Project.service;
 
 import com.example.My_Course_Project.model.Report;
+import com.example.My_Course_Project.model.Project;
+import com.example.My_Course_Project.model.WorkType;
+import com.example.My_Course_Project.repository.ProjectRepository;
 import com.example.My_Course_Project.repository.ReportRepository;
+import com.example.My_Course_Project.repository.WorkTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +21,10 @@ public class ReportService {
 
     @Autowired
     private ReportRepository reportRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private WorkTypeRepository workTypeRepository;
 
     public List<Report> getAllReports() {
         return reportRepository.findAll();
@@ -60,17 +69,21 @@ public class ReportService {
         }
     }
 
-    public void saveReport(int projectId, int workTypeId, java.util.Date completionDate, String Material, Integer UsedMaterial ,double actualCost) {
-        // Перетворення java.util.Date в java.sql.Date
-        java.sql.Date sqlCompletionDate = new java.sql.Date(completionDate.getTime());
-
+    public void saveReport(int projectId, int workTypeId, LocalDate completionDate, String Material, Integer UsedMaterial , double actualCost) {
         // Створення нового об'єкта Report
         Report report = new Report();
 
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid project ID: " + projectId));
+
+        WorkType workType = workTypeRepository.findById(workTypeId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid workType ID: " + workTypeId));
+
+
         // Встановлення значень полів
-        report.setProjectId(projectId);
-        report.setWorkTypeId(workTypeId);
-        report.setCompletionDate(sqlCompletionDate);
+        report.setProject(project);
+        report.setWorkType(workType);
+        report.setCompletionDate(completionDate);
         report.setMaterial(Material);
         report.setUsedMaterial(UsedMaterial);
         report.setActualCost(actualCost);
@@ -82,6 +95,4 @@ public class ReportService {
     public void deleteReportById(int id) {
         reportRepository.deleteById(id);
     }
-
-
 }
