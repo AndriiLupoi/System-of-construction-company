@@ -47,6 +47,8 @@ public class DataController {
     private WorkTypeService workTypeService;
     @Autowired
     private JobCategoryService jobCategoryService;
+    @Autowired
+    private KeysService keysService;
 
 
     @GetMapping("/data")
@@ -55,6 +57,8 @@ public class DataController {
         if (session.getAttribute("user") == null) {
             return "redirect:/login"; // Якщо користувач не аутентифікований, перенаправляємо на логін
         }
+
+        keysService.setUserRoles(model, session);
 
         switch (tableName) {
             case "project":

@@ -14,7 +14,7 @@
         </a>
     </div>
 
-    <div class="home-page">
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="home-page">
         <a href="home">
             <div class="icons_background">
                 <img id="home" th:src="@{../img/icons/home.png}" alt="Home Icon" />
@@ -22,7 +22,7 @@
             <span class="span">Головна</span>
         </a>
     </div>
-    <div class="project-page">
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="project-page">
         <a href="tables">
             <div class="icons_background">
                 <img id="projects" th:src="@{../img/icons/data.png}" alt="Data Icon" />
@@ -30,23 +30,23 @@
             <span class="span">Таблиці</span>
         </a>
     </div>
-    <div class="workers-page">
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="workers-page">
         <a href="employees">
             <div class="icons_background">
-                <img id="workers" th:src="@{../img/icons/workers.png}" alt="Data Icon" />
+                <img id="workers" th:src="@{../img/icons/workers.png}" alt="Employeers Icon" />
             </div>
             <span class="span">Робітники</span>
         </a>
     </div>
-    <div class="add-page">
+    <div th:if="${isOwner || isAdmin || isOperator}" class="add-page">
         <a href="add_info">
             <div class="icons_background">
-                <img id="add_info" th:src="@{../img/icons/add_info.png}" alt="Data Icon" />
+                <img id="add_info" th:src="@{../img/icons/add_info.png}" alt="Add Info Icon" />
             </div>
             <span class="span">Додати</span>
         </a>
     </div>
-    <div class="querys-page">
+    <div th:if="${isOwner || isAdmin || isOperator}" class="querys-page">
         <a href="querys">
             <div class="icons_background">
                 <img id="query_img" th:src="@{../img/icons/querys.png}" alt="Querys Icon" />
@@ -54,6 +54,7 @@
             <span class="span">Запити</span>
         </a>
     </div>
+
     <div class="logout-btn">
         <a href="logout">
             <div class="circle">
@@ -272,6 +273,22 @@
             <button type="submit">Додати</button>
         </form>
     </div>
+
+    <div class="form-container">
+        <form method="post" action="add_info_in_job_category">
+            <h2>Додати Категорію Робіт</h2>
+            <div class="form-group">
+                <label for="jobCategoryName">Назва</label>
+                <input type="text" id="jobCategoryName" name="name" required />
+            </div>
+            <div class="form-group">
+                <label for="jobCategoryDescription">Опис</label>
+                <textarea id="jobCategoryDescription" name="description" required></textarea>
+            </div>
+            <button type="submit">Додати</button>
+        </form>
+    </div>
+
 
 </div>
 </body>

@@ -1,7 +1,9 @@
 package com.example.My_Course_Project.controller;
 
 import com.example.My_Course_Project.DataTransferObjects.ProjectDTOs.ProjectDTO;
+import com.example.My_Course_Project.model.JobCategory;
 import com.example.My_Course_Project.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 import com.example.My_Course_Project.DataTransferObjects.SiteDTO;
 import jakarta.validation.Valid;
@@ -18,6 +20,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 @Controller
@@ -46,6 +49,10 @@ public class AddController {
     private WorkTypeService workTypeService;
     @Autowired
     private BuildingManagementService buildingManagementService;
+    @Autowired
+    private JobCategoryService jobCategoryService;
+    @Autowired
+    private KeysService keysService;
 
 
     @PostMapping("/add_info_in_project")
@@ -55,8 +62,11 @@ public class AddController {
             @RequestParam(value = "siteId", required = false) Integer siteId,
             @RequestParam(value = "start_date", required = false) String startDate,
             @RequestParam(value = "end_date", required = false) String endDate,
-            @RequestParam(value = "image", required = false) MultipartFile image
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            Model model,
+            HttpSession session
     ) throws IOException, ParseException {
+        keysService.setUserRoles(model, session);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         // Конвертація строк у дати
@@ -155,14 +165,14 @@ public class AddController {
     ) {
         try {
             // Перетворення рядка дати у java.util.Date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date completionDate = dateFormat.parse(completionDateStr);
+            DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate completionDate = LocalDate.parse(completionDateStr, dateFormat);
 
 
             reportService.saveReport(projectId, workTypeId, completionDate, material, usedMaterial, actualCost);
 
             return "add_info"; // Повернення до потрібної сторінки
-        } catch (ParseException e) {
+        } catch (DateTimeParseException e) {
             logger.error("Invalid date format: {}", completionDateStr, e);
             return "error"; // Вказівка на помилку
         }
@@ -204,6 +214,15 @@ public class AddController {
             @RequestParam(value = "name", required = false) String name
     ) {
         buildingManagementService.saveBuildingManagement(name);
+        return "add_info";
+    }
+
+    @PostMapping("/add_info_in_job_category")
+    public String saveJobCategory(
+            @RequestParam("name") String name,
+            @RequestParam("description") String description
+    ) {
+        jobCategoryService.saveJobCategory(name, description);
         return "add_info";
     }
 }

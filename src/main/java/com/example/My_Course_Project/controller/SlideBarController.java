@@ -15,29 +15,27 @@ import java.util.stream.Collectors;
 @Controller
 public class SlideBarController {
 
-
     @Autowired
     private EmployeeService employeeService;
-
     @Autowired
     private ProjectService projectService;
-
     @Autowired
     private CategoryService categoryService;
-
     @Autowired
     private SiteService siteService;
-
+    @Autowired
+    private KeysService keysService;
     @Autowired
     private BrigadeService brigadeService;
     @Autowired
     private BuildingManagementService buildingManagementService;
 
     @GetMapping("/tables")
-    public String showTablesPage(HttpSession session) {
+    public String showTablesPage(HttpSession session, Model model) {
         if (session.getAttribute("user") == null) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
         return "tables";
     }
 
@@ -46,6 +44,7 @@ public class SlideBarController {
         if (session.getAttribute("user") == null) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
         return "querys"; // Назва шаблону
     }
 
@@ -54,6 +53,8 @@ public class SlideBarController {
         if (session.getAttribute("user") == null) {
             return "redirect:/login"; // Якщо користувач не аутентифікований, перенаправляємо на логін
         }
+
+        keysService.setUserRoles(model, session);
 
         List<Project> projects = projectService.getAllProjects(); // Отримуємо всі проекти
         List<Category> categories = categoryService.getAllCategories(); // Отримуємо всі категорії
@@ -105,6 +106,7 @@ public class SlideBarController {
         if (session.getAttribute("user") == null) {
             return "redirect:/login"; // Перенаправлення на логін, якщо користувач не аутентифікований
         }
+        keysService.setUserRoles(model, session);
 
         List<Employee> employees = employeeService.getAllEmployees();
         model.addAttribute("employees", employees);
@@ -116,7 +118,8 @@ public class SlideBarController {
         if (session.getAttribute("user") == null) {
             return "redirect:/login"; // Перенаправлення на логін, якщо користувач не аутентифікований
         }
-        model.addAttribute("tableName", "project"); // За замовчуванням відображаємо таблицю проектів
+        keysService.setUserRoles(model, session);
+
         return "add_info";
     }
 }

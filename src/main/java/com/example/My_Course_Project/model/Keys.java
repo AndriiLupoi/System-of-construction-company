@@ -6,7 +6,6 @@ import jakarta.persistence.*; // Імпорт всіх анотацій JPA
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import java.util.Date;
 
 
 
@@ -36,4 +35,5 @@ public class Keys {
 
     @Column(name = "verification_сode")
     private String verificationCode;
+
 }
