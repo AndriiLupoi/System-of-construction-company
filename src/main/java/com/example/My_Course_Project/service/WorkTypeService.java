@@ -3,10 +3,12 @@ package com.example.My_Course_Project.service;
 import com.example.My_Course_Project.model.WorkType;
 import com.example.My_Course_Project.repository.ReportRepository;
 import com.example.My_Course_Project.repository.WorkTypeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkTypeService {
@@ -46,4 +48,19 @@ public class WorkTypeService {
         workTypeRepository.deleteById(id);
     }
 
+    public WorkType findWorkTypeById(Integer workTypeId) {
+        return workTypeRepository.findById(workTypeId).orElseThrow(() -> new IllegalArgumentException("Invalid workType ID: " + workTypeId));
+    }
+
+    public void updateWorkTypeById(int id, WorkType workType) {
+        Optional<WorkType> existingWorkType = workTypeRepository.findById(id);
+        if (existingWorkType.isPresent()) {
+            WorkType workTypeToUpdate = existingWorkType.get();
+            workTypeToUpdate.setName(workType.getName());
+            workTypeToUpdate.setDescription(workType.getDescription());
+            workTypeRepository.save(workTypeToUpdate);
+        } else {
+            throw new EntityNotFoundException("WorkType with id " + id + " not found");
+        }
+    }
 }

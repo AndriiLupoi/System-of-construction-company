@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 @Service
@@ -55,4 +56,19 @@ public class JobCategoryService {
         return result;
     }
 
+    public JobCategory findJobCategoryById(int id) {
+        return jobCategoryRepository.findById(id).orElseThrow(() -> new RuntimeException("JobCategory not found"));
+    }
+
+    public void updateJobCategoryById(int id, JobCategory jobCategory) {
+        Optional<JobCategory> existingJobCategory = jobCategoryRepository.findById(id);
+        if (existingJobCategory.isPresent()) {
+            JobCategory jobCategoryToUpdate = existingJobCategory.get();
+            jobCategoryToUpdate.setName(jobCategory.getName());
+            jobCategoryToUpdate.setDescription(jobCategory.getDescription());
+            jobCategoryRepository.save(jobCategoryToUpdate);
+        } else {
+            throw new EntityNotFoundException("JobCategory with id " + id + " not found");
+        }
+    }
 }

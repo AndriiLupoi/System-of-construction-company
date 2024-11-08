@@ -2,10 +2,12 @@ package com.example.My_Course_Project.service;
 
 import com.example.My_Course_Project.model.BuildingManagement;
 import com.example.My_Course_Project.repository.BuildingManagementRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BuildingManagementService {
@@ -37,5 +39,20 @@ public class BuildingManagementService {
         buildingManagement.setName(name);
 
         buildingManagementRepository.save(buildingManagement);
+    }
+
+    public BuildingManagement findBuildingById(int id) {
+        return buildingManagementRepository.findById(id).orElseThrow(() -> new RuntimeException("Building Managment not found"));
+    }
+    public void updateBuildingById(int id, BuildingManagement building) {
+        Optional<BuildingManagement> existingBuilding = buildingManagementRepository.findById(id);
+
+        if (existingBuilding.isPresent()) {
+            BuildingManagement buildingToUpdate = existingBuilding.get();
+            buildingToUpdate.setName(building.getName());
+            buildingManagementRepository.save(buildingToUpdate);
+        } else {
+            throw new EntityNotFoundException("Building with id " + id + " not found");
+        }
     }
 }

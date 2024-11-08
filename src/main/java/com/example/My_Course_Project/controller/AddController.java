@@ -67,25 +67,26 @@ public class AddController {
             HttpSession session
     ) throws IOException, ParseException {
         keysService.setUserRoles(model, session);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
 
         // Конвертація строк у дати
-        Date parsedStartDate = null;
-        Date parsedEndDate = null;
+        LocalDate parsedStartDate = null;
+        LocalDate parsedEndDate = null;
 
-        if (startDate != null && !startDate.isEmpty()) {
-            parsedStartDate = dateFormat.parse(startDate); // Конвертуємо строку у об'єкт Date
+        try {
+            if (startDate != null && !startDate.isEmpty()) {
+                parsedStartDate = LocalDate.parse(startDate, dateFormat); // Перетворюємо строку на LocalDate
+            }
+            if (endDate != null && !endDate.isEmpty()) {
+                parsedEndDate = LocalDate.parse(endDate, dateFormat); // Перетворюємо строку на LocalDate
+            }
+        } catch (DateTimeParseException e) {
+            logger.error("Invalid date format", e);
+            model.addAttribute("error", "Invalid date format. Please use yyyy-MM-dd.");
+            return "add_info";
         }
-        if (endDate != null && !endDate.isEmpty()) {
-            parsedEndDate = dateFormat.parse(endDate);
-        }
 
-        logger.info("User input - Name: {}, CategoryId: {}, SiteId: {}", name, categoryId, siteId);
-
-        logger.info("Saving new project: Name = {}, Start Date = {}, End Date = {}, Image size = {}",
-                name, startDate, endDate, image != null ? image.getSize() : "No Image");
-
-        // Передаємо вже конвертовані дати
         projectService.saveProject(name, categoryId, siteId, parsedStartDate, parsedEndDate, image);
         logger.info("Project successfully saved.");
 

@@ -6,15 +6,13 @@ import com.example.My_Course_Project.model.Site;
 import com.example.My_Course_Project.repository.BrigadeRepository;
 import com.example.My_Course_Project.repository.ScheduleRepository;
 import com.example.My_Course_Project.repository.SiteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BrigadeService {
@@ -86,5 +84,23 @@ public class BrigadeService {
         }
 
         return new ArrayList<>(resultSet); // Повертаємо список результатів
+    }
+
+    public Brigade findBrigadeById(int id) {
+        return brigadeRepository.findById(id).orElseThrow(() -> new RuntimeException("Brigade not found"));
+    }
+
+    public void updateBrigadeById(int id, Brigade brigade) {
+        Optional<Brigade> existingBrigade = brigadeRepository.findById(id);
+
+        if (existingBrigade.isPresent()) {
+            Brigade brigadeToUpdate = existingBrigade.get();
+            brigadeToUpdate.setName(brigade.getName());
+            brigadeToUpdate.setSiteId(brigade.getSiteId());
+            brigadeToUpdate.setLeaderId(brigade.getLeaderId());
+            brigadeRepository.save(brigadeToUpdate);
+        } else {
+            throw new EntityNotFoundException("Brigade with id " + id + " not found");
+        }
     }
 }

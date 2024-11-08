@@ -1,5 +1,6 @@
 package com.example.My_Course_Project.DataTransferObjects.ProjectDTOs;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ProjectDTO {
@@ -7,11 +8,11 @@ public class ProjectDTO {
     private String name;
     private int categoryId;
     private int siteId;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     // Конструктори, геттери і сеттери
-    public ProjectDTO(int id, String name, int categoryId, int siteId, Date startDate, Date endDate) {
+    public ProjectDTO(int id, String name, int categoryId, int siteId, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.name = name;
         this.categoryId = categoryId;
@@ -25,6 +26,6 @@ public class ProjectDTO {
     public String getName() { return name; }
     public int getCategoryId() { return categoryId; }
     public int getSiteId() { return siteId; }
-    public Date getStartDate() { return startDate; }
-    public Date getEndDate() { return endDate; }
+    public LocalDate getStartDate() { return startDate; }
+    public LocalDate getEndDate() { return endDate; }
 }

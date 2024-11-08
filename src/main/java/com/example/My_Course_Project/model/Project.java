@@ -6,6 +6,8 @@ import jakarta.persistence.*; // Імпорт всіх анотацій JPA
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -32,10 +34,10 @@ public class Project {
     private int siteId;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(name = "image")
     private byte[] image;

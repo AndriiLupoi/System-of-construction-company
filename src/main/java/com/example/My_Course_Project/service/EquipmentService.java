@@ -106,5 +106,24 @@ public class EquipmentService {
         return equipmentList;
     }
 
+    public Equipment findEquipmentById(int id) {
+        return equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipment not found"));
+    }
+
+    public void updateEquipmentById(int id, Equipment equipment) {
+        Optional<Equipment> existingEquipment = equipmentRepository.findById(id);
+
+        if (existingEquipment.isPresent()) {
+            Equipment equipmentToUpdate = existingEquipment.get();
+
+            equipmentToUpdate.setName(equipment.getName());
+            equipmentToUpdate.setType(equipment.getType());
+            equipmentToUpdate.setSite(equipment.getSite()); // Оновлюємо сайт
+
+            equipmentRepository.save(equipmentToUpdate); // Збереження оновленого об'єкта
+        } else {
+            throw new RuntimeException("Обладнання з ID " + id + " не знайдено.");
+        }
+    }
 }
 

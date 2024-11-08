@@ -4,11 +4,13 @@ import com.example.My_Course_Project.exception.ResourceNotFoundException;
 import com.example.My_Course_Project.model.Estimate;
 import com.example.My_Course_Project.model.Schedule;
 import com.example.My_Course_Project.repository.EstimateRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EstimateService {
@@ -62,4 +64,22 @@ public class EstimateService {
         return estimateRepository.findByProjectId(projectId);
     }
 
+    public Estimate findEstimateById(int id) {
+        return estimateRepository.findById(id).orElseThrow(() -> new RuntimeException("Estimate not found"));
+    }
+
+    public void updateEstimateById(int id, Estimate estimate) {
+        Optional<Estimate> existingEstimate = estimateRepository.findById(id);
+
+        if (existingEstimate.isPresent()) {
+            Estimate estimateToUpdate = existingEstimate.get();
+            estimateToUpdate.setProjectId(estimate.getProjectId());
+            estimateToUpdate.setMaterial(estimate.getMaterial());
+            estimateToUpdate.setQuantity(estimate.getQuantity());
+            estimateToUpdate.setCost(estimate.getCost());
+            estimateRepository.save(estimateToUpdate);
+        } else {
+            throw new EntityNotFoundException("Estimate with id " + id + " not found");
+        }
+    }
 }

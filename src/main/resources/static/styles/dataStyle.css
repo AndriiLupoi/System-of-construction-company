@@ -167,6 +167,16 @@ small {
     padding: 10px 15px;
     cursor: pointer;
 }
+.edit-btn{
+    margin-top: 8%; /* Установіть однаковий маргін */
+    margin-bottom: -20px;
+    background-color: #20521f; /* Наприклад, червоний фон */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
 
 
 @media (max-width: 600px) {

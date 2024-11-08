@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагування запису</title>
+    <link rel="stylesheet" th:href="@{/styles/editFormStyles.css}">
+</head>
+<body>
+<div class="edit-container">
+    <h1 class="page-title">Редагування запису в таблиці <span th:text="${tableName}"></span></h1>
+    <form th:if="${tableName == 'project'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${projects.id})}" th:object="${projects}" method="post" class="edit-form">
+        <div th:if="${tableName == 'project'}" class="project-form">
+            <div class="form-group">
+                <label for="name" class="form-label">Назва:</label>
+                <input type="text" id="name" name="name" th:value="${projects.name}" required class="form-input"/>
+            </div>
+            <div class="form-group">
+                <label for="category_id" class="form-label">ID категорії:</label>
+                <input type="text" id="category_id" name="categoryId" th:value="${projects.categoryId}" required class="form-input"/>
+            </div>
+            <div class="form-group">
+                <label for="site_id_project" class="form-label">ID розташування:</label>
+                <input type="text" id="site_id_project" name="siteId" th:value="${projects.siteId}" required class="form-input"/>
+            </div>
+
+            <div class="form-group">
+                <label for="start_date" class="form-label">Дата початку:</label>
+                <input type="date" id="start_date" name="start_date" th:value="${projects.startDate != null ? projects.startDate.toString() : ''}" required class="form-input"/>
+            </div>
+            <div class="form-group">
+                <label for="end_date" class="form-label">Дата закінчення:</label>
+                <input type="date" id="end_date" name="end_date" th:value="${projects.endDate != null ? projects.endDate.toString() : ''}" required class="form-input"/>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'equipment'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${equipment.id})}" th:object="${equipment}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="nameS" class="form-label">Назва:</label>
+            <input type="text" id="nameS" name="name" th:value="${equipment.name}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="type" class="form-label">Тип:</label>
+            <input type="text" id="type" name="type" th:value="${equipment.type}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="site_id" class="form-label">Розташування:</label>
+            <select id="site_id" name="site_id" required class="form-input">
+                <option class="siteSelect" th:each="site : ${sites}" th:value="${site.id}" th:text="${site.name}"
+                        th:selected="${equipment.site != null and equipment.site.id == site.id}">Сайт</option>
+            </select>
+        </div>
+
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'category'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${category.id})}" th:object="${category}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="nameС" class="form-label">Назва:</label>
+            <input type="text" id="nameС" name="name" th:value="${category.name}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="description" class="form-label">Опис:</label>
+            <textarea id="description" name="description" required class="form-input" th:text="${category.description}"></textarea>
+        </div>
+
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'brigade'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${brigade.id})}" th:object="${brigade}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="nameB" class="form-label">Назва:</label>
+            <input type="text" id="nameB" name="name" th:value="${brigade.name}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="site_idB" class="form-label">Розташування:</label>
+            <select id="site_idB" name="site_id" required class="form-input">
+                <option class="siteSelect" th:each="site : ${siteInBrigade}" th:value="${site.id}" th:text="${site.name}"
+                        th:selected="${brigade.site != null and brigade.site.id == site.id}">Розташування</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="leaderId" class="form-label">Лідер ID:</label>
+            <input type="number" id="leaderId" name="leaderId" th:value="${brigade.leaderId}" class="form-input"/>
+        </div>
+
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'building_management'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${building.id})}" th:object="${building}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="nameBM" class="form-label">Назва:</label>
+            <input type="text" id="nameBM" name="name" th:value="${building.name}" required class="form-input"/>
+        </div>
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'estimate'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${estimate.id})}" th:object="${estimate}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="projectId" class="form-label">Проект ID:</label>
+            <input type="text" id="projectId" name="projectId" th:value="${estimate.projectId}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="material" class="form-label">Матеріал:</label>
+            <input type="text" id="material" name="material" th:value="${estimate.material}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity" class="form-label">Кількість:</label>
+            <input type="number" id="quantity" name="quantity" th:value="${estimate.quantity}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="cost" class="form-label">Вартість:</label>
+            <input type="number" id="cost" name="cost" th:value="${estimate.cost}" required class="form-input"/>
+        </div>
+
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'report'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${report.id})}" th:object="${report}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="projectIdR" class="form-label">Проект ID:</label>
+            <input type="number" id="projectIdR" name="projectId" th:value="${report.project.id}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="workTypeId" class="form-label">Тип робіт ID:</label>
+            <input type="number" id="workTypeId" name="workTypeId" th:value="${report.workType.id}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="completionDate" class="form-label">Дата завершення:</label>
+            <input type="date" id="completionDate" name="completionDate" th:value="${report.completionDate}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="materialR" class="form-label">Матеріали:</label>
+            <input type="text" id="materialR" name="material" th:value="${report.material}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="usedMaterial" class="form-label">Використано:</label>
+            <input type="text" id="usedMaterial" name="usedMaterial" th:value="${report.usedMaterial}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="actualCost" class="form-label">Фактична вартість:</label>
+            <input type="number" id="actualCost" name="actualCost" th:value="${report.actualCost}" required class="form-input"/>
+        </div>
+
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'schedule'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${schedule.id})}" th:object="${schedule}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="projectIdSchedule" class="form-label">Проект ID:</label>
+            <input type="number" id="projectIdSchedule" name="project_id" th:value="${schedule.project.id}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="workTypeIdSchedule" class="form-label">Тип робіт ID:</label>
+            <input type="number" id="workTypeIdSchedule" name="workType_id" th:value="${schedule.workType.id}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="startDate" class="form-label">Дата початку:</label>
+            <input type="date" id="startDate" name="startDate" th:value="${schedule.startDate != null ? schedule.startDate.toString() : ''}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="endDate" class="form-label">Дата завершення:</label>
+            <input type="date" id="endDate" name="endDate" th:value="${schedule.endDate != null ? schedule.endDate.toString() : ''}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="brigadeId" class="form-label">Бригада ID:</label>
+            <input type="number" id="brigadeId" name="brigade_id" th:value="${schedule.brigade.id}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="siteId" class="form-label">Розташування ID:</label>
+            <input type="number" id="siteId" name="site_id" th:value="${schedule.site.id}" required class="form-input"/>
+        </div>
+
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'site'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${site.id})}" th:object="${site}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="nameSite" class="form-label">Назва:</label>
+            <input type="text" id="nameSite" name="name" th:value="${site.name}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="buildingManagementId" class="form-label">ID управління:</label>
+            <input type="number" id="buildingManagementId" name="buildingManagementId" th:value="${site.buildingManagement.id}" required class="form-input"/>
+        </div>
+
+        <div class="form-group">
+            <label for="location" class="form-label">Локація:</label>
+            <input type="text" id="location" name="location" th:value="${site.location}" required class="form-input"/>
+        </div>
+
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'work_type'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${workType.id})}" th:object="${workType}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="nameworkType" class="form-label">Назва:</label>
+            <input type="text" id="nameworkType" name="name" th:value="${workType.name}" required class="form-input"/>
+        </div>
+        <div class="form-group">
+            <label for="descriptionworkType" class="form-label">Опис:</label>
+            <textarea id="descriptionworkType" name="description" required class="form-input" th:text="${workType.description}"></textarea>
+        </div>
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+    <form th:if="${tableName == 'jobCategory'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${jobCategory.id})}" th:object="${jobCategory}" method="post" class="edit-form">
+        <div class="form-group">
+            <label for="nameJobCategory" class="form-label">Назва:</label>
+            <input type="text" id="nameJobCategory" name="name" th:value="${jobCategory.name}" required class="form-input"/>
+        </div>
+        <div class="form-group">
+            <label for="descriptionJobCategory" class="form-label">Опис:</label>
+            <textarea id="descriptionJobCategory" name="description" required class="form-input" th:text="${jobCategory.description}"></textarea>
+        </div>
+        <button type="submit" class="save-btn">Зберегти</button>
+    </form>
+
+
+</div>
+
+</body>
+</html>

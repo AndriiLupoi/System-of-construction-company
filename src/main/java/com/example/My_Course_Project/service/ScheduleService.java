@@ -208,4 +208,25 @@ public class ScheduleService {
 
         return new ArrayList<>(resultSet);
     }
+
+    public Schedule findScheduleById(int id) {
+        return scheduleRepository.findById(id).orElseThrow(() -> new RuntimeException("Schedule not found"));
+    }
+
+    public void updateScheduleById(int id, Schedule schedule) {
+        Schedule existingSchedule = scheduleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Розклад з ID " + id + " не знайдено."));
+
+        // Оновлюємо поля об'єкта existingSchedule значеннями з параметра schedule
+        existingSchedule.setStartDate(schedule.getStartDate());
+        existingSchedule.setEndDate(schedule.getEndDate());
+        existingSchedule.setProject(schedule.getProject());
+        existingSchedule.setWorkType(schedule.getWorkType());
+        existingSchedule.setBrigade(schedule.getBrigade());
+        existingSchedule.setSite(schedule.getSite());
+
+        // Зберігаємо оновлений об'єкт
+        scheduleRepository.save(existingSchedule);
+    }
+
 }

@@ -6,6 +6,7 @@ import com.example.My_Course_Project.model.WorkType;
 import com.example.My_Course_Project.repository.ProjectRepository;
 import com.example.My_Course_Project.repository.ReportRepository;
 import com.example.My_Course_Project.repository.WorkTypeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReportService {
@@ -95,4 +97,27 @@ public class ReportService {
     public void deleteReportById(int id) {
         reportRepository.deleteById(id);
     }
+
+    public Report findReportById(int id) {
+        return reportRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid report ID: " + id));
+    }
+
+    public void updateReportById(int id, Report report) {
+        Optional<Report> existingReport = reportRepository.findById(id);
+
+        if (existingReport.isPresent()) {
+            Report reportToUpdate = existingReport.get();
+            reportToUpdate.setProject(report.getProject());
+            reportToUpdate.setWorkType(report.getWorkType());
+            reportToUpdate.setCompletionDate(report.getCompletionDate());
+            reportToUpdate.setMaterial(report.getMaterial());
+            reportToUpdate.setUsedMaterial(report.getUsedMaterial());
+            reportToUpdate.setActualCost(report.getActualCost());
+            reportRepository.save(reportToUpdate);
+        } else {
+            throw new EntityNotFoundException("Report with id " + id + " not found");
+        }
+    }
+
+
 }

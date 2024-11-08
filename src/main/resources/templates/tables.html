@@ -115,6 +115,7 @@
             <th>Дата початку</th>
             <th>Дата завершення</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
 
@@ -125,6 +126,7 @@
             <th>Тип</th>
             <th>Сайт ID</th>
             <th th:if="${isOwner || isAdmin}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('category')}">
@@ -132,6 +134,7 @@
             <th>Назва</th>
             <th>опис</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('brigade')}">
@@ -140,12 +143,14 @@
             <th>Сайт ID</th>
             <th>Лідер ID</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('building_management')}">
             <th>ID</th>
             <th>Назва</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('estimate')}">
@@ -155,6 +160,7 @@
             <th>Кількість</th>
             <th>Вартість</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('report')}">
@@ -166,6 +172,7 @@
             <th>Використано</th>
             <th>Фактична вартість</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('schedule')}">
@@ -177,6 +184,7 @@
             <th>Бригада</th>
             <th>Розташування</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('site')}">
@@ -185,6 +193,7 @@
             <th>ID управління</th>
             <th>Локація</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('work_type')}">
@@ -192,6 +201,7 @@
             <th>Назва</th>
             <th>Опис</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('jobCategory')}">
@@ -199,6 +209,7 @@
             <th>Назва</th>
             <th>Опис</th>
             <th th:if="${isOwner}">Видалення</th>
+            <th th:if="${isOwner}">Редагування</th>
         </tr>
 
 
@@ -217,6 +228,12 @@
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${project.id})}" method="get">
+                    <input type="hidden" name="tableName" value="project">
+                    <button type="submit" class="edit-btn">Редагувати</button>
+                </form>
+            </td>
 
         </tr>
 
@@ -231,6 +248,12 @@
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
+            <td th:if="${isOwner || isAdmin}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${equipment.id})}" method="get">
+                    <input type="hidden" name="tableName" value="equipment">
+                    <button type="submit" class="edit-btn">Редагувати</button>
+                </form>
+            </td>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('category')}" th:each="category : ${data}">
@@ -241,6 +264,12 @@
                 <form th:action="@{/data/delete/{id}(id=${category.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="category"/>
                     <button type="submit" class="delete-btn">Видалити</button>
+                </form>
+            </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${category.id})}" method="get">
+                    <input type="hidden" name="tableName" value="category">
+                    <button type="submit" class="edit-btn">Редагувати</button>
                 </form>
             </td>
         </tr>
@@ -256,6 +285,12 @@
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${brigade.id})}" method="get">
+                    <input type="hidden" name="tableName" value="brigade">
+                    <button type="submit" class="edit-btn">Редагувати</button>
+                </form>
+            </td>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('building_management')}" th:each="building : ${data}">
@@ -265,6 +300,12 @@
                 <form th:action="@{/data/delete/{id}(id=${building.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="building_management"/>
                     <button type="submit" class="delete-btn">Видалити</button>
+                </form>
+            </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${building.id})}" method="get">
+                    <input type="hidden" name="tableName" value="building_management">
+                    <button type="submit" class="edit-btn">Редагувати</button>
                 </form>
             </td>
         </tr>
@@ -279,6 +320,12 @@
                 <form th:action="@{/data/delete/{id}(id=${estimate.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="estimate"/>
                     <button type="submit" class="delete-btn">Видалити</button>
+                </form>
+            </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${estimate.id})}" method="get">
+                    <input type="hidden" name="tableName" value="estimate">
+                    <button type="submit" class="edit-btn">Редагувати</button>
                 </form>
             </td>
         </tr>
@@ -297,6 +344,12 @@
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${report.id})}" method="get">
+                    <input type="hidden" name="tableName" value="report">
+                    <button type="submit" class="edit-btn">Редагувати</button>
+                </form>
+            </td>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('schedule')}" th:each="schedule : ${data}">
@@ -313,6 +366,12 @@
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${schedule.id})}" method="get">
+                    <input type="hidden" name="tableName" value="schedule">
+                    <button type="submit" class="edit-btn">Редагувати</button>
+                </form>
+            </td>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('site')}" th:each="site : ${data}">
@@ -324,6 +383,12 @@
                 <form th:action="@{/data/delete/{id}(id=${site.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="site"/>
                     <button type="submit" class="delete-btn">Видалити</button>
+                </form>
+            </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${site.id})}" method="get">
+                    <input type="hidden" name="tableName" value="site">
+                    <button type="submit" class="edit-btn">Редагувати</button>
                 </form>
             </td>
         </tr>
@@ -338,6 +403,12 @@
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${workType.id})}" method="get">
+                    <input type="hidden" name="tableName" value="work_type">
+                    <button type="submit" class="edit-btn">Редагувати</button>
+                </form>
+            </td>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('jobCategory')}" th:each="jobCategory : ${jobCategories}">
@@ -350,12 +421,17 @@
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
+            <td th:if="${isOwner}" class="edit_field">
+                <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${jobCategory.id})}" method="get">
+                    <input type="hidden" name="tableName" value="jobCategory">
+                    <button type="submit" class="edit-btn">Редагувати</button>
+                </form>
+            </td>
         </tr>
 
         </tbody>
 
     </table>
 </div>
-
 </body>
 </html>

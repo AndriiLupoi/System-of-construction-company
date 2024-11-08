@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,6 +27,9 @@ public class ProjectService {
     private EstimateRepository estimateRepository;
     @Autowired
     private ReportRepository reportRepository;
+    public Date convertToDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
 
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
@@ -71,7 +76,7 @@ public class ProjectService {
         }
     }
 
-    public void saveProject(String name, int categoryId, int siteId, Date startDate, Date endDate, MultipartFile image) throws IOException {
+    public void saveProject(String name, int categoryId, int siteId, LocalDate startDate, LocalDate endDate, MultipartFile image) throws IOException {
         // Створення нового проекту
         Project project = new Project();
 
@@ -99,6 +104,31 @@ public class ProjectService {
         return reportRepository.findOverBudgetMaterials(projectId);
     }
 
+
+    public void updateProjectById(int id, Project record) {
+        Optional<Project> existingProject = projectRepository.findById(id);
+
+        if (existingProject.isPresent()) {
+            Project projectToUpdate = existingProject.get();
+
+            // Оновлюємо поля проекту
+            projectToUpdate.setName(record.getName());
+            projectToUpdate.setCategoryId(record.getCategoryId());
+            projectToUpdate.setSiteId(record.getSiteId());
+            projectToUpdate.setStartDate(record.getStartDate());
+            projectToUpdate.setEndDate(record.getEndDate());
+
+            // Збереження оновленого проекту
+            projectRepository.save(projectToUpdate);
+        } else {
+            throw new RuntimeException("Проект з ID " + id + " не знайдено.");
+        }
+    }
+
+
+    public Project findProjectById(int id) {
+        return projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Проект не знайдено"));
+    }
 
 
 }

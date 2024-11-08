@@ -1,0 +1,167 @@
+/* Загальні стилі */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1e1e1e; /* Темний фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #f0f0f0;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Контейнер для форми редагування */
+.edit-container {
+    background-color: rgba(51, 51, 51, 0.8); /* Прозорий темний фон для контейнера */
+    padding: 30px;
+    border-radius: 12px; /* М'якше округлення */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6); /* Менший тіньовий ефект */
+    width: 100%;
+    max-width: 450px; /* Зменшена ширина */
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Під час наведення */
+.edit-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(255, 102, 0, 0.3); /* Легше підсвічування */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+/* Заголовок */
+h1 {
+    margin-bottom: 20px;
+    color: #ff6600; /* Яскравий помаранчевий */
+    font-size: 24px; /* Менший шрифт */
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+
+/* Стилі для форми */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Лейбли */
+label {
+    font-weight: bold;
+    color: #dcdcdc; /* Світло-сірий колір */
+    text-align: left;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+select{
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ff6600;
+    background-color: #2a2a2a;
+    color: #dddddd;
+    font-size: 17px;
+    margin-top: 12px;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+textarea {
+    height: 200px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ff6600;
+    background-color: #2a2a2a;
+    color: #dddddd;
+    font-size: 17px;
+    margin-top: 12px;
+    outline: none;
+    width: 94%;
+    transition: border-color 0.3s ease;
+}
+
+textarea:focus {
+    border-color: #ff9900; /* Колір обводки при фокусі */
+}
+/* Поля вводу */
+input[type="text"],
+input[type="date"],
+input[type="file"],
+input[type="number"]{
+    background-color: #2a2a2a;
+    color: #ffffff;
+    padding: 12px;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    font-size: 17px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    width: 94%;
+}
+
+/* Фокус на поля вводу */
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="file"]:focus {
+    border-color: #ff6600;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
+}
+
+/* Кнопка для збереження */
+button[type="submit"] {
+    padding: 12px;
+    margin-top: 18px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+button[type="submit"]:hover {
+    background-color: #cc5200;
+    transform: translateY(-2px);
+}
+
+/* Повідомлення про помилки */
+.error-message {
+    color: #ff3333;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+/* Додаткові стилі для мобільних пристроїв */
+@media (max-width: 400px) {
+    .edit-container {
+        width: 90%;
+        padding: 18px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    button[type="submit"] {
+        font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="file"] {
+        font-size: 12px;
+    }
+}

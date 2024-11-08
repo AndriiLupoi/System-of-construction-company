@@ -66,4 +66,19 @@ public class SiteService {
     public void deleteSiteById(int id) {
         siteRepository.deleteById(id);
     }
+
+    public Site findSiteById(int siteId) {
+        return siteRepository.findById(siteId).orElseThrow(() -> new RuntimeException("Site not found"));
+    }
+
+    public void updateSiteById(int id, Site site) {
+        Site existingSite = siteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Site з ID " + id + " не знайдено."));
+
+        existingSite.setName(site.getName());
+        existingSite.setBuildingManagement(site.getBuildingManagement());
+        existingSite.setLocation(site.getLocation());
+
+        siteRepository.save(existingSite);
+    }
 }

@@ -3,10 +3,12 @@ package com.example.My_Course_Project.service;
 import com.example.My_Course_Project.exception.ResourceNotFoundException;
 import com.example.My_Course_Project.model.Category;
 import com.example.My_Course_Project.repository.CategoryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -44,4 +46,25 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
+    public Category findCategoryById(int id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+    }
+
+    public void updateCategoryById(int id, Category category) {
+        // Знаходимо категорію в базі даних за її ID
+        Optional<Category> existingCategory = categoryRepository.findById(id);
+
+        if (existingCategory.isPresent()) {
+            Category categoryToUpdate = existingCategory.get();
+
+            // Оновлюємо необхідні поля
+            categoryToUpdate.setName(category.getName());
+            categoryToUpdate.setDescription(category.getDescription());
+
+            // Зберігаємо оновлену категорію в базі даних
+            categoryRepository.save(categoryToUpdate);
+        } else {
+            throw new EntityNotFoundException("Category with id " + id + " not found");
+        }
+    }
 }
