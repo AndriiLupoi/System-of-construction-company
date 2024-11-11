@@ -68,7 +68,7 @@
 <div class="content">
     <h1>Додати нові дані</h1>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('project')}">
         <form method="post" action="/add_info_in_project" enctype="multipart/form-data">
             <h2>Додати проект</h2>
             <div class="form-group">
@@ -99,7 +99,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('equipment')}">
         <form method="post" action="add_info_in_site" enctype="multipart/form-data">
             <h2>Додати розташування</h2>
             <div class="form-group">
@@ -118,7 +118,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('category')}">
         <form method="post" action="add_info_in_brigade" enctype="multipart/form-data">
             <h2>Додати Бригаду</h2>
             <div class="form-group">
@@ -137,7 +137,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('brigade')}">
         <form method="post" action="add_info_in_category" enctype="multipart/form-data">
             <h2>Додати Категорію</h2>
             <div class="form-group">
@@ -152,7 +152,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('building_management')}">
         <form method="post" action="add_info_in_equipment" enctype="multipart/form-data">
             <h2>Додати обладнання</h2>
             <div class="form-group">
@@ -171,7 +171,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('estimate')}">
         <form method="post" action="add_info_in_estimate" enctype="multipart/form-data">
             <h2>Додати кошторис</h2>
             <div class="form-group">
@@ -194,7 +194,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('report')}">
         <form method="post" action="add_info_in_report" enctype="multipart/form-data">
             <h2>Додати звіт</h2>
             <div class="form-group">
@@ -225,7 +225,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('schedule')}">
         <form method="post" action="add_info_in_schedule">
             <h2>Додати Графік</h2>
             <div class="form-group">
@@ -248,7 +248,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('site')}">
         <form method="post" action="add_info_in_work_type">
             <h2>Додати Тип Роботи</h2>
             <div class="form-group">
@@ -263,7 +263,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('work_type')}">
         <form method="post" action="add_info_in_building_managment">
             <h2>Додати Управління</h2>
             <div class="form-group">
@@ -274,7 +274,7 @@
         </form>
     </div>
 
-    <div class="form-container">
+    <div class="form-container" th:if="${allowedTables.contains('jobCategory')}">
         <form method="post" action="add_info_in_job_category">
             <h2>Додати Категорію Робіт</h2>
             <div class="form-group">
@@ -289,7 +289,43 @@
         </form>
     </div>
 
+    <div class="form-container" th:if="${allowedTables.contains('employee')}">
+        <form action="add_info_in_employee" enctype="multipart/form-data" method="post">
+            <h2>Додати нового працівника</h2>
 
+            <div class="form-group">
+                <label for="nameAdd">Ім'я</label>
+                <input type="text" id="nameAdd" name="name" required />
+            </div>
+
+            <div class="form-group">
+                <label for="positionAdd">Посада</label>
+                <input type="text" id="positionAdd" name="position" required />
+            </div>
+
+            <div class="form-group">
+                <label for="jobCategoryAdd">Категорія роботи (ID)</label>
+                <input type="text" id="jobCategoryAdd" name="jobCategory.id" required />
+            </div>
+
+            <div class="form-group">
+                <label for="siteAdd">Місце (ID)</label>
+                <input type="text" id="siteAdd" name="site.id" required />
+            </div>
+
+            <div class="form-group">
+                <label for="brigadeAdd">Бригада (ID)</label>
+                <input type="text" id="brigadeAdd" name="brigade.id" required />
+            </div>
+
+            <div class="form-group">
+                <label for="imageAdd">Зображення</label>
+                <input type="file" id="imageAdd" name="image" accept="image/png, image/jpeg" required/>
+            </div>
+
+            <button type="submit">Додати працівника</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

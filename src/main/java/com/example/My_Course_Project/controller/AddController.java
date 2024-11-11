@@ -53,6 +53,8 @@ public class AddController {
     private JobCategoryService jobCategoryService;
     @Autowired
     private KeysService keysService;
+    @Autowired
+    private EmployeeService employeeService;
 
 
     @PostMapping("/add_info_in_project")
@@ -88,7 +90,6 @@ public class AddController {
         }
 
         projectService.saveProject(name, categoryId, siteId, parsedStartDate, parsedEndDate, image);
-        logger.info("Project successfully saved.");
 
         return "add_info";
     }
@@ -100,7 +101,6 @@ public class AddController {
             @RequestParam(value = "location", required = false) String location
     )
         throws IOException, ParseException {
-
         logger.info("User input - Name: {}, Brigade: {}, location: {}", name, managementId, location);
         siteService.saveSite(name, managementId, location);
 
@@ -225,5 +225,21 @@ public class AddController {
     ) {
         jobCategoryService.saveJobCategory(name, description);
         return "add_info";
+    }
+
+    @PostMapping("/add_info_in_employee")
+    public String saveEmployee(
+            @RequestParam("name") String name,
+            @RequestParam("position") String position,
+            @RequestParam("jobCategory.id") int jobCategoryId,
+            @RequestParam("site.id") int siteId,
+            @RequestParam("brigade.id") int brigadeId,
+            @RequestParam(value = "image", required = false) MultipartFile image
+    ) throws IOException {
+        // Збереження працівника через сервіс
+        employeeService.saveEmployee(name, position, jobCategoryId, siteId, brigadeId, image);
+
+        // Після додавання перенаправлення на сторінку зі списком працівників
+        return "redirect:/employees"; // Тут можна вказати URL, на який потрібно перенаправити після успішного збереження
     }
 }

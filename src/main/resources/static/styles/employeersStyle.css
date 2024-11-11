@@ -16,12 +16,14 @@ body {
 }
 
 .employee-container {
+    margin-top: 2%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Зменшив мінімальну ширину карток */
     gap: 20px;
     justify-content: center;
     margin-left: 5%;
-    width: 95%;
+    width: 90%;
+    height: 100%;
 }
 
 .employee-card {
@@ -30,6 +32,7 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); /* М'яка тінь */
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 420px;
 }
 
 .employee-card:hover {
@@ -39,7 +42,7 @@ body {
 
 .employee-image {
     width: 100%;
-    height: 220px; /* Зменшив висоту зображення */
+    height: 250px;
     object-fit: cover;
     border-bottom: 3px solid #ff6600; /* Лінія для акценту */
 }
@@ -61,13 +64,13 @@ p {
 }
 
 button {
-    margin: 15px auto 20px;
+    margin: 15px auto 15px;
     display: block;
     padding: 10px 25px;
     background-color: #ff6600;
     color: white;
     border: none;
-    border-radius: 25px; /* Менш круглі краї */
+    border-radius: 10px; /* Менш круглі краї */
     font-size: 15px;
     text-transform: uppercase;
     cursor: pointer;
@@ -82,6 +85,20 @@ button:hover {
 h1{
     color: white;
     margin-left: 4%;
+}
+.buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.delete-button {
+    background-color: #d9534f;
+    color: white;
+    margin-left: 5px;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
 }
 
 /* Адаптивні стилі для мобільних пристроїв */
