@@ -19,7 +19,7 @@
     margin-bottom: 15px;
     transition: transform 0.3s, width 0.3s, height 0.3s;
 }
-.sidebar #home, #projects, #workers, #add_info, #query_img {
+.sidebar #home, #projects, #workers, #add_info, #query_img, #userAdd_img{
     width: 20px;
     height: 20px;
     margin: 10px;
@@ -27,13 +27,15 @@
 }
 
 .sidebar:hover {
-    width: 90px; /* Збільшена ширина при наведенні */
+    width: 90px;
+    transition: width 0.6s ease;
 }
 
-.sidebar #home:hover, #projects:hover, #workers:hover, #add_info:hover, #query_img:hover{
-    transform: scale(1.2); /* Збільшення для інших зображень */
+.sidebar #home:hover, #projects:hover, #workers:hover, #add_info:hover, #query_img:hover, #userAdd_img:hover {
+    transform: scale(1.2); /* Increase size on hover */
     width: 35px;
     height: 35px;
+    transition: transform 0.4s ease, width 0.5s ease, height 0.5s ease;
 }
 
 
@@ -61,12 +63,12 @@
     text-decoration: none; /* Скинути стиль посилання */
 }
 
-.home-page, .project-page, .workers-page, .add-page, .querys-page{
+.home-page, .project-page, .workers-page, .add-page, .querys-page, .addUser-page{
     width: auto;
     height: auto;
     margin: 10px 0 5px 0;
 }
-.project-page, .workers-page, .add-page, .querys-page{
+.project-page, .workers-page, .add-page, .querys-page, .addUser-page{
     margin: 10px 0 15px 0;
 }
 .home-page{

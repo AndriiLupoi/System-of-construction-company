@@ -39,4 +39,7 @@ public class Keys {
     @Column(name = "allowed_tables")
     private String allowedTables;
 
+    @Column(name = "allowed_fields")
+    private String allowedFields;
+
 }

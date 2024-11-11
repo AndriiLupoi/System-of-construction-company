@@ -1,0 +1,169 @@
+/* Загальні стилі */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1e1e1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #f0f0f0;
+    overflow: hidden;
+}
+
+/* Контейнер для форми редагування */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(51, 51, 51, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+}
+
+/* Заголовок */
+h2 {
+    margin-bottom: 20px;
+    color: #ff6600;
+    font-size: 28px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* Контейнер форми */
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+/* Лейбли */
+label {
+    font-weight: bold;
+    color: #dcdcdc;
+    font-size: 14px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+/* Поля вводу */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select {
+    width: 93%;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    padding: 12px;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+select:focus {
+    border-color: #ff6600;
+    box-shadow: 0 0 8px rgba(255, 102, 0, 0.5);
+}
+
+/* Чекбокси для вибору полів */
+.checkbox-container {
+    width: 100%;
+    grid-column: span 2;
+    padding-top: 10px;
+}
+
+.checkbox-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+/* Кнопка для збереження */
+button[type="submit"] {
+    grid-column: 1 / -1;
+    padding: 12px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #cc5200;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4);
+}
+.checkbox-container {
+    width: 100%;
+    grid-column: span 2;
+    padding-top: 10px;
+}
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns for labels and checkboxes */
+    gap: 20px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group label {
+    font-size: 15px;
+    color: #dcdcdc;
+    font-weight: bold;
+}
+
+.checkbox-item input[type="checkbox"] {
+    accent-color: #ff6600; /* Change the checkbox color */
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+
+/* Додаткові стилі для мобільних пристроїв */
+@media (max-width: 400px) {
+    .form-container {
+        width: 90%;
+        padding: 25px;
+    }
+
+    .user-form {
+        grid-template-columns: 1fr; /* Один стовпчик на менших екранах */
+    }
+
+    .checkbox-container {
+        grid-column: span 1; /* Переключити чекбокси в одну колонку */
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    button[type="submit"] {
+        font-size: 14px;
+    }
+}

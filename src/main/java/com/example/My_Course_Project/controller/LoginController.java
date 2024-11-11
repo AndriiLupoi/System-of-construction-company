@@ -31,10 +31,8 @@ public class LoginController {
         Keys user = keysService.checkLogin(login, password);
 
         if (user != null) {
-            // Зберігаємо користувача в сесії
             session.setAttribute("user", user);
-            // Якщо користувач знайдений, перенаправляємо на головну сторінку
-            return new ModelAndView("redirect:/home"); // Перенаправлення на сторінку /index
+            return new ModelAndView("redirect:/home");
         } else {
             ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("error", "Невірний логін або пароль");

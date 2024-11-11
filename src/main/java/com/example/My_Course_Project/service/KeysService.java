@@ -64,4 +64,8 @@ public class KeysService {
         String allowedTablesStr = currentUser.getAllowedTables(); // Отримуємо список дозволених таблиць
             return Arrays.asList(allowedTablesStr.split(","));
     }
+
+    public Keys saveUser(Keys user) {
+        return keysRepository.save(user);
+    }
 }

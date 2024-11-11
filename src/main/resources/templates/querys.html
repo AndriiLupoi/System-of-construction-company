@@ -21,7 +21,7 @@
         </a>
     </div>
 
-    <div class="home-page">
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="home-page">
         <a href="home">
             <div class="icons_background">
                 <img id="home" th:src="@{../img/icons/home.png}" alt="Home Icon" />
@@ -29,7 +29,7 @@
             <span class="span">Головна</span>
         </a>
     </div>
-    <div class="project-page">
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="project-page">
         <a href="tables">
             <div class="icons_background">
                 <img id="projects" th:src="@{../img/icons/data.png}" alt="Data Icon" />
@@ -37,7 +37,7 @@
             <span class="span">Таблиці</span>
         </a>
     </div>
-    <div class="workers-page">
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="workers-page">
         <a href="employees">
             <div class="icons_background">
                 <img id="workers" th:src="@{../img/icons/workers.png}" alt="Employeers Icon" />
@@ -45,7 +45,7 @@
             <span class="span">Робітники</span>
         </a>
     </div>
-    <div class="add-page">
+    <div th:if="${isOwner || isAdmin || isOperator}" class="add-page">
         <a href="add_info">
             <div class="icons_background">
                 <img id="add_info" th:src="@{../img/icons/add_info.png}" alt="Add Info Icon" />
@@ -53,7 +53,7 @@
             <span class="span">Додати</span>
         </a>
     </div>
-    <div class="querys-page">
+    <div th:if="${isOwner || isAdmin || isOperator}" class="querys-page">
         <a href="querys">
             <div class="icons_background">
                 <img id="query_img" th:src="@{../img/icons/querys.png}" alt="Querys Icon" />
@@ -61,6 +61,16 @@
             <span class="span">Запити</span>
         </a>
     </div>
+
+    <div th:if="${isOwner || isAdmin}" class="addUser-page">
+        <a href="addUser">
+            <div class="icons_background">
+                <img id="userAdd_img" th:src="@{../img/icons/user.png}" alt="User Add Icon">
+            </div>
+            <span class="span">Додати користувача</span>
+        </a>
+    </div>
+
     <div class="logout-btn">
         <a href="logout">
             <div class="circle">

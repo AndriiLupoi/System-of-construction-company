@@ -5,23 +5,17 @@ import com.example.My_Course_Project.model.JobCategory;
 import com.example.My_Course_Project.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
-import com.example.My_Course_Project.DataTransferObjects.SiteDTO;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 
 @Controller
 public class AddController {

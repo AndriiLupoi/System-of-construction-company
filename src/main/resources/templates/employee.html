@@ -55,6 +55,15 @@
         </a>
     </div>
 
+    <div th:if="${isOwner || isAdmin}" class="addUser-page">
+        <a href="addUser">
+            <div class="icons_background">
+                <img id="userAdd_img" th:src="@{../img/icons/user.png}" alt="User Add Icon">
+            </div>
+            <span class="span">Додати користувача</span>
+        </a>
+    </div>
+
     <div class="logout-btn">
         <a href="logout">
             <div class="circle">

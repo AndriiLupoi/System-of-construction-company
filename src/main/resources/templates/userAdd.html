@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Додати користувача</title>
+    <link rel="stylesheet" th:href="@{../styles/slideBar.css}">
+    <link rel="stylesheet" th:href="@{../styles/userAddStyles.css}">
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo-img">
+        <a href="home">
+            <img class="logo" th:src="@{../img/icons/logo.png}" alt="Log Icon">
+        </a>
+    </div>
+
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="home-page">
+        <a href="home">
+            <div class="icons_background">
+                <img id="home" th:src="@{../img/icons/home.png}" alt="Home Icon" />
+            </div>
+            <span class="span">Головна</span>
+        </a>
+    </div>
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="project-page">
+        <a href="tables">
+            <div class="icons_background">
+                <img id="projects" th:src="@{../img/icons/data.png}" alt="Data Icon" />
+            </div>
+            <span class="span">Таблиці</span>
+        </a>
+    </div>
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="workers-page">
+        <a href="employees">
+            <div class="icons_background">
+                <img id="workers" th:src="@{../img/icons/workers.png}" alt="Employeers Icon" />
+            </div>
+            <span class="span">Робітники</span>
+        </a>
+    </div>
+    <div th:if="${isOwner || isAdmin || isOperator}" class="add-page">
+        <a href="add_info">
+            <div class="icons_background">
+                <img id="add_info" th:src="@{../img/icons/add_info.png}" alt="Add Info Icon" />
+            </div>
+            <span class="span">Додати</span>
+        </a>
+    </div>
+    <div th:if="${isOwner || isAdmin || isOperator}" class="querys-page">
+        <a href="querys">
+            <div class="icons_background">
+                <img id="query_img" th:src="@{../img/icons/querys.png}" alt="Querys Icon" />
+            </div>
+            <span class="span">Запити</span>
+        </a>
+    </div>
+
+    <div th:if="${isOwner || isAdmin}" class="addUser-page">
+        <a href="addUser">
+            <div class="icons_background">
+                <img id="userAdd_img" th:src="@{../img/icons/user.png}" alt="User Add Icon">
+            </div>
+            <span class="span">Додати користувача</span>
+        </a>
+    </div>
+
+    <div class="logout-btn">
+        <a href="logout">
+            <div class="circle">
+                <img th:src="@{../img/icons/logout.png}" alt="Logout Icon" />
+                <span class="span-logout">Вийти</span>
+            </div>
+        </a>
+    </div>
+</div>
+
+<div class="form-container">
+    <h2>Додати нового користувача</h2>
+    <form action="/addUser/save" method="post" class="user-form">
+        <div class="form-group">
+            <label for="login">Логін:</label>
+            <input type="text" id="login" name="login" th:value="${user.login}" placeholder="Введіть логін" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" th:value="${user.password}" placeholder="Введіть пароль" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Почта:</label>
+            <input type="email" id="email" name="email" th:value="${user.email}" placeholder="Введіть email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="position">Посада:</label>
+            <select id="position" name="position" required th:value="${user.position}">
+                <option value="">-- Оберіть посаду --</option>
+                <option value="адміністратор" th:selected="${position == 'адміністратор'}">Адміністратор</option>
+                <option value="оператор"  th:selected="${position == 'оператор'}">Оператор</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="allowedTables">Таблиця:</label>
+            <select id="allowedTables" name="allowedTables" required>
+                <option value="">-- Оберіть таблицю --</option>
+                <th:block th:each="table : ${tables}">
+                    <option th:value="${table}" th:text="${table}" th:selected="${allowedTables == table}"></option>
+                </th:block>
+            </select>
+        </div>
+
+        <!-- Чекбокси для вибору полів -->
+        <div class="checkbox-container" th:if="${showFields}">
+            <label>Вибрані поля для таблиці "бригади":</label>
+
+            <div class="checkbox-group">
+                <th:block th:each="field : ${fields}">
+                    <div class="checkbox-item">
+                        <label th:text="${field}"></label>
+                        <input type="checkbox" name="allowedFields" th:value="${field}"
+                               th:checked="${allowedFields != null and allowedFields.contains(field)}">
+                    </div>
+                </th:block>
+            </div>
+        </div>
+
+
+        <button type="submit" class="submit-btn">Додати користувача</button>
+    </form>
+</div>
+
+</body>
+</html>

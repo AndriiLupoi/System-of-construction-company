@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -141,5 +142,24 @@ public class SlideBarController {
 
 
         return "add_info";
+    }
+
+    @GetMapping("/addUser")
+    public String showAddUserForm(Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login"; // Перенаправлення на логін, якщо користувач не аутентифікований
+        }
+        keysService.setUserRoles(model, session);
+
+        model.addAttribute("user", new Keys());
+        model.addAttribute("tables", getAvailableTables());
+        model.addAttribute("showFields", false); // Спочатку не показуємо додаткові поля
+        model.addAttribute("allowedFields", new ArrayList<>());
+        return "userAdd";
+    }
+
+    public List<String> getAvailableTables() {
+        return List.of("project", "equipment", "category", "brigade", "building_management", "estimate",
+                "report", "schedule", "site", "work_type", "jobCategory");
     }
 }
