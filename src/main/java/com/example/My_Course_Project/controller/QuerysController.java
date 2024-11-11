@@ -38,6 +38,8 @@ public class QuerysController {
     private EmployeeService employeeService;
     @Autowired
     private EquipmentService equipmentService;
+    @Autowired
+    private KeysService keysService;
 
     private boolean isUserAuthenticated(HttpSession session) {
         return session.getAttribute("user") != null;
@@ -49,6 +51,8 @@ public class QuerysController {
         if (!isUserAuthenticated(session)) {
             return "redirect:/login";
         }
+
+        keysService.setUserRoles(model, session);
 
         // Логування отриманих параметрів
         System.out.println("Selected Query: " + selectedQuery);
@@ -113,6 +117,7 @@ public class QuerysController {
         if (!isUserAuthenticated(session)) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
         model.addAttribute("schedules", scheduleService.getSchedulesByProjectName(projectName));
         model.addAttribute("estimates", estimateService.getEstimatesByProjectName(projectName));
         model.addAttribute("projectName", projectName);
@@ -133,6 +138,7 @@ public class QuerysController {
         if (!isUserAuthenticated(session)) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
         // Отримуємо бригади за вказаним типом робіт та періодом
         List<Object[]> results = scheduleService.findBrigadesByWorkTypeAndPeriod(workTypeId, startDate, endDate);
 
@@ -148,7 +154,14 @@ public class QuerysController {
     @PostMapping("/overbudgetMaterials")
     public String getOverBudgetMaterials(
             @RequestParam("projectId") int projectId,
-            Model model) {
+            Model model,
+            HttpSession session) {
+
+        if (!isUserAuthenticated(session)) {
+            return "redirect:/login";
+        }
+
+        keysService.setUserRoles(model, session);
 
         List<Object[]> overBudgetMaterials = projectService.findOverBudgetMaterials(projectId);
 
@@ -177,6 +190,7 @@ public class QuerysController {
         if (!isUserAuthenticated(session)) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
 
         // Отримуємо дані про роботи, виконані бригадою за вказаний період
         List<Object[]> brigadeWorkDetails = scheduleService.findWorkDetailsByBrigadeAndPeriod(brigadeId, startDateB, endDateB);
@@ -201,6 +215,7 @@ public class QuerysController {
         if (!isUserAuthenticated(session)) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
 
         if (managementId == null && siteId == null) {
             model.addAttribute("error", "Будь ласка, оберіть будівельне управління або ділянку.");
@@ -222,6 +237,7 @@ public class QuerysController {
         if (!isUserAuthenticated(session)) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
 
         List<Object[]> brigadeComposition = employeeService.findBrigadeCompositionForProject(projectId);
         model.addAttribute("brigadeComposition", brigadeComposition);
@@ -238,6 +254,7 @@ public class QuerysController {
         if (!isUserAuthenticated(session)) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
 
         // Перевірка, чи передано хоча б один параметр
         if (siteId != null || managementId != null) {
@@ -258,6 +275,7 @@ public class QuerysController {
         if (!isUserAuthenticated(session)) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
 
         // Перевірка, чи передано хоча б один параметр
         if (siteId != null || (startDate != null && endDate != null)) {
@@ -283,6 +301,7 @@ public class QuerysController {
         if (!isUserAuthenticated(session)) {
             return "redirect:/login";
         }
+        keysService.setUserRoles(model, session);
 
         // Перевірка, чи передано хоча б один параметр
         if (siteId != null || managementId != null || organizationFlag != null) {

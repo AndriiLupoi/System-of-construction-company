@@ -290,7 +290,8 @@ public class DataController {
     }
 
     @GetMapping("/data/edit/{tableName}/{id}")
-    public String showEditForm(@PathVariable("tableName") String tableName, @PathVariable("id") int id, Model model) {
+    public String showEditForm(@PathVariable("tableName") String tableName, @PathVariable("id") int id, Model model, HttpSession session) {
+        Keys currentUser = (Keys) session.getAttribute("user");
         switch (tableName) {
             case "project":
                 Project project = projectService.findProjectById(id);
@@ -307,10 +308,17 @@ public class DataController {
                 model.addAttribute("category", category);  // Додавання категорії в модель
                 break;
             case "brigade":
+                if ("оператор".equals(currentUser.getPosition()) && "brigade".equals(currentUser.getAllowedTables())) {
+                    List<String> allowedFields = Arrays.asList(currentUser.getAllowedFields().split(","));
+                    List<Site> siteInBrigade = siteService.getAllSites();
+                    model.addAttribute("allowedFields", allowedFields);
+                    model.addAttribute("siteInBrigade", siteInBrigade);
+                } else {
+                    model.addAttribute("allowedFields", List.of());  // Якщо не оператор, доступу до полів немає
+                }
+                // Отримання даних бригади
                 Brigade brigade = brigadeService.findBrigadeById(id);
-                List<Site> siteInBrigade = siteService.getAllSites();
                 model.addAttribute("brigade", brigade);
-                model.addAttribute("siteInBrigade", siteInBrigade);
                 break;
             case "building_management":
                 BuildingManagement building = buildingManagementService.findBuildingById(id); // Отримуємо об'єкт будівлі
@@ -350,7 +358,7 @@ public class DataController {
     }
 
     @PostMapping("/data/edit/{tableName}/{id}")
-    public String updateEntity(@PathVariable("tableName") String tableName,
+    public String updateEntity(@PathVariable("tableName") String tableName, @ModelAttribute Brigade brigade,
                                @PathVariable("id") int id,
                                @RequestParam(required = false) String startDate,
                                @RequestParam(required = false) String endDate,
@@ -358,7 +366,7 @@ public class DataController {
                                @RequestParam(required = false) String type,
                                @RequestParam(value = "site_id", required = false) Integer siteId,
                                @RequestParam(required = false) String description,
-                               @RequestParam(value = "leader_id", required = false) String leaderId,
+                               @RequestParam(value = "leader_id", required = false) Integer leaderId,
                                @RequestParam(required = false) Integer buildingManagementId,
                                @RequestParam(required = false) String location,
                                @RequestParam(required = false) Integer projectId,
@@ -371,7 +379,9 @@ public class DataController {
                                @RequestParam(required = false) Double actualCost,
                                @RequestParam(value = "brigade_id", required = false) Integer brigadeId,
                                @ModelAttribute("projects") Project project,
-                               @ModelAttribute("equipment") Equipment equipment) {
+                               @ModelAttribute("equipment") Equipment equipment,
+                               HttpSession session) {
+        Keys currentUser = (Keys) session.getAttribute("user");
 
         switch (tableName) {
             case "project":
@@ -409,17 +419,22 @@ public class DataController {
                 categoryService.updateCategoryById(id, category);
                 break;
             case "brigade":
-                Brigade brigade = brigadeService.findBrigadeById(id);
-                if (name != null && !name.isEmpty()) {
-                    brigade.setName(name);
+                if ("оператор".equals(currentUser.getPosition()) && "brigade".equals(currentUser.getAllowedTables())) {
+                    List<String> allowedFields = Arrays.asList(currentUser.getAllowedFields().split(","));
+
+                    Brigade originalBrigade = brigadeService.findBrigadeById(brigade.getId());
+
+                    if (allowedFields.contains("name")) {
+                        originalBrigade.setName(brigade.getName());
+                    }
+                    if (allowedFields.contains("siteId")) {
+                        originalBrigade.setSiteId(siteId);
+                    }
+                    if (allowedFields.contains("leaderId")) {
+                        originalBrigade.setLeaderId(leaderId);
+                    }
+                    brigadeService.updateBrigadeById(id, originalBrigade);
                 }
-                if (siteId != null) {
-                    brigade.setSiteId(siteId);
-                }
-                if (leaderId != null) {
-                    brigade.setLeaderId(Integer.parseInt(leaderId));
-                }
-                brigadeService.updateBrigadeById(id, brigade);
                 break;
             case "building_management":
                 BuildingManagement building = buildingManagementService.findBuildingById(id);

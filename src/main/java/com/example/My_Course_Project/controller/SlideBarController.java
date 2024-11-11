@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Controller
@@ -140,7 +141,6 @@ public class SlideBarController {
         // Передаємо доступні таблиці в модель
         model.addAttribute("allowedTables", allowedTables);
 
-
         return "add_info";
     }
 
@@ -151,15 +151,34 @@ public class SlideBarController {
         }
         keysService.setUserRoles(model, session);
 
+        Keys currentUser = (Keys) session.getAttribute("user");
+
+        Logger logger = Logger.getLogger(getClass().getName());
+        logger.info("Дозволені таблиці для користувача перед getAvailableTables: " + currentUser.getAllowedTables());
+
+
         model.addAttribute("user", new Keys());
-        model.addAttribute("tables", getAvailableTables());
+        model.addAttribute("tables", getAvailableTables(currentUser));
         model.addAttribute("showFields", false); // Спочатку не показуємо додаткові поля
         model.addAttribute("allowedFields", new ArrayList<>());
         return "userAdd";
     }
 
-    public List<String> getAvailableTables() {
-        return List.of("project", "equipment", "category", "brigade", "building_management", "estimate",
-                "report", "schedule", "site", "work_type", "jobCategory");
+    public List<String> getAvailableTables(Keys currentUser) {
+        Logger logger = Logger.getLogger(getClass().getName());
+
+        if ("власник".equals(currentUser.getPosition())) {
+            List<String> allTables = Arrays.asList(currentUser.getAllowedTables().split(","));
+            logger.info("Власник: показуємо всі таблиці: " + allTables);
+            return allTables;
+        } else if ("адміністратор".equals(currentUser.getPosition()) && currentUser.getAllowedTables() != null) {
+            List<String> adminTables = Arrays.asList(currentUser.getAllowedTables().split(","));
+            logger.info("Адмін: дозволені таблиці: " + adminTables);
+            return adminTables;
+        }
+
+        logger.info("Немає дозволених таблиць для користувача " + currentUser.getPosition());
+        return List.of();
     }
+
 }

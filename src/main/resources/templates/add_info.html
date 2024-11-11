@@ -108,7 +108,7 @@
         </form>
     </div>
 
-    <div class="form-container" th:if="${allowedTables.contains('equipment')}">
+    <div class="form-container" th:if="${allowedTables.contains('site')}">
         <form method="post" action="add_info_in_site" enctype="multipart/form-data">
             <h2>Додати розташування</h2>
             <div class="form-group">
@@ -127,7 +127,7 @@
         </form>
     </div>
 
-    <div class="form-container" th:if="${allowedTables.contains('category')}">
+    <div class="form-container" th:if="${allowedTables.contains('brigade')}">
         <form method="post" action="add_info_in_brigade" enctype="multipart/form-data">
             <h2>Додати Бригаду</h2>
             <div class="form-group">
@@ -146,7 +146,7 @@
         </form>
     </div>
 
-    <div class="form-container" th:if="${allowedTables.contains('brigade')}">
+    <div class="form-container" th:if="${allowedTables.contains('category')}">
         <form method="post" action="add_info_in_category" enctype="multipart/form-data">
             <h2>Додати Категорію</h2>
             <div class="form-group">
@@ -161,7 +161,7 @@
         </form>
     </div>
 
-    <div class="form-container" th:if="${allowedTables.contains('building_management')}">
+    <div class="form-container" th:if="${allowedTables.contains('equipment')}">
         <form method="post" action="add_info_in_equipment" enctype="multipart/form-data">
             <h2>Додати обладнання</h2>
             <div class="form-group">
@@ -257,7 +257,7 @@
         </form>
     </div>
 
-    <div class="form-container" th:if="${allowedTables.contains('site')}">
+    <div class="form-container" th:if="${allowedTables.contains('work_type')}">
         <form method="post" action="add_info_in_work_type">
             <h2>Додати Тип Роботи</h2>
             <div class="form-group">
@@ -272,7 +272,7 @@
         </form>
     </div>
 
-    <div class="form-container" th:if="${allowedTables.contains('work_type')}">
+    <div class="form-container" th:if="${allowedTables.contains('building_managment')}">
         <form method="post" action="add_info_in_building_managment">
             <h2>Додати Управління</h2>
             <div class="form-group">

@@ -73,12 +73,12 @@
     </form>
 
     <form th:if="${tableName == 'brigade'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${brigade.id})}" th:object="${brigade}" method="post" class="edit-form">
-        <div class="form-group">
+        <div th:if="${allowedFields.contains('name')}" class="form-group">
             <label for="nameB" class="form-label">Назва:</label>
             <input type="text" id="nameB" name="name" th:value="${brigade.name}" required class="form-input"/>
         </div>
 
-        <div class="form-group">
+        <div th:if="${allowedFields.contains('siteId')}" class="form-group">
             <label for="site_idB" class="form-label">Розташування:</label>
             <select id="site_idB" name="site_id" required class="form-input">
                 <option class="siteSelect" th:each="site : ${siteInBrigade}" th:value="${site.id}" th:text="${site.name}"
@@ -86,7 +86,7 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <div th:if="${allowedFields.contains('leaderId')}" class="form-group">
             <label for="leaderId" class="form-label">Лідер ID:</label>
             <input type="number" id="leaderId" name="leaderId" th:value="${brigade.leaderId}" class="form-input"/>
         </div>

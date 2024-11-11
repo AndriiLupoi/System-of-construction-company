@@ -1,7 +1,9 @@
 package com.example.My_Course_Project.controller;
 
 import com.example.My_Course_Project.DataTransferObjects.ProjectDTOs.ProjectDTO;
+import com.example.My_Course_Project.model.Brigade;
 import com.example.My_Course_Project.model.JobCategory;
+import com.example.My_Course_Project.model.Keys;
 import com.example.My_Course_Project.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
@@ -16,6 +18,8 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class AddController {
@@ -92,9 +96,12 @@ public class AddController {
     public String saveInfoInSite(
             @RequestParam(value = "name_site", required = false) String name,
             @RequestParam(value = "management_id", required = false) int managementId,
-            @RequestParam(value = "location", required = false) String location
+            @RequestParam(value = "location", required = false) String location,
+            Model model,
+            HttpSession session
     )
         throws IOException, ParseException {
+        keysService.setUserRoles(model, session);
         logger.info("User input - Name: {}, Brigade: {}, location: {}", name, managementId, location);
         siteService.saveSite(name, managementId, location);
 
@@ -105,8 +112,11 @@ public class AddController {
     public String saveInfoInBrigade(
             @RequestParam(value = "name_brigade", required = false) String name,
             @RequestParam(value = "site_id", required = false) int siteId,
-            @RequestParam(value = "leader_id", required = false) int leaderId
+            @RequestParam(value = "leader_id", required = false) int leaderId,
+            Model model,
+            HttpSession session
     ) {
+        keysService.setUserRoles(model, session);
         logger.info("User input - Name: {}, SiteId: {}, LeaderId: {}", name, siteId, leaderId);
         brigadeService.saveBrigade(name, siteId, leaderId);
 
@@ -116,8 +126,11 @@ public class AddController {
     @PostMapping("/add_info_in_category")
     public String saveInfoInCategory(
             @RequestParam(value = "name_category", required = false) String name,
-            @RequestParam(value = "description", required = false) String description
+            @RequestParam(value = "description", required = false) String description,
+            Model model,
+            HttpSession session
     ) {
+        keysService.setUserRoles(model, session);
         logger.info("User input - Name: {}, Description: {}", name, description);
         categoryService.saveCategory(name, description);
 
@@ -128,8 +141,11 @@ public class AddController {
     public String saveInfoInEquipment(
             @RequestParam(value = "name_equipment", required = false) String name,
             @RequestParam(value = "type", required = false) String type,
-            @RequestParam(value = "site_id", required = false) int siteId
+            @RequestParam(value = "site_id", required = false) int siteId,
+            Model model,
+            HttpSession session
     ) {
+        keysService.setUserRoles(model, session);
         logger.info("User input - Name: {}, Type: {}, SiteId: {}", name, type, siteId);
         equipmentService.saveEquipment(name, type, siteId);
 
@@ -141,8 +157,11 @@ public class AddController {
             @RequestParam(value = "project_id", required = false) int projectId,
             @RequestParam(value = "material", required = false) String material,
             @RequestParam(value = "quantity", required = false) int quantity,
-            @RequestParam(value = "cost", required = false) double cost
+            @RequestParam(value = "cost", required = false) double cost,
+            Model model,
+            HttpSession session
     ) {
+        keysService.setUserRoles(model, session);
         logger.info("User input - ProjectId: {}, Material: {}, Quantity: {}, Cost: {}", projectId, material, quantity, cost);
         estimateService.saveEstimate(projectId, material, quantity, cost);
 
@@ -156,8 +175,11 @@ public class AddController {
             @RequestParam(value = "completion_date", required = false) String completionDateStr,
             @RequestParam(value = "material", required = false) String material,
             @RequestParam(value = "used_material", required = false) int usedMaterial,
-            @RequestParam(value = "actual_cost", required = false) double actualCost
+            @RequestParam(value = "actual_cost", required = false) double actualCost,
+            Model model,
+            HttpSession session
     ) {
+        keysService.setUserRoles(model, session);
         try {
             // Перетворення рядка дати у java.util.Date
             DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -178,8 +200,11 @@ public class AddController {
             @RequestParam(value = "project_id", required = false) int projectId,
             @RequestParam(value = "work_type_id", required = false) int workTypeId,
             @RequestParam(value = "start_date", required = false) String startDateStr,
-            @RequestParam(value = "end_date", required = false) String endDateStr
+            @RequestParam(value = "end_date", required = false) String endDateStr,
+            Model model,
+            HttpSession session
     ) {
+        keysService.setUserRoles(model, session);
         // Формат дати
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -198,16 +223,22 @@ public class AddController {
     @PostMapping("/add_info_in_work_type")
     public String saveInfoInWorkType(
             @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "description", required = false) String description
+            @RequestParam(value = "description", required = false) String description,
+            Model model,
+            HttpSession session
     ) {
+        keysService.setUserRoles(model, session);
         workTypeService.saveWorkType(name, description);
         return "add_info"; // Повернення до потрібної сторінки
     }
 
     @PostMapping("/add_info_in_building_managment")
     public String saveInfoInBuldingManagment(
-            @RequestParam(value = "name", required = false) String name
+            @RequestParam(value = "name", required = false) String name,
+            Model model,
+            HttpSession session
     ) {
+        keysService.setUserRoles(model, session);
         buildingManagementService.saveBuildingManagement(name);
         return "add_info";
     }
@@ -215,8 +246,11 @@ public class AddController {
     @PostMapping("/add_info_in_job_category")
     public String saveJobCategory(
             @RequestParam("name") String name,
-            @RequestParam("description") String description
+            @RequestParam("description") String description,
+            Model model,
+            HttpSession session
     ) {
+        keysService.setUserRoles(model, session);
         jobCategoryService.saveJobCategory(name, description);
         return "add_info";
     }
@@ -228,8 +262,11 @@ public class AddController {
             @RequestParam("jobCategory.id") int jobCategoryId,
             @RequestParam("site.id") int siteId,
             @RequestParam("brigade.id") int brigadeId,
-            @RequestParam(value = "image", required = false) MultipartFile image
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            Model model,
+            HttpSession session
     ) throws IOException {
+        keysService.setUserRoles(model, session);
         // Збереження працівника через сервіс
         employeeService.saveEmployee(name, position, jobCategoryId, siteId, brigadeId, image);
 

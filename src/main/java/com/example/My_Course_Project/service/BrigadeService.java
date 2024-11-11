@@ -7,11 +7,9 @@ import com.example.My_Course_Project.repository.BrigadeRepository;
 import com.example.My_Course_Project.repository.ScheduleRepository;
 import com.example.My_Course_Project.repository.SiteRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -40,7 +38,7 @@ public class BrigadeService {
         }
     }
 
-    public void saveBrigade(String name, int siteId, int leaderId) {
+    public void saveBrigade(String name, Integer siteId, Integer leaderId) {
         // Створення нового об'єкта бригади з використанням конструктора
         Brigade brigade = new Brigade();
         brigade.setName(name);
@@ -102,5 +100,9 @@ public class BrigadeService {
         } else {
             throw new EntityNotFoundException("Brigade with id " + id + " not found");
         }
+    }
+
+    public Brigade saveBrigade(Brigade brigade) {
+        return brigadeRepository.save(brigade);
     }
 }

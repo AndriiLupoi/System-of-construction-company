@@ -96,14 +96,15 @@
             <label for="position">Посада:</label>
             <select id="position" name="position" required th:value="${user.position}">
                 <option value="">-- Оберіть посаду --</option>
-                <option value="адміністратор" th:selected="${position == 'адміністратор'}">Адміністратор</option>
-                <option value="оператор"  th:selected="${position == 'оператор'}">Оператор</option>
+                <option th:if="${isOwner}" value="адміністратор" th:selected="${position == 'адміністратор'}">Адміністратор</option>
+                <option th:if="${isOwner || isAdmin}"  value="оператор"  th:selected="${position == 'оператор'}">Оператор</option>
+                <option th:if="${isOwner || isAdmin}"  value="користувач"  th:selected="${position == 'користувач'}">Користувач</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="allowedTables">Таблиця:</label>
-            <select id="allowedTables" name="allowedTables" required>
+            <select id="allowedTables" name="allowedTables">
                 <option value="">-- Оберіть таблицю --</option>
                 <th:block th:each="table : ${tables}">
                     <option th:value="${table}" th:text="${table}" th:selected="${allowedTables == table}"></option>

@@ -5,13 +5,14 @@ import com.example.My_Course_Project.service.KeysService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Controller
 public class UserController {
@@ -33,8 +34,10 @@ public class UserController {
         }
         userService.setUserRoles(model, session);
 
+        Keys currentUser = (Keys) session.getAttribute("user");
+
         // Додаємо список доступних таблиць у модель
-        model.addAttribute("tables", getAvailableTables());
+        model.addAttribute("tables", getAvailableTables(currentUser));
 
         // Перевіряємо позицію та таблицю, щоб показати додаткові поля для "оператора" та таблиці "бригади"
         boolean showFields = "оператор".equals(position) && "brigade".equals(allowedTables);
@@ -51,11 +54,7 @@ public class UserController {
 
         if (allowedTables != null && position != null && !allowedFieldsStr.isEmpty()) {
             userService.saveUser(user);
-            return "redirect:/home"; // Повернення до списку користувачів
-        } else if (allowedTables != null && position != null) {
-            userService.saveUser(user);
             return "redirect:/home";
-
         }
 
         // Повертаємо вже заповнені дані в модель, якщо є помилки
@@ -68,8 +67,21 @@ public class UserController {
 
 
 
-    public List<String> getAvailableTables() {
-        return List.of("project", "equipment", "category", "brigade", "building_management", "estimate",
-                "report", "schedule", "site", "work_type", "jobCategory");
+    public List<String> getAvailableTables(Keys currentUser) {
+        Logger logger = Logger.getLogger(getClass().getName());
+
+        if ("власник".equals(currentUser.getPosition())) {
+            List<String> allTables = Arrays.asList(currentUser.getAllowedTables().split(","));
+            logger.info("Власник: показуємо всі таблиці: " + allTables);
+            return allTables;
+        } else if ("адміністратор".equals(currentUser.getPosition()) && currentUser.getAllowedTables() != null) {
+            List<String> adminTables = Arrays.asList(currentUser.getAllowedTables().split(","));
+            logger.info("Адмін: дозволені таблиці: " + adminTables);
+            return adminTables;
+        }
+
+        logger.info("Немає дозволених таблиць для користувача " + currentUser.getPosition());
+        return List.of();
     }
+
 }
