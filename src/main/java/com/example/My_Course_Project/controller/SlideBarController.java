@@ -1,6 +1,7 @@
 package com.example.My_Course_Project.controller;
 
 import com.example.My_Course_Project.model.*;
+import com.example.My_Course_Project.repository.KeysRepository;
 import com.example.My_Course_Project.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,6 +31,8 @@ public class SlideBarController {
     private BrigadeService brigadeService;
     @Autowired
     private BuildingManagementService buildingManagementService;
+    @Autowired
+    private KeysRepository keysRepository;
 
     @GetMapping("/tables")
     public String showTablesPage(HttpSession session, Model model) {
@@ -36,6 +40,14 @@ public class SlideBarController {
             return "redirect:/login";
         }
         keysService.setUserRoles(model, session);
+
+        Keys currentUser = (Keys) session.getAttribute("user");
+
+        List<String> allowedTables = keysService.getAllowedTablesForUser(currentUser);
+
+        // Передаємо доступні таблиці в модель
+        model.addAttribute("allowedTables", allowedTables);
+
         return "tables";
     }
 
@@ -113,12 +125,20 @@ public class SlideBarController {
         return "employee"; // Повернення шаблону для відображення
     }
     @GetMapping("/add_info")
-    public String addNewInfoPage(Model model, HttpSession session) {
+    public String addNewInfoPage(String tableName, Model model, HttpSession session) {
         // Перевірка наявності користувача в сесії
         if (session.getAttribute("user") == null) {
             return "redirect:/login"; // Перенаправлення на логін, якщо користувач не аутентифікований
         }
         keysService.setUserRoles(model, session);
+
+        Keys currentUser = (Keys) session.getAttribute("user");
+
+        List<String> allowedTables = keysService.getAllowedTablesForUser(currentUser);
+
+        // Передаємо доступні таблиці в модель
+        model.addAttribute("allowedTables", allowedTables);
+
 
         return "add_info";
     }

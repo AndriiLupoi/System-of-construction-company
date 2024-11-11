@@ -65,16 +65,25 @@
     </div>
 </div>
 <div class="main-content">
-    <h1>Список Співробітників</h1>
+
     <div class="employee-container">
         <div th:each="employee : ${employees}" class="employee-card">
             <img th:src="@{/employee/image/{id}(id=${employee.id})}" alt="Фото працівника" class="employee-image"/>
             <h3 th:text="${employee.name}">Ім'я працівника</h3>
             <p th:text="${employee.position}">Посада</p>
-            <form th:if="${isOwner}" action="/employee/edit" method="get">
-                <input type="hidden" name="id" th:value="${employee.id}" />
-                <button type="submit">Змінити зображення</button>
-            </form>
+
+            <div class="buttons">
+                <form th:if="${isOwner}" action="/employee/edit" method="get">
+                    <input type="hidden" name="id" th:value="${employee.id}" />
+                    <button type="submit">Редагувати</button>
+                </form>
+
+                <form th:if="${isOwner}" action="/employee/delete" method="post">
+                    <input type="hidden" name="id" th:value="${employee.id}" />
+                    <button type="submit" class="delete-button">Видалити</button>
+                </form>
+            </div>
+
         </div>
     </div>
 </div>

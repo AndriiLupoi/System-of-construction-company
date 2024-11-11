@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.List;
 @Controller
 public class DataController {
@@ -52,83 +53,98 @@ public class DataController {
 
     @GetMapping("/data")
     public String viewTable(@RequestParam("tableName") String tableName, Model model, HttpSession session) {
-        // Перевіряємо, чи є користувач в сесії
+        // Перевірка, чи є користувач в сесії
         if (session.getAttribute("user") == null) {
             return "redirect:/login"; // Якщо користувач не аутентифікований, перенаправляємо на логін
         }
-
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
 
+        // Отримуємо список дозволених таблиць
+        String allowedTablesStr = currentUser.getAllowedTables(); // Наприклад, "project,equipment,category"
+        List<String> allowedTables = null;
+
+        // Якщо allowedTablesStr == null, то користувач має доступ до всіх таблиць
+        if (allowedTablesStr != null && !allowedTablesStr.isEmpty()) {
+            allowedTables = Arrays.asList(allowedTablesStr.split(","));
+        } else {
+            allowedTables = Arrays.asList(
+                    "project", "equipment", "category", "brigade", "building_management", "estimate",
+                    "report", "schedule", "site", "work_type", "jobCategory"
+            );
+        }
+
+        // Перевіряємо, чи має користувач доступ до вибраної таблиці
+        if (!allowedTables.contains(tableName)) {
+            model.addAttribute("error", "У вас немає доступу до цієї таблиці");
+            return "error"; // Повертаємо повідомлення про помилку, якщо доступу немає
+        }
+
+        // Переходимо до вибору відповідної таблиці
         switch (tableName) {
             case "project":
                 List<ProjectDTO> projects = projectService.getAllProjectsWithoutImages();
                 model.addAttribute("data", projects);
-                model.addAttribute("tableName", "project");
                 break;
 
             case "equipment":
                 List<Equipment> equipment = equipmentService.getAllEquipment();
                 model.addAttribute("data", equipment);
-                model.addAttribute("tableName", "equipment");
                 break;
 
             case "category":
-                List<Category> categories = categoryService.getAllCategories(); // Потрібен сервіс для категорій
+                List<Category> categories = categoryService.getAllCategories();
                 model.addAttribute("data", categories);
-                model.addAttribute("tableName", "category");
                 break;
 
             case "brigade":
-                List<Brigade> brigades = brigadeService.getAllBrigades(); // Потрібен сервіс для бригад
+                List<Brigade> brigades = brigadeService.getAllBrigades();
                 model.addAttribute("data", brigades);
-                model.addAttribute("tableName", "brigade");
                 break;
 
             case "building_management":
-                List<BuildingManagement> buildings = buildingManagementService.getAllBuildings(); // Потрібен сервіс для управлінь будівництвом
+                List<BuildingManagement> buildings = buildingManagementService.getAllBuildings();
                 model.addAttribute("data", buildings);
-                model.addAttribute("tableName", "building_management");
                 break;
 
             case "estimate":
-                List<Estimate> estimates = estimateService.getAllEstimates(); // Потрібен сервіс для кошторисів
+                List<Estimate> estimates = estimateService.getAllEstimates();
                 model.addAttribute("data", estimates);
-                model.addAttribute("tableName", "estimate");
                 break;
 
             case "report":
-                List<Report> reports = reportService.getAllReports(); // Потрібен сервіс для звітів
+                List<Report> reports = reportService.getAllReports();
                 model.addAttribute("data", reports);
-                model.addAttribute("tableName", "report");
                 break;
 
             case "schedule":
-                List<Schedule> schedules = scheduleService.getAllSchedules(); // Потрібен сервіс для розкладів
+                List<Schedule> schedules = scheduleService.getAllSchedules();
                 model.addAttribute("data", schedules);
-                model.addAttribute("tableName", "schedule");
                 break;
 
             case "site":
-                List<Site> sites = siteService.getAllSites(); // Потрібен сервіс для сайтів
+                List<Site> sites = siteService.getAllSites();
                 model.addAttribute("data", sites);
-                model.addAttribute("tableName", "site");
                 break;
 
             case "work_type":
-                List<WorkType> workTypes = workTypeService.getAllWorkTypes(); // Потрібен сервіс для типів робіт
+                List<WorkType> workTypes = workTypeService.getAllWorkTypes();
                 model.addAttribute("data", workTypes);
-                model.addAttribute("tableName", "work_type");
                 break;
 
             case "jobCategory":
                 List<JobCategory> jobCategories = jobCategoryService.getAllJobCategory();
                 model.addAttribute("jobCategories", jobCategories);
-                model.addAttribute("tableName", "jobCategory");
                 break;
+
             default:
                 model.addAttribute("error", "Таблиця не знайдена");
                 return "error";
         }
+
+        // Повертаємо шаблон з відповідною таблицею
+        model.addAttribute("tableName", tableName);
+        model.addAttribute("allowedTables", allowedTables); // Передаємо дозволені таблиці в модель
         return "tables"; // Повертаємо шаблон таблиць з даними
     }
 

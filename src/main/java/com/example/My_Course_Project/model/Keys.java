@@ -36,4 +36,7 @@ public class Keys {
     @Column(name = "verification_сode")
     private String verificationCode;
 
+    @Column(name = "allowed_tables")
+    private String allowedTables;
+
 }

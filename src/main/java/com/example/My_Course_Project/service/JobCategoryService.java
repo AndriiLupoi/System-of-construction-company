@@ -71,4 +71,5 @@ public class JobCategoryService {
             throw new EntityNotFoundException("JobCategory with id " + id + " not found");
         }
     }
+
 }

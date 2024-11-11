@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -57,5 +58,10 @@ public class KeysService {
         model.addAttribute("isOwner", isOwner);
         model.addAttribute("isOperator", isOperator);
         model.addAttribute("isUser", isUser);
+    }
+
+    public List<String> getAllowedTablesForUser(Keys currentUser) {
+        String allowedTablesStr = currentUser.getAllowedTables(); // Отримуємо список дозволених таблиць
+            return Arrays.asList(allowedTablesStr.split(","));
     }
 }

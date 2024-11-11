@@ -72,17 +72,17 @@
             <label for="tableSelect">Оберіть таблицю:</label>
             <div class="select-container"> <!-- Додано контейнер для комбобокса та кнопки -->
                 <select id="tableSelect" name="tableName">
-                    <option value="project" th:selected="${tableName == 'project'}">Проекти</option>
-                    <option value="equipment" th:selected="${tableName == 'equipment'}">Обладнання</option>
-                    <option value="category" th:selected="${tableName == 'category'}">Категорія</option>
-                    <option value="brigade" th:selected="${tableName == 'brigade'}">Бригади</option>
-                    <option value="building_management" th:selected="${tableName == 'building_management'}">Управління будівництвом</option>
-                    <option value="estimate" th:selected="${tableName == 'estimate'}">Кошторис</option>
-                    <option value="report" th:selected="${tableName == 'report'}">Звіти</option>
-                    <option value="schedule" th:selected="${tableName == 'schedule'}">Розклад</option>
-                    <option value="site" th:selected="${tableName == 'site'}">Розташування</option>
-                    <option value="work_type" th:selected="${tableName == 'work_type'}">Типи робіт</option>
-                    <option value="jobCategory" th:selected="${tableName == 'jobCategory'}">Категорії посад</option>
+                    <option th:if="${allowedTables.contains('project')}" value="project" th:selected="${tableName == 'project'}">Проекти</option>
+                    <option th:if="${allowedTables.contains('equipment')}" value="equipment" th:selected="${tableName == 'equipment'}">Обладнання</option>
+                    <option th:if="${allowedTables.contains('category')}" value="category" th:selected="${tableName == 'category'}">Категорія</option>
+                    <option th:if="${allowedTables.contains('brigade')}" value="brigade" th:selected="${tableName == 'brigade'}">Бригади</option>
+                    <option th:if="${allowedTables.contains('building_management')}" value="building_management" th:selected="${tableName == 'building_management'}">Управління будівництвом</option>
+                    <option th:if="${allowedTables.contains('estimate')}" value="estimate" th:selected="${tableName == 'estimate'}">Кошторис</option>
+                    <option th:if="${allowedTables.contains('report')}" value="report" th:selected="${tableName == 'report'}">Звіти</option>
+                    <option th:if="${allowedTables.contains('schedule')}" value="schedule" th:selected="${tableName == 'schedule'}">Розклад</option>
+                    <option th:if="${allowedTables.contains('site')}" value="site" th:selected="${tableName == 'site'}">Розташування</option>
+                    <option th:if="${allowedTables.contains('work_type')}" value="work_type" th:selected="${tableName == 'work_type'}">Типи робіт</option>
+                    <option th:if="${allowedTables.contains('jobCategory')}" value="jobCategory" th:selected="${tableName == 'jobCategory'}">Категорії посад</option>
                 </select>
                 <button type="submit">Відобразити</button>
             </div>
@@ -114,19 +114,17 @@
             <th>Сайт ID</th>
             <th>Дата початку</th>
             <th>Дата завершення</th>
-            <th th:if="${isOwner}">Видалення</th>
-            <th th:if="${isOwner}">Редагування</th>
+            <th>Видалення</th>
+            <th>Редагування</th>
         </tr>
-
-
         <!-- Заголовки для таблиці "Обладнання" -->
         <tr th:if="${tableName != null and tableName.equals('equipment')}">
             <th>ID</th>
             <th>Назва</th>
             <th>Тип</th>
             <th>Сайт ID</th>
-            <th th:if="${isOwner || isAdmin}">Видалення</th>
-            <th th:if="${isOwner}">Редагування</th>
+            <th>Видалення</th>
+            <th>Редагування</th>
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('category')}">
@@ -222,19 +220,18 @@
             <td th:text="${project.siteId}" data-label="Сайт ID"></td>
             <td th:text="${project.startDate}" data-label="Дата початку"></td>
             <td th:text="${project.endDate}" data-label="Дата завершення"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${project.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="project"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${project.id})}" method="get">
                     <input type="hidden" name="tableName" value="project">
                     <button type="submit" class="edit-btn">Редагувати</button>
                 </form>
             </td>
-
         </tr>
 
         <tr th:if="${tableName != null and tableName.equals('equipment')}" th:each="equipment : ${data}">
@@ -242,13 +239,13 @@
             <td th:text="${equipment.name}"></td>
             <td th:text="${equipment.type}"></td>
             <td th:text="${equipment.site.id}"></td>
-            <td th:if="${isOwner || isAdmin}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${equipment.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="equipment"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner || isAdmin}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${equipment.id})}" method="get">
                     <input type="hidden" name="tableName" value="equipment">
                     <button type="submit" class="edit-btn">Редагувати</button>
@@ -260,13 +257,13 @@
             <td th:text="${category.id}" data-label="ID"></td>
             <td th:text="${category.name}" data-label="Назва"></td>
             <td th:text="${category.description}" data-label="Опис"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${category.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="category"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${category.id})}" method="get">
                     <input type="hidden" name="tableName" value="category">
                     <button type="submit" class="edit-btn">Редагувати</button>
@@ -279,13 +276,13 @@
             <td th:text="${brigade.name}" data-label="Назва"></td>
             <td th:text="${brigade.siteId}" data-label="Сайт ID"></td>
             <td th:text="${brigade.leaderId}" data-label="Лідер ID"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${brigade.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="brigade"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${brigade.id})}" method="get">
                     <input type="hidden" name="tableName" value="brigade">
                     <button type="submit" class="edit-btn">Редагувати</button>
@@ -296,13 +293,13 @@
         <tr th:if="${tableName != null and tableName.equals('building_management')}" th:each="building : ${data}">
             <td th:text="${building.id}" data-label="ID"></td>
             <td th:text="${building.name}" data-label="Назва"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${building.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="building_management"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${building.id})}" method="get">
                     <input type="hidden" name="tableName" value="building_management">
                     <button type="submit" class="edit-btn">Редагувати</button>
@@ -316,13 +313,13 @@
             <td th:text="${estimate.material}" data-label="Матеріал"></td>
             <td th:text="${estimate.quantity}" data-label="Кількість"></td>
             <td th:text="${estimate.cost}" data-label="Вартість"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${estimate.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="estimate"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${estimate.id})}" method="get">
                     <input type="hidden" name="tableName" value="estimate">
                     <button type="submit" class="edit-btn">Редагувати</button>
@@ -338,13 +335,13 @@
             <td th:text="${report.material}" data-label="Матеріали"></td>
             <td th:text="${report.usedMaterial}" data-label="Використано"></td>
             <td th:text="${report.actualCost}" data-label="Фактична вартість"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${report.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="report"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${report.id})}" method="get">
                     <input type="hidden" name="tableName" value="report">
                     <button type="submit" class="edit-btn">Редагувати</button>
@@ -360,13 +357,13 @@
             <td th:text="${schedule.endDate}" data-label="Дата завершення"></td>
             <td th:text="${schedule.brigade.id}" data-label="Бригада"></td>
             <td th:text="${schedule.site.id}" data-label="Розташування"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${schedule.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="schedule"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${schedule.id})}" method="get">
                     <input type="hidden" name="tableName" value="schedule">
                     <button type="submit" class="edit-btn">Редагувати</button>
@@ -379,13 +376,13 @@
             <td th:text="${site.name}" data-label="Назва"></td>
             <td th:text="${site.buildingManagement.id}" data-label="ID управління"></td>
             <td th:text="${site.location}" data-label="Локація"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${site.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="site"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${site.id})}" method="get">
                     <input type="hidden" name="tableName" value="site">
                     <button type="submit" class="edit-btn">Редагувати</button>
@@ -397,13 +394,13 @@
             <td th:text="${workType.id}" data-label="ID"></td>
             <td th:text="${workType.name}" data-label="Назва"></td>
             <td th:text="${workType.description}" data-label="Опис"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${workType.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="work_type"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${workType.id})}" method="get">
                     <input type="hidden" name="tableName" value="work_type">
                     <button type="submit" class="edit-btn">Редагувати</button>
@@ -415,13 +412,13 @@
             <td th:text="${jobCategory.id}" data-label="ID"></td>
             <td th:text="${jobCategory.name}" data-label="Назва"></td>
             <td th:text="${jobCategory.description}" data-label="Опис"></td>
-            <td th:if="${isOwner}" class="delete_field">
+            <td class="delete_field">
                 <form th:action="@{/data/delete/{id}(id=${jobCategory.id})}" method="post" onsubmit="return confirm('Ви впевнені, що хочете видалити цей запис?');">
                     <input type="hidden" name="tableName" value="jobCategory"/>
                     <button type="submit" class="delete-btn">Видалити</button>
                 </form>
             </td>
-            <td th:if="${isOwner}" class="edit_field">
+            <td class="edit_field">
                 <form th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${jobCategory.id})}" method="get">
                     <input type="hidden" name="tableName" value="jobCategory">
                     <button type="submit" class="edit-btn">Редагувати</button>
