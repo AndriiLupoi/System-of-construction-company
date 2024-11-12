@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Service
 public class KeysService {
@@ -60,9 +61,25 @@ public class KeysService {
         model.addAttribute("isUser", isUser);
     }
 
-    public List<String> getAllowedTablesForUser(Keys currentUser) {
-        String allowedTablesStr = currentUser.getAllowedTables(); // Отримуємо список дозволених таблиць
-            return Arrays.asList(allowedTablesStr.split(","));
+    public List<String> getAvailableTables(Keys currentUser) {
+        Logger logger = Logger.getLogger(getClass().getName());
+
+        if ("власник".equals(currentUser.getPosition())) {
+            List<String> allTables = Arrays.asList(currentUser.getAllowedTables().split(","));
+            logger.info("Власник: показуємо всі таблиці: " + allTables);
+            return allTables;
+        } else if ("адміністратор".equals(currentUser.getPosition()) && currentUser.getAllowedTables() != null) {
+            List<String> adminTables = Arrays.asList(currentUser.getAllowedTables().split(","));
+            logger.info("Адмін: дозволені таблиці: " + adminTables);
+            return adminTables;
+        } else if ("оператор".equals(currentUser.getPosition()) && currentUser.getAllowedTables() != null) {
+            List<String> operatorTables = Arrays.asList(currentUser.getAllowedTables().split(","));
+            logger.info("Оператор: дозволені таблиці: " + operatorTables);
+            return operatorTables;
+        }
+
+        logger.info("Немає дозволених таблиць для користувача " + currentUser.getPosition());
+        return List.of();
     }
 
     public Keys saveUser(Keys user) {

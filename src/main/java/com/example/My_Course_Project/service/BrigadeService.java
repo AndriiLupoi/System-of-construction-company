@@ -105,4 +105,5 @@ public class BrigadeService {
     public Brigade saveBrigade(Brigade brigade) {
         return brigadeRepository.save(brigade);
     }
+
 }

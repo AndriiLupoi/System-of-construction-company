@@ -23,11 +23,11 @@ public class Brigade {
 
     // Додайте це поле
     @Column(name = "site_id")
-    private int siteId;
+    private Integer siteId;
 
     // Додайте це поле
     @Column(name = "leader_id")
-    private int leaderId;
+    private Integer leaderId;
 
     @ManyToOne
     @JoinColumn(name = "site_id", referencedColumnName = "id", insertable = false, updatable = false)

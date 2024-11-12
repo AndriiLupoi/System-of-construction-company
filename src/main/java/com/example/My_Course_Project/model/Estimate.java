@@ -17,14 +17,14 @@ public class Estimate {
     private int id;
 
     @Column(name = "project_id")
-    private int projectId;
+    private Integer projectId;
 
     @Column(name = "material")
     private String material;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "cost")
-    private double cost;
+    private Double cost;
 }

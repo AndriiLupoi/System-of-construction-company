@@ -42,23 +42,22 @@ public class SiteService {
         return results;
     }
 
-    public void saveSite(String name, int managementId, String location) {
-        // Створення нового об'єкта сайту
+    public void saveSite(String name, Integer managementId, String location) {
         Site site = new Site();
 
-        // Встановлення значень полів
         site.setName(name);
         site.setLocation(location);
 
-        // Збереження об'єкта управління будівництвом
-        BuildingManagement buildingManagement = buildingManagementRepository.findById(managementId)
-                .orElseThrow(() -> new RuntimeException("BuildingManagement not found for ID: " + managementId));
-        site.setBuildingManagement(buildingManagement);
+        if (managementId != null && managementId > 0) {
+            BuildingManagement buildingManagement = buildingManagementRepository.findById(managementId)
+                    .orElseThrow(() -> new RuntimeException("BuildingManagement not found for ID: " + managementId));
+            site.setBuildingManagement(buildingManagement);
+        } else {
+            site.setBuildingManagement(null);
+        }
 
-        // Збереження об'єкта у базі даних
         siteRepository.save(site);
 
-        // Логування для підтвердження успішного збереження
         logger.info("Site successfully saved: Name = {}, ManagementId = {}, Location = {}", name, managementId, location);
     }
 

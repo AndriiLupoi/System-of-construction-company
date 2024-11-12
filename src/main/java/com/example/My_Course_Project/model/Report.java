@@ -34,8 +34,8 @@ public class Report {
     private String material;
 
     @Column(name = "used")
-    private int usedMaterial;
+    private Integer usedMaterial;
 
     @Column(name = "actual_cost")
-    private double actualCost;
+    private Double actualCost;
 }

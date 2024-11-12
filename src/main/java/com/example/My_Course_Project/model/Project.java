@@ -28,10 +28,10 @@ public class Project {
     private String name;
 
     @Column(name = "category_id")
-    private int categoryId;
+    private Integer categoryId;
 
     @Column(name = "site_id")
-    private int siteId;
+    private Integer siteId;
 
     @Column(name = "start_date")
     private LocalDate startDate;

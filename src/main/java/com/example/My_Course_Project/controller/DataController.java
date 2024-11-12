@@ -4,6 +4,7 @@ import com.example.My_Course_Project.DataTransferObjects.ProjectDTOs.ProjectDTO;
 import com.example.My_Course_Project.model.*;
 import com.example.My_Course_Project.service.*;
 import jakarta.servlet.http.HttpSession;
+import org.jboss.logging.BasicLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 @Controller
@@ -59,26 +61,6 @@ public class DataController {
         }
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
-
-        // Отримуємо список дозволених таблиць
-        String allowedTablesStr = currentUser.getAllowedTables(); // Наприклад, "project,equipment,category"
-        List<String> allowedTables = null;
-
-        // Якщо allowedTablesStr == null, то користувач має доступ до всіх таблиць
-        if (allowedTablesStr != null && !allowedTablesStr.isEmpty()) {
-            allowedTables = Arrays.asList(allowedTablesStr.split(","));
-        } else {
-            allowedTables = Arrays.asList(
-                    "project", "equipment", "category", "brigade", "building_management", "estimate",
-                    "report", "schedule", "site", "work_type", "jobCategory"
-            );
-        }
-
-        // Перевіряємо, чи має користувач доступ до вибраної таблиці
-        if (!allowedTables.contains(tableName)) {
-            model.addAttribute("error", "У вас немає доступу до цієї таблиці");
-            return "error"; // Повертаємо повідомлення про помилку, якщо доступу немає
-        }
 
         // Переходимо до вибору відповідної таблиці
         switch (tableName) {
@@ -144,7 +126,7 @@ public class DataController {
 
         // Повертаємо шаблон з відповідною таблицею
         model.addAttribute("tableName", tableName);
-        model.addAttribute("allowedTables", allowedTables); // Передаємо дозволені таблиці в модель
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser)); // Передаємо дозволені таблиці в модель
         return "tables"; // Повертаємо шаблон таблиць з даними
     }
 
@@ -159,7 +141,26 @@ public class DataController {
 
         }
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
 
+        String allowedTablesStr = currentUser.getAllowedTables(); // Наприклад, "project,equipment,category"
+        List<String> allowedTables = null;
+
+        // Якщо allowedTablesStr == null, то користувач має доступ до всіх таблиць
+        if (allowedTablesStr != null && !allowedTablesStr.isEmpty()) {
+            allowedTables = Arrays.asList(allowedTablesStr.split(","));
+        } else {
+            allowedTables = Arrays.asList(
+                    "project", "equipment", "category", "brigade", "building_management", "estimate",
+                    "report", "schedule", "site", "work_type", "jobCategory"
+            );
+        }
+
+        // Перевіряємо, чи має користувач доступ до вибраної таблиці
+        if (!allowedTables.contains(tableName)) {
+            model.addAttribute("error", "У вас немає доступу до цієї таблиці");
+            return "error"; // Повертаємо повідомлення про помилку, якщо доступу немає
+        }
         switch (tableName){
             case "project":
                 List<Project> projects = projectService.searchProjects(query);
@@ -242,12 +243,16 @@ public class DataController {
             default:
                 throw new IllegalStateException("Unexpected value: " + tableName);
         }
+        model.addAttribute("allowedTables", allowedTables);
 
         return "tables";
     }
 
     @PostMapping("/data/delete/{id}")
-    public String deleteRecord(@RequestParam("tableName") String tableName, @PathVariable("id") int id) {
+    public String deleteRecord(@RequestParam("tableName") String tableName,
+                               @PathVariable("id") int id,
+                               HttpSession session,
+                               BasicLogger logger) {
         switch (tableName) {
             case "project":
                 projectService.deleteProjectById(id);
@@ -259,8 +264,32 @@ public class DataController {
                 categoryService.deleteCategoryById(id);
                 break;
             case "brigade":
-                brigadeService.deleteBrigadeById(id);
+                Keys currentUser = (Keys) session.getAttribute("user");
+
+                List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                        Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+
+                // Якщо користувач є власником і allowedFields порожній, видаляємо рядок
+                if (allowedFields.isEmpty()) {
+                    brigadeService.deleteBrigadeById(id);
+                } else {
+                    Brigade brigade = brigadeService.findBrigadeById(id);
+
+                    // Якщо користувач - оператор, встановлюємо значення полів у `null`, якщо це дозволено
+                    if (allowedFields.contains("name")) {
+                        brigade.setName(null);
+                    }
+                    if (allowedFields.contains("siteId")) {
+                        brigade.setSiteId(null);
+                    }
+                    if (allowedFields.contains("leaderId")) {
+                        brigade.setLeaderId(null);
+                    }
+
+                    brigadeService.updateBrigadeById(id, brigade);
+                }
                 break;
+
             case "building_management":
                 buildingManagementService.deleteBuildingManagementById(id);
                 break;
@@ -313,8 +342,12 @@ public class DataController {
                     List<Site> siteInBrigade = siteService.getAllSites();
                     model.addAttribute("allowedFields", allowedFields);
                     model.addAttribute("siteInBrigade", siteInBrigade);
+                } else if (currentUser.getAllowedFields() == null || currentUser.getAllowedFields().isEmpty()) {
+                    // Якщо `allowedFields` порожній — надання повного доступу
+                    model.addAttribute("allowedFields", List.of("name", "site_id", "leader_id")); // Перелік всіх полів
                 } else {
-                    model.addAttribute("allowedFields", List.of());  // Якщо не оператор, доступу до полів немає
+                    // Якщо доступу немає — порожній список
+                    model.addAttribute("allowedFields", List.of());
                 }
                 // Отримання даних бригади
                 Brigade brigade = brigadeService.findBrigadeById(id);
@@ -389,11 +422,14 @@ public class DataController {
                     if (startDate != null && !startDate.isEmpty()) {
                         LocalDate parsedStartDate = LocalDate.parse(startDate);
                         project.setStartDate(parsedStartDate);
+                        System.out.println("Parsed Start Date: " + parsedStartDate);
                     }
                     if (endDate != null && !endDate.isEmpty()) {
                         LocalDate parsedEndDate = LocalDate.parse(endDate);
                         project.setEndDate(parsedEndDate);
+                        System.out.println("Parsed End Date: " + parsedEndDate);
                     }
+
                     projectService.updateProjectById(id, project);
                 } catch (DateTimeParseException e) {
                     e.printStackTrace();

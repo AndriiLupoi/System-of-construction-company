@@ -4,6 +4,7 @@ import com.example.My_Course_Project.DataTransferObjects.ProjectDTOs.ProjectDTO;
 import com.example.My_Course_Project.model.Brigade;
 import com.example.My_Course_Project.model.JobCategory;
 import com.example.My_Course_Project.model.Keys;
+import com.example.My_Course_Project.model.Site;
 import com.example.My_Course_Project.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,8 +69,11 @@ public class AddController {
             HttpSession session
     ) throws IOException, ParseException {
         keysService.setUserRoles(model, session);
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
 
+
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         // Конвертація строк у дати
         LocalDate parsedStartDate = null;
@@ -102,6 +107,8 @@ public class AddController {
     )
         throws IOException, ParseException {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         logger.info("User input - Name: {}, Brigade: {}, location: {}", name, managementId, location);
         siteService.saveSite(name, managementId, location);
 
@@ -111,17 +118,56 @@ public class AddController {
     @PostMapping("/add_info_in_brigade")
     public String saveInfoInBrigade(
             @RequestParam(value = "name_brigade", required = false) String name,
-            @RequestParam(value = "site_id", required = false) int siteId,
-            @RequestParam(value = "leader_id", required = false) int leaderId,
+            @RequestParam(value = "site_id", required = false) Integer siteId,
+            @RequestParam(value = "leader_id", required = false) Integer leaderId,
             Model model,
             HttpSession session
     ) {
         keysService.setUserRoles(model, session);
-        logger.info("User input - Name: {}, SiteId: {}, LeaderId: {}", name, siteId, leaderId);
-        brigadeService.saveBrigade(name, siteId, leaderId);
+        Keys currentUser = (Keys) session.getAttribute("user");
 
-        return "add_info";
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+
+        Brigade brigade = new Brigade();
+
+        System.out.println(siteId);
+        // Перевірка та додавання дозволених полів
+        if (allowedFields.isEmpty()) {
+            brigade.setName(name);
+            brigade.setSiteId(siteId);
+            brigade.setLeaderId(leaderId);
+            brigadeService.saveBrigade(brigade);
+        } else {
+            // Якщо є дозволені поля, додаємо їх в об'єкт Brigade
+            if (allowedFields.contains("name") && name != null && !name.isEmpty()) {
+                brigade.setName(name);  // Оновлюємо поле, якщо воно дозволене
+            } else if (!allowedFields.contains("name")) {
+                brigade.setName(null);  // Якщо не дозволене — встановлюємо в null
+            }
+
+            if (allowedFields.contains("siteId") && siteId != null && siteId > 0) {
+                brigade.setSiteId(siteId);  // Оновлюємо поле, якщо воно дозволене
+            } else if (!allowedFields.contains("siteId")) {
+                brigade.setSite(null);  // Якщо не дозволене — встановлюємо в null
+            }
+
+            if (allowedFields.contains("leaderId") && leaderId != null && leaderId > 0) {
+                brigade.setLeaderId(leaderId);  // Оновлюємо поле, якщо воно дозволене
+            } else if (!allowedFields.contains("leaderId")) {
+                brigade.setLeaderId(null);  // Якщо не дозволене — встановлюємо в null
+            }
+
+            // Збереження об'єкта Brigade в базі даних
+            brigadeService.saveBrigade(brigade);
+        }
+
+        return "add_info";  // Повертаємо відповідний шаблон після успішного додавання
     }
+
+
 
     @PostMapping("/add_info_in_category")
     public String saveInfoInCategory(
@@ -131,6 +177,8 @@ public class AddController {
             HttpSession session
     ) {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         logger.info("User input - Name: {}, Description: {}", name, description);
         categoryService.saveCategory(name, description);
 
@@ -146,6 +194,8 @@ public class AddController {
             HttpSession session
     ) {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         logger.info("User input - Name: {}, Type: {}, SiteId: {}", name, type, siteId);
         equipmentService.saveEquipment(name, type, siteId);
 
@@ -162,6 +212,8 @@ public class AddController {
             HttpSession session
     ) {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         logger.info("User input - ProjectId: {}, Material: {}, Quantity: {}, Cost: {}", projectId, material, quantity, cost);
         estimateService.saveEstimate(projectId, material, quantity, cost);
 
@@ -180,6 +232,8 @@ public class AddController {
             HttpSession session
     ) {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         try {
             // Перетворення рядка дати у java.util.Date
             DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -205,6 +259,8 @@ public class AddController {
             HttpSession session
     ) {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         // Формат дати
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -228,6 +284,8 @@ public class AddController {
             HttpSession session
     ) {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         workTypeService.saveWorkType(name, description);
         return "add_info"; // Повернення до потрібної сторінки
     }
@@ -239,6 +297,8 @@ public class AddController {
             HttpSession session
     ) {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         buildingManagementService.saveBuildingManagement(name);
         return "add_info";
     }
@@ -251,6 +311,8 @@ public class AddController {
             HttpSession session
     ) {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         jobCategoryService.saveJobCategory(name, description);
         return "add_info";
     }
@@ -267,6 +329,8 @@ public class AddController {
             HttpSession session
     ) throws IOException {
         keysService.setUserRoles(model, session);
+        Keys currentUser = (Keys) session.getAttribute("user");
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
         // Збереження працівника через сервіс
         employeeService.saveEmployee(name, position, jobCategoryId, siteId, brigadeId, image);
 
