@@ -27,9 +27,9 @@ public class HomeController {
     @GetMapping("/project/image/{id}")
     public ResponseEntity<byte[]> getProjectImage(@PathVariable int id) {
         Project project = projectService.getProjectById(id);
-        byte[] image = project.getImage(); // Отримуємо зображення проекту
+        byte[] image = project.getImage();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG); // Встановіть правильний тип зображення
+        headers.setContentType(MediaType.IMAGE_PNG);
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 

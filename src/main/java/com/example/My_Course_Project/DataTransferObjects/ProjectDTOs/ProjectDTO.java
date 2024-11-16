@@ -11,7 +11,6 @@ public class ProjectDTO {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    // Конструктори, геттери і сеттери
     public ProjectDTO(int id, String name, int categoryId, int siteId, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.name = name;
@@ -21,7 +20,6 @@ public class ProjectDTO {
         this.endDate = endDate;
     }
 
-    // Геттери та сеттери
     public int getId() { return id; }
     public String getName() { return name; }
     public int getCategoryId() { return categoryId; }

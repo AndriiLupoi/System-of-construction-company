@@ -46,7 +46,7 @@
             <span class="span">Додати</span>
         </a>
     </div>
-    <div th:if="${isOwner || isAdmin || isOperator}" class="querys-page">
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="querys-page">
         <a href="querys">
             <div class="icons_background">
                 <img id="query_img" th:src="@{../img/icons/querys.png}" alt="Querys Icon" />

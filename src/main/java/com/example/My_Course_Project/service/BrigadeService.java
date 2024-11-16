@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 @Service
 public class BrigadeService {
@@ -26,31 +27,25 @@ public class BrigadeService {
         return brigadeRepository.findAll();
     }
 
-    // Логіка пошуку бригад
     public List<Brigade> searchBrigades(String query) {
         try {
-            // Якщо query — це числове значення (наприклад, для ID сайту або лідера)
             Integer id = Integer.parseInt(query);
             return brigadeRepository.findByNameContainingOrSiteIdOrLeaderId("", id, id);
         } catch (NumberFormatException e) {
-            // Якщо це не число, шукаємо тільки за назвою
             return brigadeRepository.findByNameContainingOrSiteIdOrLeaderId(query, null, null);
         }
     }
 
     public void saveBrigade(String name, Integer siteId, Integer leaderId) {
-        // Створення нового об'єкта бригади з використанням конструктора
         Brigade brigade = new Brigade();
         brigade.setName(name);
 
-        // Знаходження сайту
         Site site = siteRepository.findById(siteId)
                 .orElseThrow(() -> new IllegalArgumentException("Розташування не знайдено"));
 
-        brigade.setSiteId(siteId);  // Використання сеттера для siteId
-        brigade.setLeaderId(leaderId); // Використання сеттера для leaderId
+        brigade.setSiteId(siteId);
+        brigade.setLeaderId(leaderId);
 
-        // Збереження об'єкта у базі даних
         brigadeRepository.save(brigade);
     }
 
@@ -61,18 +56,15 @@ public class BrigadeService {
 
 
     public List<Object[]> findAllBrigadesAndLeaders() {
-        Set<Object[]> resultSet = new HashSet<>(); // Використовуємо Set для унікальності
+        Set<Object[]> resultSet = new HashSet<>();
 
-        // Отримуємо всіх бригад
         List<Brigade> brigades = brigadeRepository.findAll();
 
         for (Brigade brigade : brigades) {
-            // Отримуємо перший розклад, пов'язаний з бригадою
             List<Schedule> schedules = scheduleRepository.findByBrigade(brigade);
 
-            // Якщо є хоча б один розклад, додаємо до результату
             if (!schedules.isEmpty()) {
-                Schedule schedule = schedules.get(0); // Отримуємо перший розклад
+                Schedule schedule = schedules.get(0);
                 resultSet.add(new Object[]{
                         brigade.getName(),
                         schedule.getProject().getName(),
@@ -90,12 +82,15 @@ public class BrigadeService {
 
     public void updateBrigadeById(int id, Brigade brigade) {
         Optional<Brigade> existingBrigade = brigadeRepository.findById(id);
-
+        Logger logger = Logger.getLogger(getClass().getName());
         if (existingBrigade.isPresent()) {
             Brigade brigadeToUpdate = existingBrigade.get();
             brigadeToUpdate.setName(brigade.getName());
             brigadeToUpdate.setSiteId(brigade.getSiteId());
             brigadeToUpdate.setLeaderId(brigade.getLeaderId());
+            logger.info("Saving brigade with leaderId: " + brigadeToUpdate.getLeaderId());
+
+
             brigadeRepository.save(brigadeToUpdate);
         } else {
             throw new EntityNotFoundException("Brigade with id " + id + " not found");

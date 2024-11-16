@@ -22,20 +22,17 @@ public class EstimateService {
         return estimateRepository.findAll();
     }
 
-    // Логіка пошуку кошторисів
     public List<Estimate> searchEstimates(String query) {
         List<Estimate> results = new ArrayList<>();
 
         try {
-            // Спробуємо спочатку розпізнати як число (ID проекту, вартість або кількість)
             Integer id = Integer.parseInt(query);
-            results.addAll(estimateRepository.findByProjectId(id)); // Пошук за ID проекту
-            results.addAll(estimateRepository.findByCost(id)); // Пошук за вартістю
-            results.addAll(estimateRepository.findByQuantity(id)); // Пошук за кількістю
+            results.addAll(estimateRepository.findByProjectId(id));
+            results.addAll(estimateRepository.findByCost(id));
+            results.addAll(estimateRepository.findByQuantity(id));
         } catch (NumberFormatException e) {
-            // Якщо не число, перевіряємо, чи це матеріал
             String material = query;
-            results.addAll(estimateRepository.findByMaterialContaining(material)); // Пошук за матеріалом
+            results.addAll(estimateRepository.findByMaterialContaining(material));
         }
 
         return results;
@@ -59,7 +56,6 @@ public class EstimateService {
     }
 
     public List<Estimate> getEstimatesByProjectName(String projectName) {
-        // Припускаємо, що у вас є метод у репозиторії, який знаходить ID проекту за його назвою
         Integer projectId = estimateRepository.findProjectIdByName(projectName);
         return estimateRepository.findByProjectId(projectId);
     }

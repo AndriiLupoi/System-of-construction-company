@@ -22,6 +22,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class AddController {
@@ -71,6 +72,9 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
 
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -109,6 +113,9 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         logger.info("User input - Name: {}, Brigade: {}, location: {}", name, managementId, location);
         siteService.saveSite(name, managementId, location);
 
@@ -129,13 +136,14 @@ public class AddController {
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
 
         List<String> allowedFields = currentUser.getAllowedFields() != null ?
-                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+                Arrays.asList(currentUser.getAllowedFields().split(",")) :
+                new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
+
 
         Brigade brigade = new Brigade();
 
-        System.out.println(siteId);
-        // Перевірка та додавання дозволених полів
-        if (allowedFields.isEmpty()) {
+        if (allowedFields.isEmpty() || Objects.equals(currentUser.getPosition(), "адміністратор")) {
             brigade.setName(name);
             brigade.setSiteId(siteId);
             brigade.setLeaderId(leaderId);
@@ -164,7 +172,7 @@ public class AddController {
             brigadeService.saveBrigade(brigade);
         }
 
-        return "add_info";  // Повертаємо відповідний шаблон після успішного додавання
+        return "add_info";
     }
 
 
@@ -179,6 +187,9 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         logger.info("User input - Name: {}, Description: {}", name, description);
         categoryService.saveCategory(name, description);
 
@@ -196,6 +207,9 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         logger.info("User input - Name: {}, Type: {}, SiteId: {}", name, type, siteId);
         equipmentService.saveEquipment(name, type, siteId);
 
@@ -214,6 +228,9 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         logger.info("User input - ProjectId: {}, Material: {}, Quantity: {}, Cost: {}", projectId, material, quantity, cost);
         estimateService.saveEstimate(projectId, material, quantity, cost);
 
@@ -234,18 +251,20 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         try {
-            // Перетворення рядка дати у java.util.Date
             DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate completionDate = LocalDate.parse(completionDateStr, dateFormat);
 
 
             reportService.saveReport(projectId, workTypeId, completionDate, material, usedMaterial, actualCost);
 
-            return "add_info"; // Повернення до потрібної сторінки
+            return "add_info";
         } catch (DateTimeParseException e) {
             logger.error("Invalid date format: {}", completionDateStr, e);
-            return "error"; // Вказівка на помилку
+            return "error";
         }
     }
 
@@ -261,10 +280,11 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
-        // Формат дати
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        // Перетворення рядків у LocalDate
         LocalDate startDate = LocalDate.parse(startDateStr, formatter);
         LocalDate endDate = LocalDate.parse(endDateStr, formatter);
 
@@ -286,8 +306,11 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         workTypeService.saveWorkType(name, description);
-        return "add_info"; // Повернення до потрібної сторінки
+        return "add_info";
     }
 
     @PostMapping("/add_info_in_building_managment")
@@ -299,6 +322,9 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         buildingManagementService.saveBuildingManagement(name);
         return "add_info";
     }
@@ -313,6 +339,9 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         jobCategoryService.saveJobCategory(name, description);
         return "add_info";
     }
@@ -331,10 +360,11 @@ public class AddController {
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
-        // Збереження працівника через сервіс
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
         employeeService.saveEmployee(name, position, jobCategoryId, siteId, brigadeId, image);
 
-        // Після додавання перенаправлення на сторінку зі списком працівників
-        return "redirect:/employees"; // Тут можна вказати URL, на який потрібно перенаправити після успішного збереження
+        return "redirect:/employees";
     }
 }

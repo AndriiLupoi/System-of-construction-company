@@ -98,8 +98,8 @@ public class SlideBarController {
         model.addAttribute("projects", projects);
         model.addAttribute("categoryMap", categoryMap);
         model.addAttribute("siteMap", siteMap);
-        model.addAttribute("brigadeMap", brigadeMap); // Додаємо мапу бригад до моделі
-        model.addAttribute("employeeMap", employeeMap); // Додаємо мапу працівників до моделі
+        model.addAttribute("brigadeMap", brigadeMap);
+        model.addAttribute("employeeMap", employeeMap);
         model.addAttribute("buildingManagementMap", buildingManagementMap);
 
         return "home"; // Повертаємо назву шаблону
@@ -135,6 +135,11 @@ public class SlideBarController {
         Keys currentUser = (Keys) session.getAttribute("user");
 
         model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
+        List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                Arrays.asList(currentUser.getAllowedFields().split(",")) :
+                new ArrayList<>();
+        model.addAttribute("allowedFields", allowedFields);
+
 
         return "add_info";
     }

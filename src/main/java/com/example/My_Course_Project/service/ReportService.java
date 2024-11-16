@@ -36,24 +36,21 @@ public class ReportService {
     public List<Report> searchReports(String query) {
         List<Report> results = new ArrayList<>();
 
-        // Спробуйте спочатку розпізнати як число (ID проекту або типу роботи)
         try {
             Integer id = Integer.parseInt(query);
             results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrMaterialOrUsedMaterialOrActualCost(id, id, null, "", 0, 0.0));
         } catch (NumberFormatException e) {
-            // Якщо не число, спробуйте розпізнати як дату
             try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // Задайте формат дати
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 Date date = dateFormat.parse(query);
                 results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrMaterialOrUsedMaterialOrActualCost(null, null, date, "",0, 0.0));
             } catch (ParseException pe) {
-                // Якщо це не число і не дата, пробуємо шукати за фактичним матеріалом
                 String material = query;
                 results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrMaterialOrUsedMaterialOrActualCost(null, null, null, material,0, 0.0));
             }
 
             // Спробуйте знайти за вартістю
-            double cost = parseCost(query); // Перетворення query у вартість
+            double cost = parseCost(query);
             if (cost >= 0) {
                 results.addAll(reportRepository.findByProjectIdOrWorkTypeIdOrCompletionDateOrMaterialOrUsedMaterialOrActualCost(null, null, null, "",0, cost));
             }

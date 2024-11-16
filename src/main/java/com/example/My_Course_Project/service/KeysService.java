@@ -76,6 +76,10 @@ public class KeysService {
             List<String> operatorTables = Arrays.asList(currentUser.getAllowedTables().split(","));
             logger.info("Оператор: дозволені таблиці: " + operatorTables);
             return operatorTables;
+        } else if ("користувач".equals(currentUser.getPosition())) {
+            List<String> userTables = Arrays.asList(currentUser.getAllowedTables().split(","));
+            logger.info("Користувач: дозволені таблиці: " + userTables);
+            return userTables;
         }
 
         logger.info("Немає дозволених таблиць для користувача " + currentUser.getPosition());

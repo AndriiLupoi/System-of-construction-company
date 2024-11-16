@@ -45,10 +45,9 @@ public class EmployeeService {
         employee.setSite(site);
         employee.setBrigade(brigade);
 
-        // Збереження зображення, якщо воно завантажене
         if (image != null && !image.isEmpty()) {
             byte[] imageData = image.getBytes();
-            employee.setImage(imageData); // Зберігаємо зображення у полі типу byte[]
+            employee.setImage(imageData);
         }
 
         employeeRepository.save(employee);
@@ -87,23 +86,23 @@ public class EmployeeService {
 
     public List<Object[]> findBrigadeCompositionForProject(int projectId) {
         List<Object[]> resultList = new ArrayList<>();
-        Set<Integer> addedEmployees = new HashSet<>(); // Унікальні ID працівників
+        Set<Integer> addedEmployees = new HashSet<>();
 
-        List<Schedule> schedules = scheduleRepository.findByProjectId(projectId); // Отримуємо розклади лише для обраного проекту
+        List<Schedule> schedules = scheduleRepository.findByProjectId(projectId);
 
         for (Schedule schedule : schedules) {
             Brigade brigade = schedule.getBrigade();
             List<Employee> employees = employeeRepository.findByBrigadeId(brigade.getId());
 
             for (Employee employee : employees) {
-                if (!addedEmployees.contains(employee.getId())) { // Перевіряємо, чи працівника ще не додано
+                if (!addedEmployees.contains(employee.getId())) {
                     resultList.add(new Object[]{
-                            brigade.getName(),           // Назва бригади
-                            employee.getName(),          // Ім'я робітника
-                            employee.getPosition(),      // Посада робітника
-                            schedule.getSite().getName() // Назва ділянки
+                            brigade.getName(),
+                            employee.getName(),
+                            employee.getPosition(),
+                            schedule.getSite().getName()
                     });
-                    addedEmployees.add(employee.getId()); // Додаємо ID працівника до множини
+                    addedEmployees.add(employee.getId());
                 }
             }
         }
@@ -135,22 +134,18 @@ public class EmployeeService {
 
 
     public void updateEmployee(Employee updatedEmployee) {
-        // Пошук працівника в базі даних за ID
         Employee existingEmployee = findEmployeeById(updatedEmployee.getId());
 
-        // Оновлення полів
         existingEmployee.setName(updatedEmployee.getName());
         existingEmployee.setPosition(updatedEmployee.getPosition());
         existingEmployee.setJobCategory(updatedEmployee.getJobCategory());
         existingEmployee.setSite(updatedEmployee.getSite());
         existingEmployee.setBrigade(updatedEmployee.getBrigade());
 
-        // Оновлення зображення, якщо воно присутнє
         if (updatedEmployee.getImage() != null) {
             existingEmployee.setImage(updatedEmployee.getImage());
         }
 
-        // Збереження оновленого працівника в базу даних
         employeeRepository.save(existingEmployee);
     }
 

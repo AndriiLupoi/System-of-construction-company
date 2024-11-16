@@ -1,4 +1,3 @@
-/* Загальні стилі */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-image: url("../img/background/brick.png");
@@ -9,12 +8,11 @@ body {
     margin: 0;
 }
 
-/* Контейнер для логіну */
 .login-container {
-    background-color: #333333; /* Темний фон для контейнера */
+    background-color: #333333;
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Більш виражена тінь */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     width: 350px;
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -22,39 +20,35 @@ body {
 
 .login-container:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2); /* Менш насичена тінь при наведенні */
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.2);
 }
 
-/* Заголовок */
 h2 {
     margin-bottom: 20px;
-    color: #f0f0f0; /* Світлий текст для контрасту */
+    color: #f0f0f0;
     font-size: 24px;
     text-transform: uppercase;
 }
 
-/* Стилі для форм */
 form {
     display: flex;
     flex-direction: column;
 }
 
-/* Лейбли */
 label {
     margin-bottom: 5px;
     font-weight: bold;
-    color: #cccccc; /* Світліший текст для кращої читабельності */
+    color: #cccccc;
     text-align: left;
 }
 
-/* Поля вводу */
 input[type="text"],
 input[type="password"] {
-    background-color: #2a2a2a; /* Темний фон полів вводу */
-    color: #ffffff; /* Світлий текст */
+    background-color: #2a2a2a;
+    color: #ffffff;
     padding: 12px 15px;
     margin-bottom: 20px;
-    border: 1px solid #444444; /* Темна рамка */
+    border: 1px solid #444444;
     border-radius: 5px;
     font-size: 16px;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -62,16 +56,15 @@ input[type="password"] {
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #ff6600; /* Акцент на помаранчевий колір при фокусі */
+    border-color: #ff6600;
     outline: none;
     box-shadow: 0 0 5px rgba(255, 102, 0, 0.5);
 }
 
-/* Кнопки */
 button {
     padding: 12px;
     margin-top: 10px;
-    background-color: #ff6600; /* Помаранчевий як основний колір кнопок */
+    background-color: #ff6600;
     color: white;
     border: none;
     border-radius: 5px;
@@ -81,18 +74,16 @@ button {
 }
 
 button:hover {
-    background-color: #cc5200; /* Темніший відтінок при наведенні */
+    background-color: #cc5200;
     transform: translateY(-2px);
 }
 
-/* Повідомлення про помилки */
 .error-message {
-    color: #ff3333; /* Яскраво-червоний для помилок */
+    color: #ff3333;
     margin-top: 10px;
     font-size: 14px;
 }
 
-/* Додаткові стилі для мобільних пристроїв */
 @media (max-width: 400px) {
     .login-container {
         width: 90%;

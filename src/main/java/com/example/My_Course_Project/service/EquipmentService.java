@@ -28,9 +28,8 @@ public class EquipmentService {
     }
 
     public void updateEquipment(Equipment updatedEquipment) {
-        // Перевірка, чи існує обладнання з таким ID
         if (equipmentRepository.existsById(updatedEquipment.getId())) {
-            equipmentRepository.save(updatedEquipment); // Зберігаємо оновлене обладнання
+            equipmentRepository.save(updatedEquipment);
         } else {
             throw new ResourceNotFoundException("Обладнання не знайдено з ID: " + updatedEquipment.getId());
         }
@@ -118,9 +117,9 @@ public class EquipmentService {
 
             equipmentToUpdate.setName(equipment.getName());
             equipmentToUpdate.setType(equipment.getType());
-            equipmentToUpdate.setSite(equipment.getSite()); // Оновлюємо сайт
+            equipmentToUpdate.setSite(equipment.getSite());
 
-            equipmentRepository.save(equipmentToUpdate); // Збереження оновленого об'єкта
+            equipmentRepository.save(equipmentToUpdate);
         } else {
             throw new RuntimeException("Обладнання з ID " + id + " не знайдено.");
         }

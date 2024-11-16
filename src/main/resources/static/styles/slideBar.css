@@ -1,5 +1,5 @@
 .sidebar {
-    width: 60px; /* Встановлено початкову ширину 60px */
+    width: 60px;
     background-image: url("../img/background/brick.png");
     height: 100vh;
     position: fixed;
@@ -32,7 +32,7 @@
 }
 
 .sidebar #home:hover, #projects:hover, #workers:hover, #add_info:hover, #query_img:hover, #userAdd_img:hover {
-    transform: scale(1.2); /* Increase size on hover */
+    transform: scale(1.2);
     width: 35px;
     height: 35px;
     transition: transform 0.4s ease, width 0.5s ease, height 0.5s ease;
@@ -49,18 +49,18 @@
     color: white;
     font-size: 12px;
     text-align: center;
-    display: none; /* Сховати текст за замовчуванням */
+    display: none;
 }
 
 .sidebar:hover .span {
-    display: block; /* Показати текст при наведенні на бічну панель */
+    display: block;
 }
 
 .sidebar a {
-    display: flex; /* Додаємо flex для центрування */
-    flex-direction: column; /* Розташування значка та тексту в стовпчик */
-    align-items: center; /* Центрування по горизонталі */
-    text-decoration: none; /* Скинути стиль посилання */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
 }
 
 .home-page, .project-page, .workers-page, .add-page, .querys-page, .addUser-page{
@@ -75,14 +75,14 @@
     margin-bottom: 10px;
 }
 .logout-btn {
-    margin-top: auto; /* Поміщаємо кнопку внизу */
+    margin-top: auto;
     margin-bottom: 50px;
 }
 
 .circle {
-    width: 40px; /* Розмір кнопки */
+    width: 40px;
     height: 40px;
-    border-radius: 50%; /* Робимо кнопку круглою */
+    border-radius: 50%;
     background-color: #ffffff;
     display: flex;
     justify-content: center;
@@ -94,30 +94,30 @@
 .circle img {
     width: 20px;
     height: 20px;
-    transition: opacity 0.3s; /* Додаємо плавну зміну прозорості */
+    transition: opacity 0.3s;
 }
 
 .circle .span-logout {
     position: absolute;
     color: white;
     font-size: 12px;
-    display: none; /* Ховаємо текст за замовчуванням */
+    display: none;
     transition: opacity 0.3s;
 }
 .circle:hover {
-    width: 80px; /* Збільшення кнопки при наведенні */
+    width: 80px;
     height: 40px;
     background-color: #ff0000;
     border-radius: 15px;
 }
 
 .circle:hover img {
-    opacity: 0; /* Іконка зникає при наведенні */
+    opacity: 0;
 }
 
 .circle:hover .span-logout {
     display: block;
-    opacity: 1; /* Текст з'являється при наведенні */
+    opacity: 1;
 }
 
 .icons_background{

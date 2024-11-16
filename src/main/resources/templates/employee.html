@@ -46,7 +46,7 @@
             <span class="span">Додати</span>
         </a>
     </div>
-    <div th:if="${isOwner || isAdmin || isOperator}" class="querys-page">
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="querys-page">
         <a href="querys">
             <div class="icons_background">
                 <img id="query_img" th:src="@{../img/icons/querys.png}" alt="Querys Icon" />
@@ -80,6 +80,8 @@
             <img th:src="@{/employee/image/{id}(id=${employee.id})}" alt="Фото працівника" class="employee-image"/>
             <h3 th:text="${employee.name}">Ім'я працівника</h3>
             <p th:text="${employee.position}">Посада</p>
+            <p th:text="${employee.jobCategory.name}">Категорія роботи</p>
+            <p th:text="${employee.brigade.name}">Бригада</p>
 
             <div class="buttons">
                 <form th:if="${isOwner}" action="/employee/edit" method="get">

@@ -10,7 +10,6 @@ body {
     flex-direction: column;
 }
 
-/* Основний блок контенту */
 .content {
     width: 85%;
     max-width: 1200px;
@@ -26,7 +25,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Стилі для вибору проекту та форми */
 form {
     margin: 0 auto 30px;
     width: 85%;
@@ -41,7 +39,7 @@ form {
 }
 
 label {
-    color: #ff6600; /* Помаранчевий для міток */
+    color: #ff6600;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -86,7 +84,6 @@ button[type="submit"]:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
 
-/* Заголовки для деталей проекту */
 h2, h3 {
     color: #ff6600;
     text-align: center;
@@ -95,7 +92,6 @@ h2, h3 {
     font-size: 24px;
 }
 
-/* Стилі для таблиць */
 table {
     width: 100%;
     margin: 20px auto;
@@ -130,7 +126,6 @@ tr:hover td {
     background-color: #333333;
 }
 
-/* Додатковий стиль для тіней і анімації */
 tr:nth-child(even) td {
     background-color: #292929;
 }

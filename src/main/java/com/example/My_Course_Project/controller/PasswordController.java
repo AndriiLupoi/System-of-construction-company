@@ -80,9 +80,6 @@ public class PasswordController {
         }
     }
 
-
-
-
     // Збереження нового паролю
     @PostMapping("/save-password")
     public String savePassword(@RequestParam("login") String login,

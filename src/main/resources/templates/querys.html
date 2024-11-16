@@ -53,7 +53,7 @@
             <span class="span">Додати</span>
         </a>
     </div>
-    <div th:if="${isOwner || isAdmin || isOperator}" class="querys-page">
+    <div th:if="${isOwner || isAdmin || isOperator || isUser}" class="querys-page">
         <a href="querys">
             <div class="icons_background">
                 <img id="query_img" th:src="@{../img/icons/querys.png}" alt="Querys Icon" />
@@ -306,8 +306,8 @@
             <tbody>
             <tr th:each="result : ${results}">
                 <td th:text="${result[0]}"></td> <!-- Назва бригади -->
-                <td th:text="${result[2]}"></td> <!-- Назва проекту -->
-                <td th:text="${result[1]}"></td> <!-- Назва типу робіт -->
+                <td th:text="${result[1]}"></td> <!-- Назва проекту -->
+                <td th:text="${result[2]}"></td> <!-- Назва типу робіт -->
             </tr>
             </tbody>
         </table>

@@ -111,10 +111,6 @@ public class ProjectService {
         if (existingProject.isPresent()) {
             Project projectToUpdate = existingProject.get();
 
-            System.out.println("Updating Project ID: " + id);
-            System.out.println("New Start Date: " + record.getStartDate());
-            System.out.println("New End Date: " + record.getEndDate());
-
             // Оновлюємо поля проекту
             projectToUpdate.setName(record.getName());
             projectToUpdate.setCategoryId(record.getCategoryId());
@@ -133,6 +129,4 @@ public class ProjectService {
     public Project findProjectById(int id) {
         return projectRepository.findById(id).orElseThrow(() -> new RuntimeException("Проект не знайдено"));
     }
-
-
 }

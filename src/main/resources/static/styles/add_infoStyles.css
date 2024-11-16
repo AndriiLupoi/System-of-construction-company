@@ -7,7 +7,7 @@ body {
 }
 
 .content {
-    width: 82%; /* Ширина 90% від вікна */
+    width: 82%;
     margin-left: 8%;
     padding: 40px;
     border-radius: 12px;
@@ -87,12 +87,12 @@ button:hover {
 }
 
 .form-container {
-    width: 96%; /* Ширина 90% від батьківського блоку з урахуванням відступу */
-    margin: 30px 10px 0  0; /* Центрування */
+    width: 96%;
+    margin: 30px 10px 0  0;
     padding: 20px;
     border: 1px solid #ff6600;
     border-radius: 10px;
     background-color: #3c3c3c;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    overflow: hidden; /* Уникнути виходу за межі */
+    overflow: hidden;
 }

@@ -73,26 +73,29 @@
     </form>
 
     <form th:if="${tableName == 'brigade'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${brigade.id})}" th:object="${brigade}" method="post" class="edit-form">
-        <div th:if="${allowedFields.contains('name')}" class="form-group">
+        <div th:if="${allowedFields.isEmpty() || allowedFields.contains('name') || (isOwner || isAdmin)}" class="form-group">
             <label for="nameB" class="form-label">Назва:</label>
             <input type="text" id="nameB" name="name" th:value="${brigade.name}" required class="form-input"/>
         </div>
 
-        <div th:if="${allowedFields.contains('siteId')}" class="form-group">
+        <div th:if="${allowedFields.isEmpty() || allowedFields.contains('siteId') || (isOwner || isAdmin)}" class="form-group">
             <label for="site_idB" class="form-label">Розташування:</label>
             <select id="site_idB" name="site_id" required class="form-input">
-                <option class="siteSelect" th:each="site : ${siteInBrigade}" th:value="${site.id}" th:text="${site.name}"
-                        th:selected="${brigade.site != null and brigade.site.id == site.id}">Розташування</option>
+                <option class="siteSelect" th:each="site : ${siteInBrigade}"
+                        th:value="${site.id}"
+                        th:text="${site.name}"
+                        th:selected="${brigade.site != null and brigade.siteId == site.id}">Розташування</option>
             </select>
         </div>
 
-        <div th:if="${allowedFields.contains('leaderId')}" class="form-group">
+        <div th:if="${allowedFields.isEmpty() || allowedFields.contains('leaderId') || (isOwner || isAdmin)}" class="form-group">
             <label for="leaderId" class="form-label">Лідер ID:</label>
             <input type="number" id="leaderId" name="leaderId" th:value="${brigade.leaderId}" class="form-input"/>
         </div>
 
         <button type="submit" class="save-btn">Зберегти</button>
     </form>
+
 
     <form th:if="${tableName == 'building_management'}" th:action="@{/data/edit/{tableName}/{id}(tableName=${tableName}, id=${building.id})}" th:object="${building}" method="post" class="edit-form">
         <div class="form-group">

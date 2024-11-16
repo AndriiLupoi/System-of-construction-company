@@ -15,6 +15,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Logger;
+
 @Controller
 public class DataController {
 
@@ -137,30 +140,13 @@ public class DataController {
                                  Model model,
                                  HttpSession session) {
         if (session.getAttribute("user") == null) {
-            return "redirect:/login"; // Якщо користувач не аутентифікований, перенаправляємо на логін
+            return "redirect:/login";
 
         }
         keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
 
-        String allowedTablesStr = currentUser.getAllowedTables(); // Наприклад, "project,equipment,category"
-        List<String> allowedTables = null;
 
-        // Якщо allowedTablesStr == null, то користувач має доступ до всіх таблиць
-        if (allowedTablesStr != null && !allowedTablesStr.isEmpty()) {
-            allowedTables = Arrays.asList(allowedTablesStr.split(","));
-        } else {
-            allowedTables = Arrays.asList(
-                    "project", "equipment", "category", "brigade", "building_management", "estimate",
-                    "report", "schedule", "site", "work_type", "jobCategory"
-            );
-        }
-
-        // Перевіряємо, чи має користувач доступ до вибраної таблиці
-        if (!allowedTables.contains(tableName)) {
-            model.addAttribute("error", "У вас немає доступу до цієї таблиці");
-            return "error"; // Повертаємо повідомлення про помилку, якщо доступу немає
-        }
         switch (tableName){
             case "project":
                 List<Project> projects = projectService.searchProjects(query);
@@ -243,7 +229,7 @@ public class DataController {
             default:
                 throw new IllegalStateException("Unexpected value: " + tableName);
         }
-        model.addAttribute("allowedTables", allowedTables);
+        model.addAttribute("allowedTables", keysService.getAvailableTables(currentUser));
 
         return "tables";
     }
@@ -269,13 +255,11 @@ public class DataController {
                 List<String> allowedFields = currentUser.getAllowedFields() != null ?
                         Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
 
-                // Якщо користувач є власником і allowedFields порожній, видаляємо рядок
-                if (allowedFields.isEmpty()) {
+                if (allowedFields.isEmpty() || Objects.equals(currentUser.getPosition(), "адміністратор")) {
                     brigadeService.deleteBrigadeById(id);
                 } else {
                     Brigade brigade = brigadeService.findBrigadeById(id);
 
-                    // Якщо користувач - оператор, встановлюємо значення полів у `null`, якщо це дозволено
                     if (allowedFields.contains("name")) {
                         brigade.setName(null);
                     }
@@ -320,6 +304,8 @@ public class DataController {
 
     @GetMapping("/data/edit/{tableName}/{id}")
     public String showEditForm(@PathVariable("tableName") String tableName, @PathVariable("id") int id, Model model, HttpSession session) {
+
+        keysService.setUserRoles(model, session);
         Keys currentUser = (Keys) session.getAttribute("user");
         switch (tableName) {
             case "project":
@@ -337,32 +323,27 @@ public class DataController {
                 model.addAttribute("category", category);  // Додавання категорії в модель
                 break;
             case "brigade":
-                if ("оператор".equals(currentUser.getPosition()) && "brigade".equals(currentUser.getAllowedTables())) {
-                    List<String> allowedFields = Arrays.asList(currentUser.getAllowedFields().split(","));
-                    List<Site> siteInBrigade = siteService.getAllSites();
-                    model.addAttribute("allowedFields", allowedFields);
-                    model.addAttribute("siteInBrigade", siteInBrigade);
-                } else if (currentUser.getAllowedFields() == null || currentUser.getAllowedFields().isEmpty()) {
-                    // Якщо `allowedFields` порожній — надання повного доступу
-                    model.addAttribute("allowedFields", List.of("name", "site_id", "leader_id")); // Перелік всіх полів
-                } else {
-                    // Якщо доступу немає — порожній список
-                    model.addAttribute("allowedFields", List.of());
-                }
+                List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                        Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
+                List<Site> siteInBrigade = siteService.getAllSites();
+                System.out.println(siteInBrigade);
+                model.addAttribute("allowedFields", allowedFields);
+                model.addAttribute("siteInBrigade", siteInBrigade);
+
                 // Отримання даних бригади
                 Brigade brigade = brigadeService.findBrigadeById(id);
                 model.addAttribute("brigade", brigade);
                 break;
             case "building_management":
-                BuildingManagement building = buildingManagementService.findBuildingById(id); // Отримуємо об'єкт будівлі
+                BuildingManagement building = buildingManagementService.findBuildingById(id);
                 model.addAttribute("building", building);
                 break;
             case "estimate":
-                Estimate estimate = estimateService.findEstimateById(id);  // Пошук об'єкта estimate
+                Estimate estimate = estimateService.findEstimateById(id);
                 model.addAttribute("estimate", estimate);
                 break;
             case "report":
-                Report report = reportService.findReportById(id);  // Пошук об'єкта report
+                Report report = reportService.findReportById(id);
                 model.addAttribute("report", report);
                 break;
             case "schedule":
@@ -384,9 +365,9 @@ public class DataController {
             default:
                 throw new IllegalArgumentException("Неправильна назва таблиці: " + tableName);
         }
+
         model.addAttribute("tableName", tableName);
 
-        // Вказуємо шаблон для редагування
         return "editForm";
     }
 
@@ -399,7 +380,7 @@ public class DataController {
                                @RequestParam(required = false) String type,
                                @RequestParam(value = "site_id", required = false) Integer siteId,
                                @RequestParam(required = false) String description,
-                               @RequestParam(value = "leader_id", required = false) Integer leaderId,
+                               @RequestParam(value = "leaderId", required = false) Integer leaderId,
                                @RequestParam(required = false) Integer buildingManagementId,
                                @RequestParam(required = false) String location,
                                @RequestParam(required = false) Integer projectId,
@@ -413,8 +394,10 @@ public class DataController {
                                @RequestParam(value = "brigade_id", required = false) Integer brigadeId,
                                @ModelAttribute("projects") Project project,
                                @ModelAttribute("equipment") Equipment equipment,
-                               HttpSession session) {
+                               HttpSession session,
+                               Model model) {
         Keys currentUser = (Keys) session.getAttribute("user");
+        keysService.setUserRoles(model, session);
 
         switch (tableName) {
             case "project":
@@ -455,23 +438,28 @@ public class DataController {
                 categoryService.updateCategoryById(id, category);
                 break;
             case "brigade":
-                if ("оператор".equals(currentUser.getPosition()) && "brigade".equals(currentUser.getAllowedTables())) {
-                    List<String> allowedFields = Arrays.asList(currentUser.getAllowedFields().split(","));
+                Logger logger = Logger.getLogger(getClass().getName());
+                List<String> allowedFields = currentUser.getAllowedFields() != null ?
+                        Arrays.asList(currentUser.getAllowedFields().split(",")) : new ArrayList<>();
 
-                    Brigade originalBrigade = brigadeService.findBrigadeById(brigade.getId());
+                Brigade originalBrigade = brigadeService.findBrigadeById(brigade.getId());
 
-                    if (allowedFields.contains("name")) {
-                        originalBrigade.setName(brigade.getName());
-                    }
-                    if (allowedFields.contains("siteId")) {
-                        originalBrigade.setSiteId(siteId);
-                    }
-                    if (allowedFields.contains("leaderId")) {
-                        originalBrigade.setLeaderId(leaderId);
-                    }
-                    brigadeService.updateBrigadeById(id, originalBrigade);
+                if (allowedFields.isEmpty() || allowedFields.contains("name") || Objects.equals(currentUser.getPosition(), "адміністратор")) {
+                    originalBrigade.setName(brigade.getName());
                 }
+                if (allowedFields.isEmpty() || allowedFields.contains("siteId") || Objects.equals(currentUser.getPosition(), "адміністратор")) {
+                    originalBrigade.setSiteId(siteId);
+                }
+                if (allowedFields.isEmpty() || allowedFields.contains("leaderId") || Objects.equals(currentUser.getPosition(), "адміністратор")) {
+                    logger.info("Allowed to set leaderId: " + leaderId);
+                    originalBrigade.setLeaderId(leaderId);
+                }
+
+
+                brigadeService.updateBrigadeById(id, originalBrigade);
                 break;
+
+
             case "building_management":
                 BuildingManagement building = buildingManagementService.findBuildingById(id);
                 if (name != null && !name.isEmpty()) {

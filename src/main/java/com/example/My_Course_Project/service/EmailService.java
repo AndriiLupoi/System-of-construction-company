@@ -17,7 +17,6 @@ public class EmailService {
         // Створюємо нове повідомлення
         MimeMessage message = mailSender.createMimeMessage();
         try {
-            // Використовуємо допоміжний об'єкт для налаштування повідомлення
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom("no-reply@mycourseproject.com");
             helper.setTo(email);
@@ -71,9 +70,8 @@ public class EmailService {
                     "</html>";
 
 
-            helper.setText(htmlContent, true); // true вказує, що це HTML контент
+            helper.setText(htmlContent, true);
 
-            // Відправляємо листа
             mailSender.send(message);
 
             System.out.println("Verification email sent successfully to: " + email);

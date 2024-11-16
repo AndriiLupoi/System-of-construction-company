@@ -1,4 +1,4 @@
-/* Загальні стилі */
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #1e1e1e;
@@ -11,7 +11,7 @@ body {
     overflow: hidden;
 }
 
-/* Контейнер для форми редагування */
+
 .form-container {
     max-width: 800px;
     margin: 0 auto;
@@ -27,7 +27,7 @@ body {
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
 }
 
-/* Заголовок */
+
 h2 {
     margin-bottom: 20px;
     color: #ff6600;
@@ -37,7 +37,7 @@ h2 {
     letter-spacing: 1.5px;
 }
 
-/* Контейнер форми */
+
 form {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -45,7 +45,6 @@ form {
     margin-top: 10px;
 }
 
-/* Лейбли */
 label {
     font-weight: bold;
     color: #dcdcdc;
@@ -54,7 +53,6 @@ label {
     text-align: left;
 }
 
-/* Поля вводу */
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -78,7 +76,6 @@ select:focus {
     box-shadow: 0 0 8px rgba(255, 102, 0, 0.5);
 }
 
-/* Чекбокси для вибору полів */
 .checkbox-container {
     width: 100%;
     grid-column: span 2;
@@ -92,7 +89,6 @@ select:focus {
     color: #ffffff;
 }
 
-/* Кнопка для збереження */
 button[type="submit"] {
     grid-column: 1 / -1;
     padding: 12px;
@@ -120,7 +116,7 @@ button[type="submit"]:hover {
 
 .checkbox-group {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Two columns for labels and checkboxes */
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
 
@@ -137,14 +133,12 @@ button[type="submit"]:hover {
 }
 
 .checkbox-item input[type="checkbox"] {
-    accent-color: #ff6600; /* Change the checkbox color */
+    accent-color: #ff6600;
     width: 20px;
     height: 20px;
     cursor: pointer;
 }
 
-
-/* Додаткові стилі для мобільних пристроїв */
 @media (max-width: 400px) {
     .form-container {
         width: 90%;
@@ -152,11 +146,11 @@ button[type="submit"]:hover {
     }
 
     .user-form {
-        grid-template-columns: 1fr; /* Один стовпчик на менших екранах */
+        grid-template-columns: 1fr;
     }
 
     .checkbox-container {
-        grid-column: span 1; /* Переключити чекбокси в одну колонку */
+        grid-column: span 1;
     }
 
     h2 {

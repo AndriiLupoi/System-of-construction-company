@@ -2,7 +2,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #1e1e1e; /* Темний фон */
+    background-color: #1e1e1e;
     background-position: center;
     display: flex;
     justify-content: center;
@@ -11,14 +11,14 @@ body {
 }
 
 .main-content {
-    width: 90%;
+    width: 95%;
     padding: 20px;
 }
 
 .employee-container {
     margin-top: 2%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Зменшив мінімальну ширину карток */
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
     gap: 20px;
     justify-content: center;
     margin-left: 5%;
@@ -27,29 +27,29 @@ body {
 }
 
 .employee-card {
-    background-color: #2a2a2a; /* Темний фон для картки */
+    background-color: #2a2a2a;
     border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6); /* М'яка тінь */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 420px;
+    height: auto;
 }
 
 .employee-card:hover {
-    transform: translateY(-5px); /* Легка анімація при наведенні */
-    box-shadow: 0 12px 30px rgba(255, 102, 0, 0.4); /* Помаранчева тінь */
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(255, 102, 0, 0.4);
 }
 
 .employee-image {
     width: 100%;
     height: 250px;
     object-fit: cover;
-    border-bottom: 3px solid #ff6600; /* Лінія для акценту */
+    border-bottom: 3px solid #ff6600;
 }
 
 h3 {
     margin: 10px 0 10px 15px;
-    color: #ff6600; /* Помаранчевий колір для заголовків */
+    color: #ff6600;
     font-size: 20px;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -59,7 +59,7 @@ h3 {
 p {
     margin: 8px 20px;
     color: #bbbbbb;
-    font-size: 15px; /* Трохи зменшив розмір шрифту */
+    font-size: 15px;
     line-height: 1.4;
 }
 
@@ -70,7 +70,7 @@ button {
     background-color: #ff6600;
     color: white;
     border: none;
-    border-radius: 10px; /* Менш круглі краї */
+    border-radius: 10px;
     font-size: 15px;
     text-transform: uppercase;
     cursor: pointer;
@@ -82,29 +82,30 @@ button:hover {
     transform: translateY(-2px);
 }
 
-h1{
+h1 {
     color: white;
     margin-left: 4%;
 }
-.buttons{
+
+.buttons {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
+
 .delete-button {
     background-color: #d9534f;
     color: white;
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 .delete-button:hover {
     background-color: #c9302c;
 }
 
-/* Адаптивні стилі для мобільних пристроїв */
 @media (max-width: 768px) {
     .employee-container {
-        grid-template-columns: 1fr; /* Одноколонкова структура для менших екранів */
+        grid-template-columns: 1fr;
         padding: 10px;
     }
 

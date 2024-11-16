@@ -45,12 +45,9 @@ public class JobCategoryService {
     public List<JobCategory> searchJobCategories(String query) {
         List<JobCategory> result = new ArrayList<>();
         try {
-            // Спробуємо перетворити запит у ціле число для ID
             Integer id = Integer.parseInt(query);
-            // Якщо ID знайдено, додаємо його до результату
             jobCategoryRepository.findById(id).ifPresent(result::add);
         } catch (NumberFormatException e) {
-            // Якщо не вдається перетворити в ID, шукаємо за назвою або описом
             result = jobCategoryRepository.findByNameContainingOrDescriptionContaining(query, query);
         }
         return result;

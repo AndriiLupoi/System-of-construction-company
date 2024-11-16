@@ -3,16 +3,16 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    background-color: #1e1e1e; /* Темний фон */
+    background-color: #1e1e1e;
     background-position: center;
 }
 
 .content {
     width: 70%;
     height: auto;
-    background-color: #2a2a2a; /* Темний фон для контейнера */
+    background-color: #2a2a2a;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); /* Більш насичена тінь */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     padding: 40px;
     margin: 40px auto;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -21,12 +21,12 @@ body {
 
 .content:hover {
     transform: scale(1.03);
-    box-shadow: 0 12px 50px rgba(255, 255, 255, 0.2); /* Легкий світлий ефект тіні при наведенні */
+    box-shadow: 0 12px 50px rgba(255, 255, 255, 0.2);
 }
 
 h1 {
     text-align: center;
-    color: #f0f0f0; /* Світлий текст */
+    color: #f0f0f0;
     font-size: 32px;
     margin-bottom: 30px;
     font-weight: 600;
@@ -42,7 +42,7 @@ form {
 label {
     font-weight: bold;
     margin-bottom: 10px;
-    color: #ff6600; /* Помаранчевий для міток */
+    color: #ff6600;
     font-size: 16px;
 }
 
@@ -50,59 +50,62 @@ label {
     display: flex;
     align-items: center;
 }
-.input-container{
+
+.input-container {
     margin-left: 60px;
     display: flex;
     align-items: center;
 }
 
-.form-container{
+.form-container {
     margin-left: 14%;
     align-items: center;
     display: flex;
     flex-direction: row;
 }
 
-#searchQuery{
+#searchQuery {
     margin: 0 10px 1px 0;
 }
-.cancel_searching{
+
+.cancel_searching {
     margin: 0 0 -30px 10px;
 }
+
 select {
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ff6600; /* Помаранчевий для рамки */
+    border: 1px solid #ff6600;
     margin-right: 10px;
     transition: border-color 0.3s;
-    background-color: #333333; /* Темний фон для селектора */
-    color: #f0f0f0; /* Світлий текст */
+    background-color: #333333;
+    color: #f0f0f0;
 }
 
 select:focus {
     outline: none;
-    border-color: #cc5200; /* Темніший помаранчевий при фокусі */
-    background-color: #444444; /* Темніший фон при фокусі */
+    border-color: #cc5200;
+    background-color: #444444;
 }
 
 input[type="text"] {
     padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ff6600; /* Помаранчевий для рамки */
-    margin-top: 10px; /* Відступ зверху */
+    border: 1px solid #ff6600;
+    margin-top: 10px;
     transition: border-color 0.3s;
-    background-color: #333333; /* Темний фон для поля введення */
-    color: #f0f0f0; /* Світлий текст */
+    background-color: #333333;
+    color: #f0f0f0;
 }
 
 input[type="text"]:focus {
     outline: none;
-    border-color: #cc5200; /* Темніший помаранчевий при фокусі */
-    background-color: #444444; /* Темніший фон при фокусі */
+    border-color: #cc5200;
+    background-color: #444444;
 }
 
 button {
-    background-color: #ff6600; /* Помаранчевий для кнопок */
+    background-color: #ff6600;
     color: white;
     border: none;
     border-radius: 5px;
@@ -112,7 +115,7 @@ button {
 }
 
 button:hover {
-    background-color: #cc5200; /* Темніший помаранчевий при наведенні */
+    background-color: #cc5200;
     transform: translateY(-2px);
 }
 
@@ -125,29 +128,32 @@ table {
 }
 
 th, td {
-    padding: 5px; /* Установіть однаковий padding */
-    text-align: left; /* Установіть вирівнювання */
-    border: 1px solid #555555; /* Однакова рамка */
+    padding: 5px;
+    text-align: left;
+    border: 1px solid #555555;
 }
+
 th {
-    background: linear-gradient(90deg, #ff6600, #cc5200); /* Градієнт для заголовка */
+    background: linear-gradient(90deg, #ff6600, #cc5200);
     color: white;
     font-weight: bold;
 }
 
 tr:nth-child(even) {
-    background-color: #333333; /* Темніший фон для парних рядків */
+    background-color: #333333;
 }
 
 tr:hover {
-    background-color: #444444; /* Темний колір при наведенні */
+    background-color: #444444;
     transition: background-color 0.3s;
 }
+
 tr {
     color: white;
 }
+
 small {
-    color: #bbbbbb; /* Світлий текст для дрібних елементів */
+    color: #bbbbbb;
 }
 
 .no-border {
@@ -158,19 +164,9 @@ small {
 }
 
 .delete-btn {
-    margin-top: 8%; /* Установіть однаковий маргін */
+    margin-top: 8%;
     margin-bottom: -20px;
-    background-color: #ff0000; /* Наприклад, червоний фон */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    cursor: pointer;
-}
-.edit-btn{
-    margin-top: 8%; /* Установіть однаковий маргін */
-    margin-bottom: -20px;
-    background-color: #20521f; /* Наприклад, червоний фон */
+    background-color: #ff0000;
     color: white;
     border: none;
     border-radius: 5px;
@@ -178,6 +174,16 @@ small {
     cursor: pointer;
 }
 
+.edit-btn {
+    margin-top: 8%;
+    margin-bottom: -20px;
+    background-color: #20521f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
 
 @media (max-width: 600px) {
     table, thead, tbody, th, td, tr {
@@ -209,12 +215,12 @@ small {
         white-space: nowrap;
         content: attr(data-label);
         font-weight: bold;
-        color: #ff6600; /* Помаранчевий для міток */
+        color: #ff6600;
     }
 }
 
-@media (max-width: 768px)  {
-    .form-container{
+@media (max-width: 768px) {
+    .form-container {
         flex-direction: column;
         align-items: center;
         margin-left: 0;
@@ -222,10 +228,9 @@ small {
 }
 
 @media (max-width: 1250px) {
-    .form-container{
+    .form-container {
         flex-direction: column;
         margin-left: 0;
         align-items: center;
     }
-
 }

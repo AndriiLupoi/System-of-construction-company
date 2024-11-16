@@ -45,7 +45,6 @@ public class ScheduleService {
                 LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 return scheduleRepository.findByProjectIdOrWorkTypeIdOrStartDateOrEndDate(null, null, localDate, localDate);
             } catch (ParseException ex) {
-                // Тут ви можете обробити інші значення, наприклад, якщо ви хочете шукати за іншим критерієм
                 throw new RuntimeException("Invalid search query: " + query, ex);
             }
         }
@@ -75,7 +74,6 @@ public class ScheduleService {
     }
 
     public List<Schedule> getSchedulesByProjectName(String projectName) {
-        // Припускаємо, що у вас є метод у репозиторії, який знаходить ID проекту за його назвою
         Integer projectId = scheduleRepository.findProjectIdByName(projectName);
         return scheduleRepository.findByProjectId(projectId);
     }

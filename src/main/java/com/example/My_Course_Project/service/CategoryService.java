@@ -51,17 +51,14 @@ public class CategoryService {
     }
 
     public void updateCategoryById(int id, Category category) {
-        // Знаходимо категорію в базі даних за її ID
         Optional<Category> existingCategory = categoryRepository.findById(id);
 
         if (existingCategory.isPresent()) {
             Category categoryToUpdate = existingCategory.get();
 
-            // Оновлюємо необхідні поля
             categoryToUpdate.setName(category.getName());
             categoryToUpdate.setDescription(category.getDescription());
 
-            // Зберігаємо оновлену категорію в базі даних
             categoryRepository.save(categoryToUpdate);
         } else {
             throw new EntityNotFoundException("Category with id " + id + " not found");

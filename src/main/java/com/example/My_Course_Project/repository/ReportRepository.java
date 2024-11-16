@@ -24,10 +24,10 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 
     @Query("SELECT " +
             "    e.material, " +
-            "    SUM(r.usedMaterial) AS total_used, " + // Виправлено на usedMaterial
-            "    SUM(r.actualCost) AS total_actual_cost, " + // Залишилося так
+            "    SUM(r.usedMaterial) AS total_used, " +
+            "    SUM(r.actualCost) AS total_actual_cost, " +
             "    MAX(e.cost) AS estimated_cost, " +
-            "    SUM(r.actualCost) - MAX(e.cost) AS cost_exceeded " + // Залишилося так
+            "    SUM(r.actualCost) - MAX(e.cost) AS cost_exceeded " +
             "FROM " +
             "    Report r " +
             "JOIN " +

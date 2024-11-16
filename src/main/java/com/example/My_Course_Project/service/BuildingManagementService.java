@@ -19,7 +19,6 @@ public class BuildingManagementService {
         return buildingManagementRepository.findAll();
     }
 
-    // Логіка пошуку управлінь будівництва
     public List<BuildingManagement> searchBuildingManagements(String query) {
         try {
             Integer id = Integer.parseInt(query);
